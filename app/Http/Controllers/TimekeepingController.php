@@ -30,9 +30,10 @@ class TimekeepingController extends Controller
         $capturedDescriptor = $request->descriptor;
 
         $distance = $this->calculateDistance($storedDescriptor, $capturedDescriptor);
-
         return response()->json([
-            'match' => $distance < 0.6 // Điều chỉnh ngưỡng theo nhu cầu
+            'distance'=> $distance,
+            'match' => $distance > 0.2,
+             // Điều chỉnh ngưỡng theo nhu cầu
         ]);
     }
 

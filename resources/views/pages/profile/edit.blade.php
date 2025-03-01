@@ -113,6 +113,7 @@
                 hideLoading()
                 if (!detection) {
                     alert('Không tìm thấy khuôn mặt!');
+                    document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(""));
                     return;
                 }
 
