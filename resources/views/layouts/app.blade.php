@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     class=" layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr" data-skin="default"
     data-template="vertical-menu-template" data-bs-theme="light">
->
 
 <head>
     <meta charset="utf-8">
@@ -36,23 +35,29 @@
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <!-- endbuild -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
 
-    @yield('css-vendor')
+    @isset($cssVendor)
+        {{ $cssVendor }}
+    @endisset
     <!-- Page CSS -->
 
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script> --}}
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
 
     <script src="{{ asset('assets/js/config.js') }}"></script>
-    @yield('css')
 
+    @isset($css)
+        {{ $css }}
+    @endisset
 </head>
 
-<body>
+<body id="page-block">
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -78,7 +83,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
-                        {{$slot}}
+                        {{ $slot }}
                         {{-- @yield('content') --}}
                     </div>
                     <!-- / Content -->
@@ -97,6 +102,8 @@
 
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
+        <button class="btn btn-primary btn-page-block-overlay d-none" id="btn-page-block-overlay">Overlay Color</button>
+        <button class="btn btn-primary remove-page-btn d-none" id="remove-page-btn">remove/unblock</button>
 
         <!-- Drag Target Area To SlideIn Menu On Small Screens -->
         <div class="drag-target"></div>
@@ -127,22 +134,26 @@
 
     <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
 
-    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
-
-
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
 
     <!-- endbuild -->
 
     <!-- Vendors JS -->
-    @yield('script-vendor')
+    <script src="{{ asset('assets/vendor/libs/notiflix/notiflix.js') }}"></script>
+    @isset($scriptVendor)
+        {{ $scriptVendor }}
+    @endisset
 
     <!-- Main JS -->
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <!-- Page JS -->
-    @yield('script')
+    <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
 
+    <script src="{{ asset('assets/js/action-loading.js') }}"></script>
+    @isset($script)
+        {{ $script }}
+    @endisset
 </body>
 
 </html>

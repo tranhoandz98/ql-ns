@@ -2,7 +2,6 @@
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}"
     class=" layout-navbar-fixed layout-menu-fixed layout-compact " dir="ltr" data-skin="default"
     data-template="vertical-menu-template" data-bs-theme="light">
->
 
 <head>
     <meta charset="utf-8">
@@ -36,6 +35,8 @@
 
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
     <!-- endbuild -->
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
 
     @yield('css-vendor')
     <!-- Page CSS -->
@@ -43,10 +44,9 @@
     <!-- Helpers -->
     <script src="{{ asset('assets/vendor/js/helpers.js') }}"></script>
     <!--? Template customizer: To hide customizer set displayCustomizer value false in config.js.  -->
-    <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script>
+    {{-- <script src="{{ asset('assets/vendor/js/template-customizer.js') }}"></script> --}}
 
     <!--? Config:  Mandatory theme config file contain global vars & default theme options, Set your preferred theme option in this file.  -->
-
     <script src="{{ asset('assets/js/config.js') }}"></script>
     @yield('css')
 
@@ -55,7 +55,7 @@
 <body>
     <!-- Layout wrapper -->
     <div class="authentication-wrapper authentication-cover">
-        {{$slot}}
+        {{ $slot }}
     </div>
     <!-- / Layout wrapper -->
 
@@ -83,16 +83,16 @@
 
     <script src="{{ asset('assets/vendor/libs/hammer/hammer.js') }}"></script>
 
-    <script src="{{ asset('assets/vendor/libs/i18n/i18n.js') }}"></script>
-
-
     <script src="{{ asset('assets/vendor/js/menu.js') }}"></script>
 
     <!-- endbuild -->
 
     <!-- Vendors JS -->
     @yield('script-vendor')
+    <script src="{{ asset('assets/vendor/libs/notiflix/notiflix.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
     <!-- Main JS -->
+    <script src="{{ asset('assets/js/action-loading.js') }}"></script>
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <!-- Page JS -->
