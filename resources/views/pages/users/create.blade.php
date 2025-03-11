@@ -4,7 +4,10 @@
     </x-breadcrumb>
 @endsection
 <x-app-layout>
-    <x-card :title=" __('messages.user-create') ">
+    <x-card >
+        <h4>
+            {{ __('messages.user-create') }}
+        </h4>
         @include('pages.users.partials.form', [
             'action' => route('users.store'),
             'method' => 'POST',

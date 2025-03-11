@@ -5,9 +5,9 @@
 @endsection
 <x-app-layout>
     <x-card>
-        <h5>
+        <h4>
             {{ __('messages.role-edit') }}
-        </h5>
+        </h4>
         @include('pages.roles.partials.form', [
             'action' => route('roles.update', $result->id),
             'method' => 'PUT',

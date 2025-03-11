@@ -4,7 +4,10 @@
     </x-breadcrumb>
 @endsection
 <x-app-layout>
-    <x-card :title="'Cập nhật vai trò'">
+    <x-card>
+        <h4>
+            Cập nhật vai trò
+        </h4>
             @include('pages.roles.partials.form', [
                 'action' => route('roles.update', $result->id),
                 'method' => 'PUT',

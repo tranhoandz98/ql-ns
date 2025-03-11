@@ -5,10 +5,9 @@
 @endsection
 <x-app-layout>
     <x-card>
-        <h5>
+        <h4>
             {{ __('messages.role-create') }}
-
-        </h5>
+        </h4>
         @include('pages.roles.partials.form', [
             'action' => route('roles.store'),
             'method' => 'POST',

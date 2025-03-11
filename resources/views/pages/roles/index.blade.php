@@ -22,9 +22,9 @@
             <div class="d-flex gap-4">
                 <div>
 
-                    <h5>
+                    <h4>
                         {{ __('messages.role-index') }}
-                    </h5>
+                    </h4>
                 </div>
                 <div class="ms-auto">
                     <a href="{{ route('roles.create') }}">

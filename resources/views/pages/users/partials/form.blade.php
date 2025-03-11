@@ -19,20 +19,23 @@
     <input name="id" value="{{ $result->id ?? '' }}" class="d-none" />
     <div class="d-flex gap-4">
         <div>
-            <h6 class="text-primary">Thông tin chung</h6>
+            <h6 class="text-primary mb-0">Thông tin chung</h6>
         </div>
         <div class="ml-auto">
             avatar
         </div>
     </div>
     <div class="row">
-        <div class="col-lg-6">
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="name" :value="'Tên nhân viên'"></x-input-label>
                 <input type="text" class="form-control" id="name" name="name" {{ $disabled ?? '' }}
                     value="{{ old('name', $result->name ?? '') }}" />
                 <x-input-error :messages="$errors->get('name')" class="" />
             </div>
+        </div>
+
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="position_id" :value="'Chức vụ'"></x-input-label>
                 <select class="select2 form-select" data-allow-clear="true" name="position_id">
@@ -46,6 +49,8 @@
                 </select>
                 <x-input-error :messages="$errors->get('position_id')" class="" />
             </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="department_id" :value="'Phòng ban'"></x-input-label>
                 <select class="select2 form-select" data-allow-clear="true" name="department_id">
@@ -59,6 +64,8 @@
                 </select>
                 <x-input-error :messages="$errors->get('department_id')" class="" />
             </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="manager" :value="'Cán bộ quản lý'"></x-input-label>
                 <select class="select2 form-select" data-allow-clear="true" name="manager">
@@ -73,19 +80,23 @@
                 <x-input-error :messages="$errors->get('manager')" class="" />
             </div>
         </div>
-        <div class="col-lg-6">
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="phone" :value="'Số điện thoại'"></x-input-label>
                 <input type="text" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
                     value="{{ old('phone', $result->phone ?? '') }}" />
                 <x-input-error :messages="$errors->get('phone')" class="" />
             </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="email" :value="'Email'"></x-input-label>
                 <input type="text" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
                     value="{{ old('email', $result->email ?? '') }}" />
                 <x-input-error :messages="$errors->get('email')" class="" />
             </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="status" :value="'Trạng thái'"></x-input-label>
                 <select class="select2 form-select" data-allow-clear="true" name="status">
@@ -99,6 +110,8 @@
                 </select>
                 <x-input-error :messages="$errors->get('status')" class="" />
             </div>
+        </div>
+        <div class="col-md-6 col-lg-4">
             <div class="form-group mb-4">
                 <x-input-label for="type" :value="'Loại người dùng'"></x-input-label>
                 <select class="select2 form-select" data-allow-clear="true" name="type">
@@ -144,15 +157,6 @@
             </div>
 
         </div>
-    </div>
-
-
-
-    <div class="form-group mb-4">
-        <x-input-label for="description" :value="'Mô tả'"></x-input-label>
-        <textarea id="description" name="description" {{ $disabled ?? '' }} class="form-control">{{ old('description', $result->description ?? '') }}</textarea>
-        <x-input-error :messages="$errors->get('description')" class="" />
-
     </div>
 
     <div class="gap-4 d-flex">

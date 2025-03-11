@@ -4,7 +4,10 @@
     </x-breadcrumb>
 @endsection
 <x-app-layout>
-    <x-card :title="'Xem vai trò'">
+    <x-card>
+        <h4>
+            Xem vai trò
+        </h4>
             @include('pages.roles.partials.form', [
                 'action' => '#',
                 'method' => 'GET',
