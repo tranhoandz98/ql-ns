@@ -30,12 +30,12 @@
         <x-input-error :messages="$errors->get('permission')" class="" />
 
     </div>
-    <div class="gap-4 d-flex">
+    <div class="gap-4 d-flex justify-content-center">
         <a href="{{ route('roles.index') }}">
-            <x-button type="button" class="btn-secondary">Huỷ</x-button>
+            <x-button :icon="'x'" type="button" class="btn-secondary">Huỷ</x-button>
         </a>
         @if (!isset($disabled))
-            <x-button class="">Lưu</x-button>
+            <x-button :icon="'device-floppy'" class="">Lưu</x-button>
         @endif
     </div>
 
