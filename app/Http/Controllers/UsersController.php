@@ -17,6 +17,7 @@ class UsersController extends Controller
 
     public $statusUser;
     public $typeUser;
+    public $genders;
 
 
     public function __construct()

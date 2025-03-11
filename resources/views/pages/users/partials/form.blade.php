@@ -1,13 +1,24 @@
 @section('cssVendor')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
+
 @endsection
 @section('scriptVendor')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+
 @endsection
 
 @section('script')
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
-    <script></script>
+    <script>
+        let time = $(".bs-rangepicker-single")
+        time.flatpickr({ monthSelectorType: "static",
+        dateFormat: "d/m/Y",
+        static: !0 })
+    </script>
 @endsection
 
 
@@ -84,7 +95,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="phone" :value="'Số điện thoại'"></x-input-label>
-                    <input type="text" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
+                    <input type="tel" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
                         value="{{ old('phone', $result->phone ?? '') }}" />
                     <x-input-error :messages="$errors->get('phone')" class="" />
                 </div>
@@ -92,7 +103,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="email" :value="'Email'"></x-input-label>
-                    <input type="text" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
+                    <input type="email" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
                         value="{{ old('email', $result->email ?? '') }}" />
                     <x-input-error :messages="$errors->get('email')" class="" />
                 </div>
@@ -153,7 +164,8 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
-                    <input type="timestamp" class="form-control" id="start_date" name="start_date"
+                    <input type="text" class="form-control bs-rangepicker-single" id="start_date" name="start_date"
+                    placeholder="dd/mm/yyy"
                         {{ $disabled ?? '' }} value="{{ old('start_date', $result->start_date ?? '') }}" />
                     <x-input-error :messages="$errors->get('start_date')" class="" />
                 </div>
@@ -161,7 +173,7 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="person_tax_code">MST cá nhânh</x-input-label>
+                    <x-input-label for="person_tax_code">MST cá nhân</x-input-label>
                     <input type="timestamp" class="form-control" id="person_tax_code" name="person_tax_code"
                         {{ $disabled ?? '' }} value="{{ old('person_tax_code', $result->person_tax_code ?? '') }}" />
                     <x-input-error :messages="$errors->get('person_tax_code')" class="" />
@@ -178,7 +190,9 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
-                    <input type="timestamp" class="form-control" id="date_of_issue" name="date_of_issue"
+                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue" name="date_of_issue"
+                    placeholder="dd/mm/yyy"
+
                         {{ $disabled ?? '' }} value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_issue')" class="" />
                 </div>
@@ -194,15 +208,26 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
-                    <input type="timestamp" class="form-control" id="date_of_birth" name="date_of_birth"
+                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth" name="date_of_birth"
+                    placeholder="dd/mm/yyy"
+
                         {{ $disabled ?? '' }} value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_birth')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="gender">Ngày sinh</x-input-label>
-                    <input type="timestamp" class="form-control" id="gender" name="gender"
+                    <x-input-label for="gender">Giới tính</x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="work_time">
+                        <option value="" disabled selected>Chọn</option>
+                        @foreach ($genders as $gender)
+                            <option value="{{ $gender->id }}"
+                                {{ old('work_time', $result->gender ?? null) == $gender->id ? 'selected' : '' }}>
+                                {{ $gender->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <input type="text" class="form-control" id="gender" name="gender"
                         {{ $disabled ?? '' }} value="{{ old('gender', $result->gender ?? '') }}" />
                     <x-input-error :messages="$errors->get('gender')" class="" />
                 </div>

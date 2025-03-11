@@ -40,7 +40,7 @@
             <form class="dt_adv_search" method="GET">
                 <div class="row">
                     <div class="col-12 col-sm-6 col-lg-4">
-                        <input type="text" class="form-control dt-input dt-full-name" data-column="1"
+                        <input type="search" class="form-control dt-input dt-full-name" data-column="1"
                             placeholder="Tên vai trò" name="name" data-column-index="0" />
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
