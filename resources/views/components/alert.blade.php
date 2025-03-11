@@ -1,4 +1,6 @@
-<div {{ $attributes->merge(['class' => 'alert alert-primary alert-dismissible']) }} role="alert">
+@props(['type'])
+
+<div {{ $attributes->merge(['class' => 'alert alert-' . ($type ?? 'success') . ' alert-dismissible']) }} role="alert">
     @isset($title)
         <h5 class="alert-heading mb-2">
             {{ $title }}

@@ -63,7 +63,7 @@
                     @csrf
                     <div class="mb-6 form-control-validation">
                         <x-input-label for="email" :value="__('Email')" />
-                        <x-text-input id="email" class="" type="email" name="email" :value="old('email')"
+                        <x-input-text id="email" class="" type="email" name="email" :value="old('email')"
                             required autofocus autocomplete="username" placeholder="Nhập email" :invalid="$errors->get('email')" />
                         <x-input-error :messages="$errors->get('email')" class="" />
                     </div>

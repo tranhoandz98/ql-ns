@@ -28,8 +28,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/css/demo.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/perfect-scrollbar/perfect-scrollbar.css') }}" />
 
     <!-- Vendors CSS -->
 
@@ -38,9 +36,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
 
-    @isset($cssVendor)
-        {{ $cssVendor }}
-    @endisset
+    @yield('cssVendor')
     <!-- Page CSS -->
 
     <!-- Helpers -->
@@ -52,9 +48,9 @@
 
     <script src="{{ asset('assets/js/config.js') }}"></script>
 
-    @isset($css)
-        {{ $css }}
-    @endisset
+    @yield('css')
+    <link rel="stylesheet" href="{{ asset('assets/css/index.css') }}" />
+
 </head>
 
 <body id="page-block">
@@ -83,6 +79,7 @@
                 <div class="content-wrapper">
                     <!-- Content -->
                     <div class="container-xxl flex-grow-1 container-p-y">
+                        @yield('breadcrumbs')
                         {{ $slot }}
                         {{-- @yield('content') --}}
                     </div>
@@ -140,9 +137,7 @@
 
     <!-- Vendors JS -->
     <script src="{{ asset('assets/vendor/libs/notiflix/notiflix.js') }}"></script>
-    @isset($scriptVendor)
-        {{ $scriptVendor }}
-    @endisset
+    @yield('scriptVendor')
 
     <!-- Main JS -->
 
@@ -151,9 +146,8 @@
     <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
 
     <script src="{{ asset('assets/js/action-loading.js') }}"></script>
-    @isset($script)
-        {{ $script }}
-    @endisset
+    @yield('script')
+
 </body>
 
 </html>

@@ -34,10 +34,10 @@
                             </div>
                             <input type="file" id="avatar" name="avatar" class="form-control d-none"
                                 accept="image/png, image/jpeg" onchange="previewImage(this)">
-                            <x-text-input name="face_descriptor" id="face_descriptor" class="d-none"
+                            <x-input-text name="face_descriptor" id="face_descriptor" class="d-none"
                             :value="old('name', $user->face_descriptor)"
                             >
-                            </x-text-input>
+                            </x-input-text>
                             <x-input-error class="mt-2" :messages="$errors->get('avatar')" />
 
 
@@ -46,14 +46,14 @@
                     <div class="col-lg-6">
                         <div class="mb-4">
                             <x-input-label for="name" :value="__('Name')" />
-                            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"
+                            <x-input-text id="name" name="name" type="text" class="mt-1 block w-full"
                                 :value="old('name', $user->name)" required autofocus autocomplete="name" />
                             <x-input-error class="mt-2" :messages="$errors->get('name')" />
                         </div>
 
                         <div class="mb-4">
                             <x-input-label for="email" :value="__('Email')" />
-                            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                            <x-input-text id="email" name="email" type="email" class="mt-1 block w-full"
                                 :value="old('email', $user->email)" required autocomplete="username" />
                             <x-input-error class="mt-2" :messages="$errors->get('email')" />
 
@@ -88,7 +88,7 @@
         </section>
 
     </x-card>
-    @slot('scriptVendor')
+    @section('scriptVendor')
         <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
         <script>
             async function loadModels() {
@@ -98,8 +98,8 @@
             }
             loadModels();
         </script>
-    @endslot
-    @slot('script')
+    @endsection
+    @section('script')
         <script>
             document.getElementById('avatar').addEventListener('change', async (e) => {
                 const file = e.target.files[0];
@@ -147,5 +147,5 @@
                 }
             }
         </script>
-    @endslot
+    @endsection
 </x-app-layout>

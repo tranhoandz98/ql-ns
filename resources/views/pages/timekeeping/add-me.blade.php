@@ -27,13 +27,13 @@
             <div class="col-md-6 text-center">
                 <video id="webcam" class="img-fluid rounded" autoplay></video>
                 <div class="mt-4">
-                    <x-button type="button" id="captureBtn" :icon="'user-pin'">
+                    <x-button type="button" id="captureBtn" :icon="'fingerprint'">
                         Chấm công</x-button>
                 </div>
             </div>
         </div>
     </x-card>
-    @slot('scriptVendor')
+    @section('scriptVendor')
         <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
         <script>
             async function loadModels() {
@@ -43,8 +43,8 @@
             }
             loadModels();
         </script>
-    @endslot
-    @slot('script')
+    @endsection
+    @section('script')
         <script>
             const video = document.getElementById('webcam');
             const captureBtn = document.getElementById('captureBtn');
@@ -92,5 +92,5 @@
                 alert(result.match ? 'Chấm công thành công!' : 'Xác thực thất bại!');
             });
         </script>
-    @endslot
+    @endsection
 </x-app-layout>

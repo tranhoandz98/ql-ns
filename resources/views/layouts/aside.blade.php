@@ -3,7 +3,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
 
     <div class="app-brand demo ">
-        <a href="index.html" class="app-brand-link">
+        <a href={{route('dashboard')}} class="app-brand-link mt-2">
             <span class="app-brand-logo demo">
                 <span class="text-primary">
                     <svg width="32" height="22" viewBox="0 0 32 22" fill="none"
@@ -32,68 +32,62 @@
 
     <div class="menu-inner-shadow"></div>
     <ul class="menu-inner py-1">
-        <li class="menu-item active">
+        <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <a href={{ route('dashboard') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-smart-home"></i>
                 <div>Trang chủ</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('cham-cong.*') ? 'active' : '' }}">
             <a href={{ route('cham-cong.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-list-check"></i>
                 <div>Chấm công</div>
             </a>
         </li>
-        <li class="menu-item">
-            <a href="app-email.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-buildings"></i>
-                <div>Bộ máy tổ chức</div>
-            </a>
-        </li>
-        <li class="menu-item">
-            <a href="app-email.html" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+            <a href="{{ route('users.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-user"></i>
                 <div>Quản lý người dùng</div>
             </a>
         </li>
-        <li class="menu-item">
-            <a href="app-email.html" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+            <a href={{route('roles.index')}} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-circles"></i>
                 <div>Quản lý vai trò</div>
             </a>
         </li>
 
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('overtime.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-clock-plus"></i>
                 <div>Tăng ca</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-user-dollar"></i>
                 <div>Lương và phúc lợi</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('leave.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-calendar-cancel"></i>
                 <div>Nghỉ phép</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('kpi.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-cookie"></i>
                 <div>KPI</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('department.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-chart-cohort"></i>
                 <div>Phòng ban</div>
             </a>
         </li>
-        <li class="menu-item">
+        <li class="menu-item {{ request()->routeIs('device.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-devices"></i>
                 <div>Quản lý thiết bị</div>

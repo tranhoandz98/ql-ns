@@ -9,21 +9,21 @@
                 @method('put')
                 <div class="mb-4">
                     <x-input-label for="update_password_current_password" :value="'Mật khẩu hiện tại'" />
-                    <x-text-input id="update_password_current_password" name="current_password" type="password"
+                    <x-input-text id="update_password_current_password" name="current_password" type="password"
                         class="" autocomplete="current-password" />
                     <x-input-error :messages="$errors->updatePassword->get('current_password')" class="mt-2" />
                 </div>
 
                 <div class="mb-4">
                     <x-input-label for="update_password_password" :value="'Mật khẩu mới'" />
-                    <x-text-input id="update_password_password" name="password" type="password" class=""
+                    <x-input-text id="update_password_password" name="password" type="password" class=""
                         autocomplete="new-password" />
                     <x-input-error :messages="$errors->updatePassword->get('password')" class="mt-2" />
                 </div>
 
                 <div class="mb-4">
                     <x-input-label for="update_password_password_confirmation" :value="'Nhập lại mật khẩu mới'" />
-                    <x-text-input id="update_password_password_confirmation" name="password_confirmation"
+                    <x-input-text id="update_password_password_confirmation" name="password_confirmation"
                         type="password" class="" autocomplete="new-password" />
                     <x-input-error :messages="$errors->updatePassword->get('password_confirmation')" class="mt-2" />
                 </div>
