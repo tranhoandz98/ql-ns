@@ -2,7 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RolesRequest;
+use App\Enums\User\GenderUser;
+use App\Enums\User\StatusUser;
+use App\Enums\User\TypeUser;
+use App\Http\Requests\UserRequest;
+use App\Models\ConfigModel;
 use App\Models\Departments;
 use App\Models\Permission;
 use App\Models\Position;
@@ -11,51 +15,11 @@ use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Support\Facades\Hash;
 
 class UsersController extends Controller
 {
 
-    public $statusUser;
-    public $typeUser;
-    public $genders;
-
-
-    public function __construct()
-    {
-        $this->statusUser = collect([
-            (object) [
-                "id" => 1,
-                "name" => 'Đang làm việc',
-            ],
-            (object)[
-                "id" => 2,
-                "name" => 'Hợp đồng đã chấm dứt',
-            ],
-            (object)[
-                "id" => 3,
-                "name" => 'Tạm nghỉ',
-            ],
-            (object)[
-                "id" => 4,
-                "name" => 'Thai sản',
-            ],
-        ]);
-
-        $this->typeUser = collect([
-            (object)[
-                "id" => 1,
-                "name" => 'Admin',
-            ],
-            (object)[
-                "id" => 2,
-                "name" => 'Cán bộ quản lý',
-            ],
-            (object)[
-                "id" => 3,
-                "name" => 'Nhân viên',
-            ]
-        ]);
-    }
     /**
      * Display a listing of the resource.
      */
@@ -69,7 +33,7 @@ class UsersController extends Controller
             }
         })
             ->orderBy('created_at', 'desc')
-            ->select('id', 'name', 'email')
+            // ->select('id', 'name', 'email')
             ->paginate($perPage);
         return view('pages.users.index', compact('listAll'));
     }
@@ -84,37 +48,51 @@ class UsersController extends Controller
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
         $users = User::select(['id', 'name', 'code'])->get();
-        $typeUser = $this->typeUser;
-        $statusUser = $this->statusUser;
-        return view('pages.users.create', compact('positions', 'departments', 'roles', 'users', 'typeUser', 'statusUser'));
+        $typeUser = TypeUser::options();
+        $statusUser = StatusUser::options();
+        $genderUser = GenderUser::options();
+        return view('pages.users.create', compact('positions', 'departments', 'roles', 'users', 'typeUser', 'statusUser', 'genderUser'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RolesRequest $request)
+    public function store(UserRequest $request)
     {
-        $result = Roles::create([
+        $password_default = ConfigModel::getSetting('password_default');
+        User::create([
             'code' => self::genderUserCode(),
             'name' => $request->name,
-            'description' => $request->description,
+            'password' => Hash::make($password_default),
+            'position_id' => $request->position_id,
+            'department_id' => $request->department_id,
+            'phone' => $request->phone,
+            'email' => $request->email,
+            'status' => $request->status,
+            'type' => $request->type,
+            'manager' => $request->manager,
+
+            'bank_account' => $request->bank_account,
+            'bank_branch' => $request->bank_branch,
+            'bank' => $request->bank,
+            'permanent_address' => $request->permanent_address,
+            'current_address' => $request->current_address,
+            'nation' => $request->nation,
+            'nationality' => $request->nationality,
+            'date_of_birth' => $request->date_of_birth,
+
+            'place_of_issue' => $request->place_of_issue,
+            'date_of_issue' => $request->date_of_issue,
+
+            'start_date' => $request->start_date,
+            'person_tax_code' => $request->person_tax_code,
+            'identifier' => $request->identifier,
         ]);
-        $listPermission = json_decode($request->permission, true);
-        if ($result) {
-            foreach ($listPermission as $permission_uuid) {
-                if (is_numeric($permission_uuid)) {
-                    RolePermission::create([
-                        'role_id' => $result->id,
-                        'permission_id' => $permission_uuid,
-                    ]);
-                }
-            }
-            return redirect()->route('users.index')
-                ->with(
-                    ['message' => Lang::get('messages.role-create_s'), 'status' => 'success']
-                );
-        }
-        return redirect()->route('roles.index')->with((['status' => 'danger', 'message' => 'Có lỗi xảy ra!']));
+
+        return redirect()->route('users.index')
+            ->with(
+                ['message' => Lang::get('messages.user-create_s'), 'status' => 'success']
+            );
     }
 
     /**
@@ -144,7 +122,7 @@ class UsersController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RolesRequest $request, string $id)
+    public function update(UserRequest $request, string $id)
     {
         //
         $result = Roles::find($id);

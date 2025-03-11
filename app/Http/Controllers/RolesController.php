@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\RolesRequest;
+use App\Http\Requests\RoleRequest;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Roles;
@@ -40,7 +40,7 @@ class RolesController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(RolesRequest $request)
+    public function store(RoleRequest $request)
     {
         $result = Roles::create([
             'name' => $request->name,
@@ -91,7 +91,7 @@ class RolesController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(RolesRequest $request, string $id)
+    public function update(RoleRequest $request, string $id)
     {
         //
         $result = Roles::find($id);

@@ -72,10 +72,10 @@
                             {{ __('messages.user-name') }}
                         </th>
                         <th>
-                            {{ __('messages.user-position') }}
+                            {{ __('messages.user-position_id') }}
                         </th>
                         <th>
-                            {{ __('messages.user-departments') }}
+                            {{ __('messages.user-department_id') }}
                         </th>
                         <th>
                             {{ __('messages.user-manager') }}

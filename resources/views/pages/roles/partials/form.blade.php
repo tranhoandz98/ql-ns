@@ -9,7 +9,10 @@
     @endif
     <input name="id" value="{{ $result->id ??'' }}" class="d-none" />
     <div class="form-group mb-4">
-        <x-input-label for="nameRole" :value="'Tên vai trò'"></x-input-label>
+        <x-input-label for="nameRole">
+            <span class="text-danger">*</span>
+            Tên vai trò
+        </x-input-label>
         <input type="text" class="form-control" id="name" name="name" {{ $disabled ?? '' }}
             value="{{ old('name', $result->name ?? '') }}" />
         <x-input-error :messages="$errors->get('name')" class="" />
@@ -24,7 +27,10 @@
     </div>
 
     <div class="form-group mb-4">
-        <x-input-label for="permission" :value="'Phân quyền'"></x-input-label>
+        <x-input-label for="permission">
+            <span class="text-danger">*</span>
+            Phân quyền
+        </x-input-label>
         <div id="jstree-checkbox"></div>
         <input class="d-none" name="permission" />
         <x-input-error :messages="$errors->get('permission')" class="" />

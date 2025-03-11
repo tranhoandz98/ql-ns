@@ -21,6 +21,9 @@
     </script>
 @endsection
 
+@php
+
+@endphp
 
 <form method="POST" action="{{ $action }}">
     @csrf
@@ -40,7 +43,10 @@
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="name" :value="'Tên nhân viên'"></x-input-label>
+                    <x-input-label for="name" >
+                        <span class="text-danger">*</span>
+                        @lang('messages.user-name')
+                    </x-input-label>
                     <input type="text" class="form-control" id="name" name="name" {{ $disabled ?? '' }}
                         value="{{ old('name', $result->name ?? '') }}" />
                     <x-input-error :messages="$errors->get('name')" class="" />
@@ -49,7 +55,11 @@
 
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="position_id" :value="'Chức vụ'"></x-input-label>
+                    <x-input-label for="position_id" >
+                        <span class="text-danger">*</span>
+                        Chức vụ
+
+                    </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="position_id">
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($positions as $position)
@@ -64,7 +74,11 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="department_id" :value="'Phòng ban'"></x-input-label>
+                    <x-input-label for="department_id" >
+                        <span class="text-danger">*</span>
+                        Phòng ban
+
+                    </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="department_id">
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($departments as $department)
@@ -102,7 +116,11 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="email" :value="'Email'"></x-input-label>
+                    <x-input-label for="email" >
+                        <span class="text-danger">*</span>
+                        Email
+
+                    </x-input-label>
                     <input type="email" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
                         value="{{ old('email', $result->email ?? '') }}" />
                     <x-input-error :messages="$errors->get('email')" class="" />
@@ -114,9 +132,9 @@
                     <select class="select2 form-select" data-allow-clear="true" name="status">
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($statusUser as $item)
-                            <option value="{{ $item->id }}"
-                                {{ old('status', $result->status ?? null) == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}
+                            <option value="{{ $item['id'] }}"
+                                {{ old('status', $result->status ?? null) == $item['id'] ? 'selected' : '' }}>
+                                {{ $item['name'] }}
                             </option>
                         @endforeach
                     </select>
@@ -129,9 +147,9 @@
                     <select class="select2 form-select" data-allow-clear="true" name="type">
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($typeUser as $item)
-                            <option value="{{ $item->id }}"
-                                {{ old('type', $result->type ?? null) == $item->id ? 'selected' : '' }}>
-                                {{ $item->name }}
+                            <option value="{{ $item['id'] }}"
+                                {{ old('type', $result->type ?? null) == $item['id'] ? 'selected' : '' }}>
+                                {{ $item['name'] }}
                             </option>
                         @endforeach
                     </select>
@@ -220,15 +238,14 @@
                     <x-input-label for="gender">Giới tính</x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="work_time">
                         <option value="" disabled selected>Chọn</option>
-                        @foreach ($genders as $gender)
-                            <option value="{{ $gender->id }}"
-                                {{ old('work_time', $result->gender ?? null) == $gender->id ? 'selected' : '' }}>
-                                {{ $gender->name }}
+                        @foreach ($genderUser as $item)
+                            <option value="{{ $item['id'] }}"
+                                {{ old('gender', $result->gender ?? null) == $item['id'] ? 'selected' : '' }}>
+                                {{ $item['name'] }}
                             </option>
                         @endforeach
                     </select>
-                    <input type="text" class="form-control" id="gender" name="gender"
-                        {{ $disabled ?? '' }} value="{{ old('gender', $result->gender ?? '') }}" />
+
                     <x-input-error :messages="$errors->get('gender')" class="" />
                 </div>
             </div>

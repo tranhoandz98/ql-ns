@@ -1,6 +1,6 @@
 @section('title', __('messages.user-create'))
 @section('breadcrumbs')
-    <x-breadcrumb :labelParent="__('messages.role')" :urlParent="route('roles.index')" :label="__('messages.show')">
+    <x-breadcrumb :labelParent="__('messages.user')" :urlParent="route('users.index')" :label="__('messages.create')">
     </x-breadcrumb>
 @endsection
 <x-app-layout>
