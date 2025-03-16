@@ -1,15 +1,15 @@
-@section('title', __('messages.position-create'))
+@section('title', __('messages.department-create'))
 @section('breadcrumbs')
-    <x-breadcrumb :labelParent="__('messages.position')" :urlParent="route('positions.index')" :label="__('messages.create')">
+    <x-breadcrumb :labelParent="__('messages.department')" :urlParent="route('departments.index')" :label="__('messages.create')">
     </x-breadcrumb>
 @endsection
 <x-app-layout>
     <x-card >
         <h4>
-            {{ __('messages.position-create') }}
+            {{ __('messages.department-create') }}
         </h4>
-        @include('pages.positions.partials.form', [
-            'action' => route('positions.store'),
+        @include('pages.departments.partials.form', [
+            'action' => route('departments.store'),
             'method' => 'POST',
             'result' => null, // Không có dữ liệu cũ
             'permissionOld' => null,

@@ -153,7 +153,7 @@
                                         <select class="select2 form-select" data-allow-clear="true" name="work_time"
                                             {{ $disabled ?? '' }}>
                                             <option value="" disabled selected>Chọn</option>
-                                            @foreach ($genderUser as $item)
+                                            @foreach ($GenderUserEnum as $item)
                                                 <option value="{{ $item['id'] }}"
                                                     {{ old('gender', $result->gender ?? null) == $item['id'] ? 'selected' : '' }}>
                                                     {{ $item['name'] }}

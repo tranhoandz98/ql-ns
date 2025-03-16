@@ -72,6 +72,14 @@
                 </div>
             </a>
         </li>
+        <li class="menu-item {{ request()->routeIs('departments.*') ? 'active' : '' }}">
+            <a href={{route('departments.index')}} class="menu-link">
+                <i class="menu-icon icon-base ti tabler-building"></i>
+                <div>
+                    @lang('messages.department-menu')
+                </div>
+            </a>
+        </li>
 
         <li class="menu-item {{ request()->routeIs('overtime.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">

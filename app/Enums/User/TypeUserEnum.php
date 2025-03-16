@@ -4,7 +4,7 @@ namespace App\Enums\User;
 
 use Illuminate\Support\Facades\Lang;
 
-enum TypeUser: int
+enum TypeUserEnum: int
 {
     case ADMIN = 1;
     case CAN_BO_QUAN_LY = 2;

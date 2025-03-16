@@ -2,15 +2,17 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\User\GenderUser;
-use App\Enums\User\StatusUser;
-use App\Enums\User\TypeUser;
+use App\Enums\User\GenderUserEnum;
+use App\Enums\User\StatusUserEnum;
+use App\Enums\User\TimeWorkUserEnum;
+use App\Enums\User\TypeUserEnum;
 use App\Http\Requests\UserRequest;
 use App\Models\ConfigModel;
 use App\Models\Departments;
 use App\Models\Position;
 use App\Models\Roles;
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -65,10 +67,10 @@ class UserController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code','status'])->get();
-        $typeUser = TypeUser::options();
-        $statusUser = StatusUser::options();
-        $genderUser = GenderUser::options();
+        $users = User::select(['id', 'name', 'code', 'status'])->get();
+        $TypeUserEnum = TypeUserEnum::options();
+        $StatusUserEnum = StatusUserEnum::options();
+        $GenderUserEnum = GenderUserEnum::options();
 
         return view('pages.users.index', compact(
             'listAll',
@@ -76,9 +78,9 @@ class UserController extends Controller
             'departments',
             'roles',
             'users',
-            'typeUser',
-            'statusUser',
-            'genderUser'
+            'TypeUserEnum',
+            'StatusUserEnum',
+            'GenderUserEnum'
         ));
     }
 
@@ -89,13 +91,23 @@ class UserController extends Controller
     {
         //
         $positions = Position::select(['id', 'name'])->get();
-        $departments = Departments::select(['id', 'name'])->get();
+        $departments = Departments::select(['id', 'name'])->active()->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code','status'])->active()->get();
-        $typeUser = TypeUser::options();
-        $statusUser = StatusUser::options();
-        $genderUser = GenderUser::options();
-        return view('pages.users.create', compact('positions', 'departments', 'roles', 'users', 'typeUser', 'statusUser', 'genderUser'));
+        $users = User::select(['id', 'name', 'code', 'status'])->active()->get();
+        $TypeUserEnum = TypeUserEnum::options();
+        $StatusUserEnum = StatusUserEnum::options();
+        $GenderUserEnum = GenderUserEnum::options();
+        $timeWorkUserEnum = TimeWorkUserEnum::options();
+        return view('pages.users.create', compact(
+            'positions',
+            'departments',
+            'roles',
+            'users',
+            'TypeUserEnum',
+            'StatusUserEnum',
+            'GenderUserEnum',
+            'timeWorkUserEnum'
+        ));
     }
 
     /**
@@ -107,7 +119,7 @@ class UserController extends Controller
         try {
             $password_default = ConfigModel::getSetting('password_default');
             $result = User::create([
-                'code' => self::genderUserCode(),
+                'code' => self::GenderUserEnumCode(),
                 'name' => $request->name,
                 'password' => Hash::make($password_default),
                 'position_id' => $request->position_id,
@@ -126,14 +138,14 @@ class UserController extends Controller
                 'current_address' => $request->current_address,
                 'nation' => $request->nation,
                 'nationality' => $request->nationality,
-                'date_of_birth' => $request->date_of_birth,
-
+                'date_of_birth' => !empty($request->date_of_birth) ? Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d') : null,
+                'date_of_issue' => !empty($request->date_of_issue) ? Carbon::createFromFormat('d/m/Y', $request->date_of_issue)->format('Y-m-d') : null,
+                'start_date' => !empty($request->start_date) ? Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d') : null,
                 'place_of_issue' => $request->place_of_issue,
-                'date_of_issue' => $request->date_of_issue,
 
-                'start_date' => $request->start_date,
                 'person_tax_code' => $request->person_tax_code,
                 'identifier' => $request->identifier,
+                'work_time' => $request->work_time,
             ]);
 
 
@@ -173,19 +185,22 @@ class UserController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code','status'])->get();
-        $typeUser = TypeUser::options();
-        $statusUser = StatusUser::options();
-        $genderUser = GenderUser::options();
+        $users = User::select(['id', 'name', 'code', 'status'])->get();
+        $TypeUserEnum = TypeUserEnum::options();
+        $StatusUserEnum = StatusUserEnum::options();
+        $GenderUserEnum = GenderUserEnum::options();
+        $timeWorkUserEnum = TimeWorkUserEnum::options();
+
         return view('pages.users.show', compact(
             'result',
             'positions',
             'departments',
             'roles',
             'users',
-            'typeUser',
-            'statusUser',
-            'genderUser'
+            'TypeUserEnum',
+            'StatusUserEnum',
+            'GenderUserEnum',
+            'timeWorkUserEnum'
         ));
     }
 
@@ -203,21 +218,24 @@ class UserController extends Controller
             ]
         )->find($id);
         $positions = Position::select(['id', 'name'])->get();
-        $departments = Departments::select(['id', 'name'])->get();
+        $departments = Departments::select(['id', 'name'])->active()->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code','status'])->active()->get();
-        $typeUser = TypeUser::options();
-        $statusUser = StatusUser::options();
-        $genderUser = GenderUser::options();
+        $users = User::select(['id', 'name', 'code', 'status'])->active()->get();
+        $TypeUserEnum = TypeUserEnum::options();
+        $StatusUserEnum = StatusUserEnum::options();
+        $GenderUserEnum = GenderUserEnum::options();
+        $timeWorkUserEnum = TimeWorkUserEnum::options();
+
         return view('pages.users.edit', compact(
             'result',
             'positions',
             'departments',
             'roles',
             'users',
-            'typeUser',
-            'statusUser',
-            'genderUser'
+            'TypeUserEnum',
+            'StatusUserEnum',
+            'GenderUserEnum',
+            'timeWorkUserEnum'
         ));
     }
 
@@ -248,14 +266,16 @@ class UserController extends Controller
                 'current_address' => $request->current_address,
                 'nation' => $request->nation,
                 'nationality' => $request->nationality,
-                'date_of_birth' => $request->date_of_birth,
 
                 'place_of_issue' => $request->place_of_issue,
-                'date_of_issue' => $request->date_of_issue,
 
-                'start_date' => $request->start_date,
                 'person_tax_code' => $request->person_tax_code,
                 'identifier' => $request->identifier,
+                'date_of_birth' => !empty($request->date_of_birth) ? Carbon::createFromFormat('d/m/Y', $request->date_of_birth)->format('Y-m-d') : null,
+                'date_of_issue' => !empty($request->date_of_issue) ? Carbon::createFromFormat('d/m/Y', $request->date_of_issue)->format('Y-m-d') : null,
+                'start_date' => !empty($request->start_date) ? Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d') : null,
+
+                'work_time' => $request->work_time,
             ]);
 
             if (empty($request->avatar) && !$request->hasFile('fileAvatar')) {
@@ -306,7 +326,7 @@ class UserController extends Controller
             );
     }
 
-    public function genderUserCode()
+    public function GenderUserEnumCode()
     {
         return 'CBNV' . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
     }

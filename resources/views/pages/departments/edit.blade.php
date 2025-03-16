@@ -1,15 +1,15 @@
-@section('title', __('messages.position-edit'))
+@section('title', __('messages.department-edit'))
 @section('breadcrumbs')
-    <x-breadcrumb :labelParent="__('messages.position')" :urlParent="route('positions.index')" :label="__('messages.update')">
+    <x-breadcrumb :labelParent="__('messages.department')" :urlParent="route('departments.index')" :label="__('messages.update')">
     </x-breadcrumb>
 @endsection
 <x-app-layout>
     <x-card>
         <h4>
-            {{ __('messages.position-edit') }}
+            {{ __('messages.department-edit') }}
         </h4>
-            @include('pages.positions.partials.form', [
-                'action' => route('positions.update', $result->id),
+            @include('pages.departments.partials.form', [
+                'action' => route('departments.update', $result->id),
                 'method' => 'PUT',
                 'result' => $result,
             ])

@@ -129,7 +129,7 @@
                                 @php
                                     $statusBadge = '';
                                     $colorBadge = '';
-                                    foreach ($typeUser as $type) {
+                                    foreach ($TypeUserEnum as $type) {
                                         if ($type['id'] == $item->type) {
                                             $statusBadge = $type['name'];
                                             $colorBadge = $type['color'];
@@ -146,7 +146,7 @@
                                 @php
                                     $statusBadge = '';
                                     $colorBadge = '';
-                                    foreach ($statusUser as $status) {
+                                    foreach ($StatusUserEnum as $status) {
                                         if ($status['id'] == $item->status) {
                                             $statusBadge = $status['name'];
                                             $colorBadge = $status['color'];

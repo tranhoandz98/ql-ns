@@ -27,7 +27,7 @@
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
-                @foreach ($typeUser as $item)
+                @foreach ($TypeUserEnum as $item)
                     <option value="{{ $item['id'] }}" {{ request('type') == $item['id'] ? 'selected' : '' }}>
                         {{ $item['name'] }}
                     </option>
@@ -36,11 +36,11 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="status">
-                Trạng thái
+                @lang('messages.status')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
-                @foreach ($statusUser as $item)
+                @foreach ($StatusUserEnum as $item)
                     <option value="{{ $item['id'] }}" {{ request('status') == $item['id'] ? 'selected' : '' }}>
                         {{ $item['name'] }}
                     </option>

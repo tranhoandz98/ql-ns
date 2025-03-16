@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Enums\User\GenderUser;
+use App\Enums\User\GenderUserEnum;
 use App\Http\Requests\ProfileUpdateRequest;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Http\RedirectResponse;

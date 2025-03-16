@@ -1,18 +1,21 @@
-@section('title', __('messages.position-index'))
+@section('title', __('messages.department-index'))
 @section('breadcrumbs')
-    <x-breadcrumb :label="__('messages.position')">
+    <x-breadcrumb :label="__('messages.department')">
     </x-breadcrumb>
 @endsection
 @section('cssVendor')
+<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
 @endsection
 @section('scriptVendor')
+<script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
 @endsection
 @section('script')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
 @endsection
 <x-app-layout>
     <div class="card">
@@ -21,11 +24,11 @@
             <div class="d-flex gap-4">
                 <div>
                     <h4>
-                        {{ __('messages.position-index') }}
+                        {{ __('messages.department-index') }}
                     </h4>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('positions.create') }}">
+                    <a href="{{ route('departments.create') }}">
                         <x-button type="button" class="btn-success" :icon="'plus'">
                             {{ __('messages.add') }}
                         </x-button>
@@ -35,7 +38,7 @@
             </div>
         </div>
         <div class="card-body">
-            @include('pages.positions.partials.search-form')
+            @include('pages.departments.partials.search-form')
         </div>
         <div class="card-datatable table-responsive">
             <table class="table table-hover ">
@@ -45,13 +48,20 @@
                             {{ __('messages.stt') }}
                         </th>
                         <th>
-                            {{ __('messages.position-name') }}
+                            {{ __('messages.department-name') }}
                         </th>
                         <th>
-                            {{ __('messages.description') }}
+                            {{ __('messages.department-manager_id') }}
                         </th>
+                        <th>
+                            {{ __('messages.department-founding_at') }}
+                        </th>
+
                         <th>
                             {{ __('messages.created_at') }}
+                        </th>
+                        <th>
+                            {{ __('messages.status') }}
                         </th>
                         <th>
                             {{ __('messages.action') }}
@@ -69,16 +79,32 @@
                                 </span>
                             </td>
                             <td>
-                                <span class="text-truncate-3-lines" style="max-width: 30rem;"
-                                    title=" {{ $item?->description }}">
-                                    {{ $item?->description }}
+                                <span class="text-truncate-3-lines" style="max-width: 10rem;"
+                                    title=" {{ $item?->manager?->name }}">
+                                    {{ $item?->manager?->name }}
                                 </span>
-
                             </td>
+                            <td>{{ formatDateView($item->founding_at) }}</td>
                             <td>{{ formatDateTimeView($item->created_at) }}</td>
                             <td>
+                                @php
+                                    $statusBadge = '';
+                                    $colorBadge = '';
+                                    foreach ($StatusGlobalEnum as $status) {
+                                        if ($status['id'] == $item->status) {
+                                            $statusBadge = $status['name'];
+                                            $colorBadge = $status['color'];
+                                            break;
+                                        }
+                                    }
+                                @endphp
+                                <span class="badge text-bg-{{ $colorBadge ?? 'secondary' }}">
+                                    {{ $statusBadge }}
+                                </span>
+                            </td>
+                            <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('positions.show', $item->id) }}" title="Xem"
+                                    <a href="{{ route('departments.show', $item->id) }}" title="Xem"
                                         class="text-primary">
                                         <x-icon :icon="'eye'"></x-icon>
                                     </a>
@@ -88,12 +114,12 @@
                                             <x-icon :icon="'dots-vertical'"></x-icon>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('positions.edit', $item->id) }}>
+                                            <a class="dropdown-item" href={{ route('departments.edit', $item->id) }}>
                                                 <x-icon :icon="'edit'" class="me-2"></x-icon>
                                                 {{ __('messages.edit') }}
 
                                             </a>
-                                            <form action="{{ route('positions.destroy', $item->id) }}" method="POST"
+                                            <form action="{{ route('departments.destroy', $item->id) }}" method="POST"
                                                 style="display:inline;"
                                                 onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                                 @csrf

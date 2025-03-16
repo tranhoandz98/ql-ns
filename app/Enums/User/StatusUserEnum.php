@@ -4,7 +4,7 @@ namespace App\Enums\User;
 
 use Illuminate\Support\Facades\Lang;
 
-enum StatusUser: int
+enum StatusUserEnum: int
 {
     case DANG_LAM_VIEC = 1;
     case HOP_DONG_DA_CHAM_DUT = 2;

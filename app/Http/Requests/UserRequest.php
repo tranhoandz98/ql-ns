@@ -42,7 +42,7 @@ class UserRequest extends FormRequest
             ],
             'person_tax_code' => 'max:255',
             'identifier' => 'max:255',
-            'place_of_issue' => 'max:255',
+            'place_of_issue' => 'max:500',
             'nationality' => 'max:255',
             'nation' => 'max:255',
             'current_address' => 'max:500',

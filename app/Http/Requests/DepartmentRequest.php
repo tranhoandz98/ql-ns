@@ -28,10 +28,20 @@ class DepartmentRequest extends FormRequest
                 Rule::unique(Departments::class)->ignore($this->id),
             ],
             'description' => 'max:1000',
+            'manager_id' => 'required',
             'phone' => [
                 'max:15',
                 (new PhoneRule())->customAttribute(Lang::get('messages.user-phone')),
             ],
+            'email' => [
+                'required',
+                'string',
+                'lowercase',
+                'email',
+                'max:150',
+            ],
+            'status' => 'required',
+            'founding_at' => 'required',
         ];
         return $rules;
     }
@@ -39,8 +49,13 @@ class DepartmentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => Lang::get('messages.position-name'),
+            'name' => Lang::get('messages.department-name'),
             'description' => Lang::get('messages.description'),
+            'manager_id' => Lang::get('messages.department-manager_id'),
+            'status' => Lang::get('messages.status'),
+            'founding_at' => Lang::get('messages.department-founding_at'),
+            'email' => Lang::get('messages.email'),
+            'phone' => Lang::get('messages.phone'),
         ];
     }
 

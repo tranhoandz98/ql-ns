@@ -44,6 +44,10 @@ return [
     'invalid-language' => 'Ngôn ngữ không hợp lệ',
     'vietnam_lang' => 'Tiếng Việt',
     'english_lang' => 'Tiếng Anh',
+    'active' => 'Hoạt động',
+    'de_active' => 'Ngưng hoạt động',
+    'phone' => 'Số điện thoại',
+    'email' => 'Email',
 
     'role' => 'Vai trò',
     'role-code' => 'Mã vai trò',
@@ -132,7 +136,7 @@ return [
     'user-verify_admin' => 'Bạn không thể xóa người dùng admin của doanh nghiệp',
 
     'position' => 'Chức vụ',
-    'position-menu' => 'Quản lý chức vụ',
+    'position-menu' => 'Chức vụ',
     'position-create' => 'Thêm mới chức vụ',
     'position-edit' => 'Cập nhật chức vụ',
     'position-show' => 'Chi tiết chức vụ',
@@ -142,4 +146,20 @@ return [
     'position-create_s' => 'Thêm mới chức vụ thành công',
     'position-update_s' => 'Cập nhật chức vụ thành công',
     'position-delete_s' => 'Xóa chức vụ thành công',
+
+
+
+    'department-manager_id' => 'Người quản lý',
+    'department-founding_at' => 'Ngày thành lập',
+    'department' => 'Phòng ban',
+    'department-menu' => 'Phòng ban',
+    'department-create' => 'Thêm mới phòng ban',
+    'department-edit' => 'Cập nhật phòng ban',
+    'department-show' => 'Chi tiết phòng ban',
+    'department-index' => 'Danh sách phòng ban',
+    'department-search' => 'Tên phòng ban',
+    'department-name' => 'Tên phòng ban',
+    'department-create_s' => 'Thêm mới phòng ban thành công',
+    'department-update_s' => 'Cập nhật phòng ban thành công',
+    'department-delete_s' => 'Xóa phòng ban thành công',
 ];

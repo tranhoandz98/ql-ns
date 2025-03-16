@@ -30,9 +30,21 @@
     overflow: hidden;
     text-overflow: ellipsis;
 }
-.fw-500{
+.fw-500 {
     font-weight: 500;
 }
-.table>:not(caption)>*>*{
-    padding: .782rem 1rem;
+.table > :not(caption) > * > * {
+    padding: 0.782rem 1rem;
+}
+.select2-selection__clear {
+    position: absolute;
+    block-size: 100%;
+    inline-size: 2rem;
+    inset-block-start: var(--bs-border-width);
+    inset-block-end: var(--bs-border-width);
+    inset-inline-start: auto;
+    padding-left: 0.7rem;
+}
+.select2-selection__clear:hover {
+    color: var(--bs-primary) !important;
 }

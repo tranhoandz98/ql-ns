@@ -83,7 +83,17 @@
 @endsection
 
 @php
-
+    if ($result) {
+        $result->start_date = !empty($result->start_date)
+            ? \Carbon\Carbon::parse($result->start_date)->format('d/m/Y')
+            : '';
+        $result->date_of_birth = !empty($result->date_of_birth)
+            ? \Carbon\Carbon::parse($result->date_of_birth)->format('d/m/Y')
+            : '';
+        $result->date_of_issue = !empty($result->date_of_issue)
+            ? \Carbon\Carbon::parse($result->date_of_issue)->format('d/m/Y')
+            : '';
+    }
 @endphp
 
 <form method="POST" action="{{ $action }}" enctype="multipart/form-data">
@@ -118,8 +128,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="email">
                         <span class="text-danger">*</span>
-                        Email
-
+                        @lang('messages.email')
                     </x-input-label>
                     <input type="email" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
                         value="{{ old('email', $result->email ?? '') }}" />
@@ -128,7 +137,9 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="phone" :value="'Số điện thoại'"></x-input-label>
+                    <x-input-label for="phone">
+                        @lang('messages.phone')
+                    </x-input-label>
                     <input type="tel" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
                         value="{{ old('phone', $result->phone ?? '') }}" />
                     <x-input-error :messages="$errors->get('phone')" class="" />
@@ -220,7 +231,7 @@
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
-                        @foreach ($statusUser as $item)
+                        @foreach ($StatusUserEnum as $item)
                             <option value="{{ $item['id'] }}"
                                 {{ old('status', $result->status ?? null) == $item['id'] ? 'selected' : '' }}>
                                 {{ $item['name'] }}
@@ -239,7 +250,7 @@
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
-                        @foreach ($typeUser as $item)
+                        @foreach ($TypeUserEnum as $item)
                             <option value="{{ $item['id'] }}"
                                 {{ old('type', $result->type ?? null) == $item['id'] ? 'selected' : '' }}>
                                 {{ $item['name'] }}
@@ -290,14 +301,16 @@
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="work_time" :value="'Giờ làm việc'"></x-input-label>
+                    <x-input-label for="work_time">
+                        @lang('messages.user-work_time')
+                    </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="work_time"
                         {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
-                        @foreach ($departments as $department)
-                            <option value="{{ $department->id }}"
-                                {{ old('work_time', $result->work_time ?? null) == $department->id ? 'selected' : '' }}>
-                                {{ $department->name }}
+                        @foreach ($timeWorkUserEnum as $department)
+                            <option value="{{ $department['id'] }}"
+                                {{ old('work_time', $result->work_time ?? null) == $department['id'] ? 'selected' : '' }}>
+                                {{ $department['name'] }}
                             </option>
                         @endforeach
                     </select>
@@ -308,11 +321,10 @@
                 <div class="form-group mb-4">
                     <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="start_date"
-                        name="start_date" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        name="start_date" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
                         value="{{ old('start_date', $result->start_date ?? '') }}" />
                     <x-input-error :messages="$errors->get('start_date')" class="" />
                 </div>
-
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
@@ -334,7 +346,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue"
-                        name="date_of_issue" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        name="date_of_issue" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
                         value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_issue')" class="" />
                 </div>
@@ -351,7 +363,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth"
-                        name="date_of_birth" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        name="date_of_birth" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
                         value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_birth')" class="" />
                 </div>
@@ -362,7 +374,7 @@
                     <select class="select2 form-select" data-allow-clear="true" name="work_time"
                         {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
-                        @foreach ($genderUser as $item)
+                        @foreach ($GenderUserEnum as $item)
                             <option value="{{ $item['id'] }}"
                                 {{ old('gender', $result->gender ?? null) == $item['id'] ? 'selected' : '' }}>
                                 {{ $item['name'] }}

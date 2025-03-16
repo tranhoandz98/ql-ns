@@ -4,7 +4,7 @@ namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-use App\Enums\User\StatusUser;
+use App\Enums\User\StatusUserEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
@@ -90,7 +90,7 @@ class User extends Authenticatable
      */
     public function scopeActive($query)
     {
-        return $query->where('status', StatusUser::DANG_LAM_VIEC->value);
+        return $query->where('status', StatusUserEnum::DANG_LAM_VIEC->value);
     }
 
     public function createdByData()

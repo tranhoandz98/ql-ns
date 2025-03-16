@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimekeepingController;

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\User\StatusGlobalEnum;
 use App\Http\Requests\DepartmentRequest;
 use App\Http\Requests\PositionRequest;
 use App\Models\Departments;
 use App\Models\Position;
+use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -28,9 +31,14 @@ class DepartmentController extends Controller
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);
 
+        $users = User::select(['id', 'name', 'code'])->active()->get();
+        $StatusGlobalEnum = StatusGlobalEnum::options();
 
         return view('pages.departments.index', compact(
             'listAll',
+            'users',
+            'StatusGlobalEnum'
+
         ));
     }
 
@@ -39,7 +47,16 @@ class DepartmentController extends Controller
      */
     public function create()
     {
-        return view('pages.departments.create');
+        $users = User::select(['id', 'name', 'code'])->active()->get();
+        $StatusGlobalEnum = StatusGlobalEnum::options();
+
+        return view(
+            'pages.departments.create',
+            compact(
+                'users',
+                'StatusGlobalEnum'
+            )
+        );
     }
 
     /**
@@ -53,7 +70,7 @@ class DepartmentController extends Controller
                 'name' => $request->name,
                 'description' => $request->description,
                 'manager_id' => $request->manager_id,
-                'founding_at' => $request->founding_at,
+                'founding_at' => !empty($request->founding_at) ? Carbon::createFromFormat('d/m/Y', $request->founding_at)->format('Y-m-d') : null,
                 'status' => $request->status,
                 'email' => $request->email,
                 'phone' => $request->phone,
@@ -82,10 +99,13 @@ class DepartmentController extends Controller
                 'updatedByData:id,name',
             ]
         )->find($id);
+        $StatusGlobalEnum = StatusGlobalEnum::options();
+        $users = User::select(['id', 'name', 'code'])->active()->get();
 
         return view('pages.departments.show', compact(
             'result',
-
+            'users',
+            'StatusGlobalEnum'
         ));
     }
 
@@ -95,12 +115,17 @@ class DepartmentController extends Controller
     public function edit(string $id)
     {
         //
+
         $result = Departments::with(
             []
         )->find($id);
+        $StatusGlobalEnum = StatusGlobalEnum::options();
+        $users = User::select(['id', 'name', 'code'])->active()->get();
 
         return view('pages.departments.edit', compact(
             'result',
+            'users',
+            'StatusGlobalEnum'
 
         ));
     }
@@ -118,7 +143,7 @@ class DepartmentController extends Controller
                 'name' => $request->name,
                 'description' => $request->description,
                 'manager_id' => $request->manager_id,
-                'founding_at' => $request->founding_at,
+                'founding_at' => !empty($request->founding_at) ? Carbon::createFromFormat('d/m/Y', $request->founding_at)->format('Y-m-d') : null,
                 'status' => $request->status,
                 'email' => $request->email,
                 'phone' => $request->phone,

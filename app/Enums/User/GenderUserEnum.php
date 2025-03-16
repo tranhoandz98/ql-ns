@@ -4,7 +4,7 @@ namespace App\Enums\User;
 
 use Illuminate\Support\Facades\Lang;
 
-enum GenderUser: int
+enum GenderUserEnum: int
 {
     case MALE = 1;
     case FEMALE = 2;

@@ -48,7 +48,7 @@ class PositionController extends Controller
         DB::beginTransaction();
         try {
             $result = Position::create([
-                // 'code' => self::genderUserCode(),
+                // 'code' => self::GenderUserEnumCode(),
                 'name' => $request->name,
                 'description' => $request->description,
             ]);
