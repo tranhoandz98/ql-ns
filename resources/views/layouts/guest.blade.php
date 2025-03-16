@@ -56,6 +56,9 @@
     <div class="authentication-wrapper authentication-cover">
         {{ $slot }}
     </div>
+    <button class="btn btn-primary btn-page-block-spinner d-none" id="btn-page-block-spinner">Overlay Color</button>
+    <button class="btn btn-primary remove-page-btn d-none" id="remove-page-btn">remove/unblock</button>
+
     <!-- / Layout wrapper -->
 
     <!-- Core JS -->

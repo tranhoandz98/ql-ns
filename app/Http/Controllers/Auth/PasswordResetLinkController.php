@@ -30,18 +30,17 @@ class PasswordResetLinkController extends Controller
             'email' => ['required', 'email'],
         ]);
 
-        // We will send the password reset link to this user. Once we have attempted
-        // to send the link, we will examine the response then see the message we
-        // need to show to the user. Finally, we'll send out a proper response.
-        $status = Password::sendResetLink(
-            $request->only('email')
+        // Tùy chỉnh broker password để sử dụng custom notification
+        $status = Password::broker()->sendResetLink(
+            $request->only('email'),
+            function($user, $token) {
+                $user->notify(new \App\Notifications\CustomResetPasswordNotification($token));
+            }
         );
 
         return $status == Password::RESET_LINK_SENT
-            ? back()->with(
-                ['message' => Lang::get($status), 'status' => 'success']
-            )
+            ? back()->with(['message' => Lang::get($status), 'status' => 'success'])
             : back()->withInput($request->only('email'))
-            ->withErrors(['email' => __($status)]);
+                ->withErrors(['email' => __($status)]);
     }
 }
