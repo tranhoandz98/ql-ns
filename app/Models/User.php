@@ -91,4 +91,14 @@ class User extends Authenticatable
     {
         return $query->where('status', StatusUser::DANG_LAM_VIEC->value);
     }
+
+    public function createdByData()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id',);
+    }
+    public function updatedByData()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id',);
+    }
+
 }

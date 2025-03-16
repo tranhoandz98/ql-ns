@@ -35,25 +35,41 @@
         <li class="menu-item {{ request()->routeIs('dashboard') ? 'active' : '' }}">
             <a href={{ route('dashboard') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-smart-home"></i>
-                <div>Trang chủ</div>
+                <div>
+                    @lang('messages.home')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('cham-cong.*') ? 'active' : '' }}">
             <a href={{ route('cham-cong.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-list-check"></i>
-                <div>Chấm công</div>
+                <div>
+                    @lang('messages.timekeeping')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
             <a href="{{ route('users.index') }}" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-user"></i>
-                <div>Quản lý người dùng</div>
+                <div>
+                    @lang('messages.user-menu')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
             <a href={{route('roles.index')}} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-circles"></i>
-                <div>Quản lý vai trò</div>
+                <div>
+                    @lang('messages.role-menu')
+                </div>
+            </a>
+        </li>
+        <li class="menu-item {{ request()->routeIs('positions.*') ? 'active' : '' }}">
+            <a href={{route('positions.index')}} class="menu-link">
+                <i class="menu-icon icon-base ti tabler-user-pin"></i>
+                <div>
+                    @lang('messages.position-menu')
+                </div>
             </a>
         </li>
 

@@ -39,4 +39,13 @@ class Roles extends Model
     {
         return $this->belongsToMany(Permission::class, 'role_permission', 'role_id', 'permission_id');
     }
+
+    public function createdByData()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id',);
+    }
+    public function updatedByData()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id',);
+    }
 }

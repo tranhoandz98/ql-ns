@@ -1,24 +1,31 @@
-@section('title', __('messages.role-index'))
+@section('title', __('messages.position-index'))
 @section('breadcrumbs')
-    <x-breadcrumb :label="__('messages.role')">
+    <x-breadcrumb :label="__('messages.position')">
     </x-breadcrumb>
+@endsection
+@section('cssVendor')
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
 @endsection
-
+@section('scriptVendor')
+@endsection
+@section('script')
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+@endsection
 <x-app-layout>
     <div class="card">
         <div class="card-header pb-0 text-md-start text-center">
+
             <div class="d-flex gap-4">
                 <div>
                     <h4>
-                        {{ __('messages.role-index') }}
+                        {{ __('messages.position-index') }}
                     </h4>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('roles.create') }}">
+                    <a href="{{ route('positions.create') }}">
                         <x-button type="button" class="btn-success" :icon="'plus'">
                             {{ __('messages.add') }}
                         </x-button>
@@ -28,9 +35,9 @@
             </div>
         </div>
         <div class="card-body">
-            @include('pages.roles.partials.search-form')
+            @include('pages.positions.partials.search-form')
         </div>
-        <div class="card-datatable table-responsive ">
+        <div class="card-datatable table-responsive">
             <table class="table table-hover ">
                 <thead>
                     <tr>
@@ -38,10 +45,10 @@
                             {{ __('messages.stt') }}
                         </th>
                         <th>
-                            {{ __('messages.role-name') }}
+                            {{ __('messages.position-name') }}
                         </th>
                         <th>
-                            {{ __('messages.role-description') }}
+                            {{ __('messages.description') }}
                         </th>
                         <th>
                             {{ __('messages.created_at') }}
@@ -55,7 +62,6 @@
                     @foreach ($listAll as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-
                             <td>
                                 <span class="text-truncate-3-lines" style="max-width: 10rem;"
                                     title=" {{ $item?->name }}">
@@ -72,7 +78,7 @@
                             <td>{{ formatDateTimeView($item->created_at) }}</td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('roles.show', $item->id) }}" title="{{ __('messages.view') }}"
+                                    <a href="{{ route('positions.show', $item->id) }}" title="Xem"
                                         class="text-primary">
                                         <x-icon :icon="'eye'"></x-icon>
                                     </a>
@@ -82,11 +88,12 @@
                                             <x-icon :icon="'dots-vertical'"></x-icon>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('roles.edit', $item->id) }}>
+                                            <a class="dropdown-item" href={{ route('positions.edit', $item->id) }}>
                                                 <x-icon :icon="'edit'" class="me-2"></x-icon>
                                                 {{ __('messages.edit') }}
+
                                             </a>
-                                            <form action="{{ route('roles.destroy', $item->id) }}" method="POST"
+                                            <form action="{{ route('positions.destroy', $item->id) }}" method="POST"
                                                 style="display:inline;"
                                                 onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                                 @csrf
@@ -94,6 +101,7 @@
                                                 <button type="submit" class="dropdown-item">
                                                     <x-icon :icon="'trash'" class="me-2"></x-icon>
                                                     {{ __('messages.delete') }}
+
                                                 </button>
                                             </form>
                                         </div>
@@ -118,8 +126,3 @@
         }
     </script>
 </x-app-layout>
-
-@section('script')
-    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-
-@endsection

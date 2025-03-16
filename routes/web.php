@@ -1,9 +1,10 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use App\Http\Controllers\RolesController;
+use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimekeepingController;
-use App\Http\Controllers\UsersController;
+use App\Http\Controllers\UserController;
+use App\Http\Controllers\PositionController;
 use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
@@ -38,23 +39,34 @@ Route::middleware('auth')->group(function () {
 
     // vai trò
     Route::prefix('roles')->name('roles.')->group(function () {
-        Route::get('/', [RolesController::class, 'index'])->name('index');
-        Route::get('/create', [RolesController::class, 'create'])->name('create');
-        Route::post('/', [RolesController::class, 'store'])->name('store');
-        Route::get('/{id}', [RolesController::class, 'show'])->name('show');
-        Route::get('/{id}/edit', [RolesController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [RolesController::class, 'update'])->name('update');
-        Route::delete('/{id}', [RolesController::class, 'destroy'])->name('destroy');
+        Route::get('/', [RoleController::class, 'index'])->name('index');
+        Route::get('/create', [RoleController::class, 'create'])->name('create');
+        Route::post('/', [RoleController::class, 'store'])->name('store');
+        Route::get('/{id}', [RoleController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [RoleController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [RoleController::class, 'update'])->name('update');
+        Route::delete('/{id}', [RoleController::class, 'destroy'])->name('destroy');
     });
 
     // người dùng
     Route::prefix('users')->name('users.')->group(function () {
-        Route::get('/', [UsersController::class, 'index'])->name('index');
-        Route::get('/create', [UsersController::class, 'create'])->name('create');
-        Route::post('/', [UsersController::class, 'store'])->name('store');
-        Route::get('/{id}', [UsersController::class, 'show'])->name('show');
-        Route::get('/{id}/edit', [UsersController::class, 'edit'])->name('edit');
-        Route::put('/{id}', [UsersController::class, 'update'])->name('update');
-        Route::delete('/{id}', [UsersController::class, 'destroy'])->name('destroy');
+        Route::get('/', [UserController::class, 'index'])->name('index');
+        Route::get('/create', [UserController::class, 'create'])->name('create');
+        Route::post('/', [UserController::class, 'store'])->name('store');
+        Route::get('/{id}', [UserController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [UserController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [UserController::class, 'update'])->name('update');
+        Route::delete('/{id}', [UserController::class, 'destroy'])->name('destroy');
+    });
+
+    // chức vụ
+    Route::prefix('positions')->name('positions.')->group(function () {
+        Route::get('/', [PositionController::class, 'index'])->name('index');
+        Route::get('/create', [PositionController::class, 'create'])->name('create');
+        Route::post('/', [PositionController::class, 'store'])->name('store');
+        Route::get('/{id}', [PositionController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [PositionController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [PositionController::class, 'update'])->name('update');
+        Route::delete('/{id}', [PositionController::class, 'destroy'])->name('destroy');
     });
 });

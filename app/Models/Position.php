@@ -23,4 +23,14 @@ class Position extends Model
             $model->updated_by = Auth::id();
         });
     }
+
+
+    public function createdByData()
+    {
+        return $this->belongsTo(User::class, 'created_by', 'id',);
+    }
+    public function updatedByData()
+    {
+        return $this->belongsTo(User::class, 'updated_by', 'id',);
+    }
 }

@@ -17,6 +17,9 @@ return [
     'action' => 'Tác vụ',
     'home' => 'Trang chủ',
     'created_at' => 'Ngày tạo',
+    'created_by' => 'Người tạo',
+    'updated_at' => 'Ngày cập nhật',
+    'updated_by' => 'Người cập nhật',
     'all' => 'Tất cả',
     'status' => 'Trạng thái',
     'working' => 'Đang làm việc',
@@ -32,6 +35,10 @@ return [
     'code' => 'Mã',
     'compact' => 'Thu gọn',
     'extend' => 'Mở rộng',
+    'description' => 'Mô tả',
+    'timekeeping'=> 'Chấm công',
+    'cancel'=> 'Huỷ',
+    'save'=> 'Lưu',
 
 
     'role' => 'Vai trò',
@@ -40,6 +47,7 @@ return [
     'role-description' => 'Mô tả',
     'role-permission' => 'Quyền hạn',
 
+    'role-menu' => 'Quản lý vai trò',
     'role-index' => 'Danh sách vai trò',
     'role-create' => 'Thêm mới vai trò',
     'role-edit' => 'Cập nhật vai trò',
@@ -85,6 +93,7 @@ return [
     'user-bank_branch' => 'Chi nhánh',
     'user-avatar' => 'Avatar',
 
+    'user-menu' => 'Quản lý người dùng',
     'user-create' => 'Thêm mới người dùng',
     'user-edit' => 'Cập nhật người dùng',
     'user-show' => 'Chi tiết người dùng',
@@ -104,4 +113,16 @@ return [
     'user-unlock_s' => 'Mở khóa người dùng thành công',
     'user-cc1' => 'Người dùng đang được sử dụng hoặc đã được xóa',
     'user-verify_admin' => 'Bạn không thể xóa người dùng admin của doanh nghiệp',
+
+    'position' => 'Chức vụ',
+    'position-menu' => 'Quản lý chức vụ',
+    'position-create' => 'Thêm mới chức vụ',
+    'position-edit' => 'Cập nhật chức vụ',
+    'position-show' => 'Chi tiết chức vụ',
+    'position-index' => 'Danh sách chức vụ',
+    'position-search' => 'Tên chức vụ',
+    'position-name' => 'Tên chức vụ',
+    'position-create_s' => 'Thêm mới chức vụ thành công',
+    'position-update_s' => 'Cập nhật chức vụ thành công',
+    'position-delete_s' => 'Xóa chức vụ thành công',
 ];

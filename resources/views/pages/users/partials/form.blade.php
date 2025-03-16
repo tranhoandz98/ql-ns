@@ -30,24 +30,24 @@
         })
 
         document.getElementById('fileAvatar').addEventListener('change', async (e) => {
-                const file = e.target.files[0];
-                const img = await faceapi.bufferToImage(file);
-                showLoading()
-                const detection = await faceapi.detectSingleFace(
-                        img,
-                        new faceapi.TinyFaceDetectorOptions()
-                    ).withFaceLandmarks()
-                    .withFaceDescriptor();
-                hideLoading()
-                if (!detection) {
-                    alert('Không tìm thấy khuôn mặt!');
-                    document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(""));
-                    return;
-                }
+            const file = e.target.files[0];
+            const img = await faceapi.bufferToImage(file);
+            showLoading()
+            const detection = await faceapi.detectSingleFace(
+                    img,
+                    new faceapi.TinyFaceDetectorOptions()
+                ).withFaceLandmarks()
+                .withFaceDescriptor();
+            hideLoading()
+            if (!detection) {
+                alert('Không tìm thấy khuôn mặt!');
+                document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(""));
+                return;
+            }
 
-                document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(detection
-                    .descriptor));
-            });
+            document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(detection
+                .descriptor));
+        });
 
         $('#remove-avatar').on('click', function() {
             $('#avatar').val('');
@@ -86,9 +86,7 @@
 
 @endphp
 
-<form method="POST" action="{{ $action }}"
- enctype="multipart/form-data"
->
+<form method="POST" action="{{ $action }}" enctype="multipart/form-data">
     @csrf
     @if ($method === 'PUT')
         @method('PUT')
@@ -142,8 +140,7 @@
                         <span class="text-danger">*</span>
                         Vai trò
                     </x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="role_id"
-                        {{ $disabled ?? '' }}>
+                    <select class="select2 form-select" data-allow-clear="true" name="role_id" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($roles as $role)
                             <option value="{{ $role->id }}"
@@ -253,9 +250,9 @@
                 </div>
             </div>
 
-            <div class="col-md-6 col-lg-4">
+            <div class="col-md-6 col-lg-8">
                 <div class="d-flex gap-4">
-                    <div class="w-75">
+                    <div class="">
                         <x-input-label for="type">
                             Avatar
                         </x-input-label>
@@ -270,10 +267,9 @@
                         <input type="text" class="form-control d-none" id="avatar" name="avatar"
                             {{ $disabled ?? '' }} value="{{ old('avatar', $result->avatar ?? '') }}" />
                         <input type="file" class="form-control d-none" id="fileAvatar" name="fileAvatar"
-                            {{ $disabled ?? '' }} accept="image/png, image/jpeg"
-                            onchange="previewImage(this)" />
-                            <x-input-text name="face_descriptor" id="face_descriptor" class="d-none" :value="old('name', $result?->face_descriptor)">
-                            </x-input-text>
+                            {{ $disabled ?? '' }} accept="image/png, image/jpeg" onchange="previewImage(this)" />
+                        <x-input-text name="face_descriptor" id="face_descriptor" class="d-none" :value="old('name', $result?->face_descriptor)">
+                        </x-input-text>
                         <x-input-error :messages="$errors->get('fileAvatar')" class="" />
                     </div>
                     <div class="w-25 d-flex ">
@@ -410,6 +406,47 @@
                     <x-input-error :messages="$errors->get('permanent_address')" class="" />
                 </div>
             </div>
+
+            @if (isset($disabled) && $disabled)
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group mb-4">
+                        <x-input-label for="created_at">
+                            @lang('messages.created_at')
+                        </x-input-label>
+                        <input type="text" class="form-control" id="created_at" name="created_at" disabled
+                            value="{{ formatDateTimeView($result?->created_at) }}" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="form-group mb-4">
+                        <x-input-label for="created_by">
+                            @lang('messages.created_by')
+                        </x-input-label>
+                        <input type="text" class="form-control" id="created_by" name="created_by" disabled
+                            value="{{ $result?->createdByData?->name }}" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+
+                    <div class="form-group mb-4">
+                        <x-input-label for="updated_at">
+                            @lang('messages.updated_at')
+                        </x-input-label>
+                        <input type="text" class="form-control" id="updated_at" name="updated_at" disabled
+                            value="{{ formatDateTimeView($result?->updated_at) }}" />
+                    </div>
+                </div>
+                <div class="col-md-6 col-lg-4">
+                    <div class="form-group mb-4">
+                        <x-input-label for="updated_by">
+                            @lang('messages.updated_by')
+                        </x-input-label>
+                        <input type="text" class="form-control" id="updated_by" name="updated_by" disabled
+                            value="{{ $result?->updatedByData?->name }}" />
+                    </div>
+                </div>
+            @endif
         </div>
     </div>
 
@@ -445,10 +482,14 @@
 
     <div class="gap-4 justify-content-center d-flex">
         <a href="{{ route('users.index') }}">
-            <x-button :icon="'x'" type="button" class="btn-secondary">Huỷ</x-button>
+            <x-button :icon="'x'" type="button" class="btn-secondary">
+                @lang('messages.cancel')
+            </x-button>
         </a>
         @if (!isset($disabled))
-            <x-button :icon="'device-floppy'" class="submit-btn">Lưu</x-button>
+            <x-button :icon="'device-floppy'" class="submit-btn">
+                @lang('messages.save')
+            </x-button>
         @endif
     </div>
 

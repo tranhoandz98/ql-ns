@@ -19,7 +19,7 @@ use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Storage;
 
-class UsersController extends Controller
+class UserController extends Controller
 {
 
     /**
