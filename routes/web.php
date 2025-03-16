@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimekeepingController;
@@ -21,6 +22,9 @@ Route::middleware('auth')->group(function () {
         Route::get('/', [ProfileController::class, 'edit'])->name('profile.edit');
         Route::patch('/', [ProfileController::class, 'update'])->name('profile.update');
     });
+
+    Route::post('change-lang', [ConfigController::class, 'changeLang'])->name('change-lang');
+
 
     Route::prefix('cham-cong')->name('cham-cong.')->group(function () {
         Route::get('/', [TimekeepingController::class, 'index'])->name('index');

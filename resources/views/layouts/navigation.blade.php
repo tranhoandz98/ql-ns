@@ -22,7 +22,35 @@
         <!-- /Search -->
 
         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
-
+            <li class="nav-item dropdown-language dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
+                  <i class="icon-base ti tabler-language icon-22px text-heading"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-end">
+                  <li>
+                    <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
+                      @csrf
+                      <input type="hidden" name="lang" value="vi">
+                      <button type="submit" class="dropdown-item" data-language="vi" data-text-direction="ltr">
+                        <span>
+                            @lang('messages.vietnam_lang')
+                        </span>
+                      </button>
+                    </form>
+                  </li>
+                  <li>
+                    <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
+                      @csrf
+                      <input type="hidden" name="lang" value="en">
+                      <button type="submit" class="dropdown-item" data-language="en" data-text-direction="ltr">
+                        <span>
+                            @lang('messages.english_lang')
+                            </span>
+                      </button>
+                    </form>
+                  </li>
+                </ul>
+              </li>
             <!-- Style Switcher -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
@@ -143,7 +171,7 @@
                     <li></li>
                         <a class="dropdown-item" href={{ route('profile.edit') }}>
                             <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">
-                                Thông tin cá nhân
+                                @lang('messages.personal_information')
                             </span>
                         </a>
                     </li>
@@ -151,7 +179,7 @@
                     <li>
                         <a class="dropdown-item" href={{ route('password.change') }}>
                             <i class="icon-base ti tabler-password-user me-3 icon-md"></i><span class="align-middle">
-                                Đổi mật khẩu
+                                @lang('messages.change_password')
                             </span>
                         </a>
                     </li>
@@ -163,7 +191,9 @@
                                 <a class="btn btn-sm btn-danger d-flex" href="route('logout')"
                                     onclick="event.preventDefault();
                                                 this.closest('form').submit();">
-                                    <small class="align-middle">Logout</small>
+                                    <small class="align-middle">
+                                        @lang('messages.logout')
+                                    </small>
                                     <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
                                 </a>
                             </form>

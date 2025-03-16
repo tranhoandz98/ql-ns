@@ -98,7 +98,6 @@
     <script src="{{ asset('assets/js/main.js') }}"></script>
 
     <!-- Page JS -->
-    <script src="{{ asset('assets/js/action-loading.js') }}"></script>
     <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
     <script src="{{ asset('assets/js/app/app-block-ui.js') }}"></script>
     <script src="{{ asset('assets/js/app/app-toast.js') }}"></script>

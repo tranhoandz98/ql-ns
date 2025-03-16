@@ -1,12 +1,10 @@
-$(document).ready(function() {
-    function showLoading() {
-        $('#btn-page-block-spinner').click();
-    }
+function showLoading() {
+    $('#btn-page-block-spinner').click();
+}
 
-    function hideLoading() {
-        $('#remove-page-btn').click();
-    }
-    $('.submit-btn, .save-btn').on('click', function() {
-        showLoading();
-    });
+function hideLoading() {
+    $('#remove-page-btn').click();
+}
+$('.submit-btn, .save-btn').on('click', function() {
+    showLoading();
 });

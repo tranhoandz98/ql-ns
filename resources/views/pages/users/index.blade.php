@@ -24,7 +24,7 @@
             <div class="d-flex gap-4">
                 <div>
                     <h4>
-                        {{ __('messages.user-list') }}
+                        {{ __('messages.user-index') }}
                     </h4>
                 </div>
                 <div class="ms-auto">

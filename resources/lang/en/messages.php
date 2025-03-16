@@ -70,7 +70,7 @@ return [
     'user-create' => 'Thêm mới người dùng',
     'user-edit' => 'Cập nhật người dùng',
     'user-show' => 'Chi tiết người dùng',
-    'user-index' => 'Danh sách người dùng',
+    'user-index' => 'User list',
 
     'user-warning-permission' => 'Bạn phải chọn một quyền hạn',
     'user-warning-del-role' => 'Người dùng này đang được sử dụng',

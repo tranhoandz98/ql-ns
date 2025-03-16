@@ -39,7 +39,11 @@ return [
     'timekeeping' => 'Chấm công',
     'cancel' => 'Huỷ',
     'save' => 'Lưu',
-
+    'logout' => 'Đăng xuất',
+    'language-changed' => 'Thay đổi ngôn ngữ thành công',
+    'invalid-language' => 'Ngôn ngữ không hợp lệ',
+    'vietnam_lang' => 'Tiếng Việt',
+    'english_lang' => 'Tiếng Anh',
 
     'role' => 'Vai trò',
     'role-code' => 'Mã vai trò',
@@ -87,6 +91,7 @@ return [
     'change_password' => 'Đổi mật khẩu',
     'password_confirmation' => 'Nhập lại mật khẩu mới',
     'password_change_s' => 'Đổi mật khẩu thành công',
+    'personal_information' => 'Thông tin cá nhân',
 
     'user-start_date' => 'Ngày bắt đầu làm việc',
     'user-work_time' => 'Giờ làm việc',

@@ -47,7 +47,7 @@
                     <div class="col-lg-8">
                         <h5 class="text-primary mb-2">Thông tin chung</h5>
                         <div class="row">
-                            <input type="text" value="{{$result->id}}" name="id" class="d-none"/>
+                            <input type="text" value="{{ $result->id }}" name="id" class="d-none" />
                             <div class="col-md-6">
                                 <div class=" form-group mb-4">
                                     <x-input-label for="name">
@@ -240,10 +240,8 @@
                         </div>
                     </div>
                 </div>
-
             </form>
         </section>
-
     </x-card>
     @section('scriptVendor')
         <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
