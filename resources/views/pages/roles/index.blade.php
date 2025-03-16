@@ -87,11 +87,11 @@
                                                 {{ __('messages.edit') }}
                                             </a>
                                             <form action="{{ route('roles.destroy', $item->id) }}" method="POST"
-                                                style="display:inline;"
-                                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                                style="display:inline;" id="delete-form-{{ $item->id }}">
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item">
+                                                <button type="button" class="dropdown-item delete-btn"
+                                                    onclick="onDeleteItem({{ $item->id }})">
                                                     <x-icon :icon="'trash'" class="me-2"></x-icon>
                                                     {{ __('messages.delete') }}
                                                 </button>
@@ -110,13 +110,7 @@
 
         </div>
     </div>
-    <script>
-        function confirmDelete(url) {
-            if (confirm("Bạn có chắc chắn muốn xóa không?")) {
-                window.location.href = url;
-            }
-        }
-    </script>
+
 </x-app-layout>
 
 @section('script')

@@ -36,6 +36,7 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notyf/notyf.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.css') }}" />
 
     @yield('cssVendor')
     <!-- Page CSS -->
@@ -152,11 +153,36 @@
     <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
     <script src="{{ asset('assets/js/app/app-block-ui.js') }}"></script>
     <script src="{{ asset('assets/js/app/app-toast.js') }}"></script>
+
     @if (session('status'))
         <script>
             showAlert('{{ session('status') }}', '{{ session('message') }}');
         </script>
     @endif
+    <script>
+        function onDeleteItem(id) {
+            const form = document.querySelector('#delete-form-' + id); // Get the closest form element
+            Swal.fire({
+                title: "{{ __('messages.notify') }}",
+                text: `{{ __('messages.are_you_sure_delete') }}`,
+                icon: "warning",
+                showCancelButton: true,
+                reverseButtons:true,
+                confirmButtonText: "{{ __('messages.delete') }}",
+                cancelButtonText: "{{ __('messages.cancel') }}",
+                customClass: {
+                    confirmButton: "btn btn-danger waves-effect waves-light",
+                    cancelButton: "btn btn-secondary waves-effect waves-light",
+                    action: 'gap-4'
+                },
+                buttonsStyling: false,
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit(); // Submit the form if confirmed
+                }
+            });
+        }
+    </script>
     @yield('script')
 
 </body>

@@ -95,10 +95,14 @@
                                             </a>
                                             <form action="{{ route('positions.destroy', $item->id) }}" method="POST"
                                                 style="display:inline;"
-                                                onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
+                                                id="delete-form-{{ $item->id }}"
+                                                >
                                                 @csrf
                                                 @method('DELETE')
-                                                <button type="submit" class="dropdown-item">
+                                                <button type="button" class="dropdown-item"
+                                                onclick="onDeleteItem({{ $item->id }})"
+
+                                                >
                                                     <x-icon :icon="'trash'" class="me-2"></x-icon>
                                                     {{ __('messages.delete') }}
 

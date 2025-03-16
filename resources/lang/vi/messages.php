@@ -48,6 +48,8 @@ return [
     'de_active' => 'Ngưng hoạt động',
     'phone' => 'Số điện thoại',
     'email' => 'Email',
+    'notify' => 'Thông báo',
+    'are_you_sure_delete' => 'Bạn có chắc chắn muốn xóa không?',
 
     'role' => 'Vai trò',
     'role-code' => 'Mã vai trò',
