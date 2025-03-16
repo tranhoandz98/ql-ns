@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\Rules\Password;
 use Illuminate\View\View;
 
@@ -25,7 +26,10 @@ class PasswordController extends Controller
             'password' => Hash::make($validated['password']),
         ]);
 
-        return back()->with('status', 'password-updated');
+        return back()
+        ->with(
+            ['message' => Lang::get('messages.password_change_s'), 'status' => 'success']
+        );
     }
 
 

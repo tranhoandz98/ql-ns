@@ -28,7 +28,6 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/node-waves/node-waves.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/css/core.css') }}" />
-    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/') }}" />
 
     <!-- Vendors CSS -->
 
@@ -36,6 +35,7 @@
     <!-- endbuild -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notyf/notyf.css') }}" />
 
     @yield('css-vendor')
     <!-- Page CSS -->
@@ -90,11 +90,20 @@
     @yield('script-vendor')
     <script src="{{ asset('assets/vendor/libs/notiflix/notiflix.js') }}"></script>
     <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/notyf/notyf.js') }}"></script>
     <!-- Main JS -->
-    <script src="{{ asset('assets/js/action-loading.js') }}"></script>
-
     <script src="{{ asset('assets/js/main.js') }}"></script>
+
     <!-- Page JS -->
+    <script src="{{ asset('assets/js/action-loading.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-block-ui.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-toast.js') }}"></script>
+    @if (session('status'))
+        <script>
+            showAlert('{{ session('status') }}', '{{ session('message') }}');
+        </script>
+    @endif
     @yield('script')
 </body>
 

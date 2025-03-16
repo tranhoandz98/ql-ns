@@ -2,12 +2,13 @@
 
 namespace App\Http\Requests;
 
-use App\Models\Roles;
-use Illuminate\Validation\Rule;
+use App\Models\Departments;
+use App\Rules\PhoneRule;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Lang;
+use Illuminate\Validation\Rule;
 
-class RoleRequest extends FormRequest
+class DepartmentRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,10 +25,13 @@ class RoleRequest extends FormRequest
             'name' => [
                 'required',
                 'max:255',
-                Rule::unique(Roles::class)->ignore($this->id),
+                Rule::unique(Departments::class)->ignore($this->id),
             ],
-            'permission' => 'required',
             'description' => 'max:1000',
+            'phone' => [
+                'max:15',
+                (new PhoneRule())->customAttribute(Lang::get('messages.user-phone')),
+            ],
         ];
         return $rules;
     }
@@ -35,8 +39,7 @@ class RoleRequest extends FormRequest
     public function attributes()
     {
         return [
-            'name' => Lang::get('messages.role-name'),
-            'permission' => Lang::get('messages.role-permission'),
+            'name' => Lang::get('messages.position-name'),
             'description' => Lang::get('messages.description'),
         ];
     }

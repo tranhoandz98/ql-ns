@@ -26,7 +26,7 @@ class PositionRequest extends FormRequest
                 'max:255',
                 Rule::unique(Position::class)->ignore($this->id),
             ],
-            'description' => 'max:2000',
+            'description' => 'max:1000',
         ];
         return $rules;
     }

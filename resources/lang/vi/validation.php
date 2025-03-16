@@ -130,6 +130,8 @@ return [
     'url' => 'Trường :attribute must be a valid URL.',
     'uuid' => 'Trường :attribute must be a valid UUID.',
 
+    'phone_length' => 'Trường :attribute phải từ 9-15 kí tự.',
+
     /*
     |--------------------------------------------------------------------------
     | Custom Validation Language Lines
@@ -152,7 +154,7 @@ return [
     | Custom Validation Attributes
     |--------------------------------------------------------------------------
     |
-    | Trường following language lines are used to swap our attribute placeholder
+    | The following language lines are used to swap our attribute placeholder
     | with something more reader friendly such as "E-Mail Address" instead
     | of "email". This simply helps us make our message more expressive.
     |

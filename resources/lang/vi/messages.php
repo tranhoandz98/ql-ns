@@ -36,9 +36,9 @@ return [
     'compact' => 'Thu gọn',
     'extend' => 'Mở rộng',
     'description' => 'Mô tả',
-    'timekeeping'=> 'Chấm công',
-    'cancel'=> 'Huỷ',
-    'save'=> 'Lưu',
+    'timekeeping' => 'Chấm công',
+    'cancel' => 'Huỷ',
+    'save' => 'Lưu',
 
 
     'role' => 'Vai trò',
@@ -75,6 +75,18 @@ return [
     'user-description' => 'Mô tả',
     'user-permission' => 'Quyền hạn',
     'user-type' => 'Loại người dùng',
+
+    'description_reset_pass' => 'Quên mật khẩu? Không vấn đề gì. Chỉ cần cho chúng tôi biết địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu cho phép bạn chọn mật khẩu mới.',
+    'confirm' => 'Xác nhận',
+    'reset_password' => 'Đặt lại mật khẩu',
+    'password' => 'Mật khẩu',
+    'password_confirm' => 'Xác nhận mật khẩu',
+    'password_recovery' => 'Khôi phục mật khẩu',
+    'current_password' => 'Mật khẩu hiện tại',
+    'new_password' => 'Mật khẩu mới',
+    'change_password' => 'Đổi mật khẩu',
+    'password_confirmation' => 'Nhập lại mật khẩu mới',
+    'password_change_s' => 'Đổi mật khẩu thành công',
 
     'user-start_date' => 'Ngày bắt đầu làm việc',
     'user-work_time' => 'Giờ làm việc',

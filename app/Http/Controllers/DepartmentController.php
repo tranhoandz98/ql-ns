@@ -2,13 +2,15 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\DepartmentRequest;
 use App\Http\Requests\PositionRequest;
+use App\Models\Departments;
 use App\Models\Position;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
-class PositionController extends Controller
+class DepartmentController extends Controller
 {
 
     /**
@@ -17,7 +19,7 @@ class PositionController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->perPage ?? 10;
-        $listAll = Position::where(function ($query) use ($request) {
+        $listAll = Departments::where(function ($query) use ($request) {
             if (!empty($request->name)) {
                 $query->where('name', 'like', '%' . $request->name . '%');
                 // $query->orWhere('code', 'like', '%' . $request->name . '%');
@@ -27,7 +29,7 @@ class PositionController extends Controller
             ->paginate($perPage);
 
 
-        return view('pages.positions.index', compact(
+        return view('pages.departments.index', compact(
             'listAll',
         ));
     }
@@ -37,26 +39,30 @@ class PositionController extends Controller
      */
     public function create()
     {
-        return view('pages.positions.create');
+        return view('pages.departments.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(PositionRequest $request)
+    public function store(DepartmentRequest $request)
     {
         DB::beginTransaction();
         try {
-            $result = Position::create([
-                // 'code' => self::genderUserCode(),
+            $result = Departments::create([
                 'name' => $request->name,
                 'description' => $request->description,
+                'manager_id' => $request->manager_id,
+                'founding_at' => $request->founding_at,
+                'status' => $request->status,
+                'email' => $request->email,
+                'phone' => $request->phone,
             ]);
             DB::commit();
 
-            return redirect()->route('positions.index')
+            return redirect()->route('departments.index')
                 ->with(
-                    ['message' => Lang::get('messages.position-create_s'), 'status' => 'success']
+                    ['message' => Lang::get('messages.department-create_s'), 'status' => 'success']
                 );
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -70,14 +76,14 @@ class PositionController extends Controller
     public function show(string $id)
     {
         //
-        $result = Position::with(
+        $result = Departments::with(
             [
                 'createdByData:id,name',
                 'updatedByData:id,name',
             ]
         )->find($id);
 
-        return view('pages.positions.show', compact(
+        return view('pages.departments.show', compact(
             'result',
 
         ));
@@ -89,11 +95,11 @@ class PositionController extends Controller
     public function edit(string $id)
     {
         //
-        $result = Position::with(
+        $result = Departments::with(
             []
         )->find($id);
 
-        return view('pages.positions.edit', compact(
+        return view('pages.departments.edit', compact(
             'result',
 
         ));
@@ -102,20 +108,25 @@ class PositionController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(PositionRequest $request, string $id)
+    public function update(DepartmentRequest $request, string $id)
     {
 
         DB::beginTransaction();
         try {
-            $result = Position::findOrFail($id);
+            $result = Departments::findOrFail($id);
             $result->update([
                 'name' => $request->name,
                 'description' => $request->description,
+                'manager_id' => $request->manager_id,
+                'founding_at' => $request->founding_at,
+                'status' => $request->status,
+                'email' => $request->email,
+                'phone' => $request->phone,
             ]);
             DB::commit();
-            return redirect()->route('positions.index')
+            return redirect()->route('departments.index')
                 ->with(
-                    ['message' => Lang::get('messages.position-update_s'), 'status' => 'success']
+                    ['message' => Lang::get('messages.department-update_s'), 'status' => 'success']
                 );
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -129,11 +140,11 @@ class PositionController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = Position::find($id);
+        $record = Departments::find($id);
         $record->delete();
-        return redirect()->route('positions.index')
+        return redirect()->route('departments.index')
             ->with(
-                ['message' => Lang::get('messages.position-delete_s'), 'status' => 'success']
+                ['message' => Lang::get('messages.department-delete_s'), 'status' => 'success']
             );
     }
 }

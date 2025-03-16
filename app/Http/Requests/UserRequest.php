@@ -6,6 +6,7 @@ use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Validation\Rule;
 use App\Models\User;
+use App\Rules\PhoneRule;
 
 class UserRequest extends FormRequest
 {
@@ -35,7 +36,10 @@ class UserRequest extends FormRequest
             'department_id' => 'required',
             'status' => 'required',
             'type' => 'required',
-            'phone' => 'max:15',
+            'phone' => [
+                'max:15',
+                (new PhoneRule())->customAttribute(Lang::get('messages.user-phone')),
+            ],
             'person_tax_code' => 'max:255',
             'identifier' => 'max:255',
             'place_of_issue' => 'max:255',

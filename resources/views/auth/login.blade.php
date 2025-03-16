@@ -41,10 +41,11 @@
         <!-- /Left Text -->
         <div class="d-none d-xl-flex col-xl-8 p-0">
             <div class="auth-cover-bg d-flex justify-content-center align-items-center">
-                <img src="../../assets/img/illustrations/auth-login-illustration-light.png" alt="auth-login-cover"
-                    class="my-5 auth-illustration" data-app-light-img="illustrations/auth-login-illustration-light.png"
+                <img src="{{ asset('assets/img/illustrations/auth-login-illustration-light.png') }}"
+                    alt="auth-login-cover" class="my-5 auth-illustration"
+                    data-app-light-img="illustrations/auth-login-illustration-light.png"
                     data-app-dark-img="illustrations/auth-login-illustration-dark.html" />
-                <img src="../../assets/img/illustrations/bg-shape-image-light.png" alt="auth-login-cover"
+                <img src="{{ asset('assets/img/illustrations/bg-shape-image-light.png') }}" alt="auth-login-cover"
                     class="platform-bg" data-app-light-img="illustrations/bg-shape-image-light.png"
                     data-app-dark-img="illustrations/bg-shape-image-dark.html" />
             </div>
@@ -92,9 +93,9 @@
                                     Quên mật khẩu?
                                 </a>
                             @endif
-                            <a class="" href="{{ route('register') }}">
+                            {{-- <a class="" href="{{ route('register') }}">
                                 DK
-                            </a>
+                            </a> --}}
                         </div>
                     </div>
                     <button class="btn btn-primary d-grid w-100" type="submit">Đăng nhập</button>
