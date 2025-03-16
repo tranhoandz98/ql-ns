@@ -67,7 +67,7 @@ class UsersController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code'])->get();
+        $users = User::select(['id', 'name', 'code','status'])->get();
         $typeUser = TypeUser::options();
         $statusUser = StatusUser::options();
         $genderUser = GenderUser::options();
@@ -93,7 +93,7 @@ class UsersController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code'])->get();
+        $users = User::select(['id', 'name', 'code','status'])->active()->get();
         $typeUser = TypeUser::options();
         $statusUser = StatusUser::options();
         $genderUser = GenderUser::options();
@@ -175,7 +175,7 @@ class UsersController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code'])->get();
+        $users = User::select(['id', 'name', 'code','status'])->get();
         $typeUser = TypeUser::options();
         $statusUser = StatusUser::options();
         $genderUser = GenderUser::options();
@@ -207,7 +207,7 @@ class UsersController extends Controller
         $positions = Position::select(['id', 'name'])->get();
         $departments = Departments::select(['id', 'name'])->get();
         $roles = Roles::select(['id', 'name'])->get();
-        $users = User::select(['id', 'name', 'code'])->get();
+        $users = User::select(['id', 'name', 'code','status'])->active()->get();
         $typeUser = TypeUser::options();
         $statusUser = StatusUser::options();
         $genderUser = GenderUser::options();
