@@ -2,22 +2,83 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
-
 @endsection
 @section('scriptVendor')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
+    <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
+    <script>
+        async function loadModels() {
+            await faceapi.nets.tinyFaceDetector.loadFromUri("{{ asset('/assets/vendor/face-api-models') }}");
+            await faceapi.nets.faceLandmark68Net.loadFromUri("{{ asset('/assets/vendor/face-api-models') }}");
+            await faceapi.nets.faceRecognitionNet.loadFromUri("{{ asset('/assets/vendor/face-api-models') }}");
+        }
+        loadModels();
+    </script>
 @endsection
 
 @section('script')
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
     <script>
         let time = $(".bs-rangepicker-single")
-        time.flatpickr({ monthSelectorType: "static",
-        dateFormat: "d/m/Y",
-        static: !0 })
+        time.flatpickr({
+            monthSelectorType: "static",
+            dateFormat: "d/m/Y",
+            static: !0
+        })
+
+        document.getElementById('fileAvatar').addEventListener('change', async (e) => {
+                const file = e.target.files[0];
+                const img = await faceapi.bufferToImage(file);
+                showLoading()
+                const detection = await faceapi.detectSingleFace(
+                        img,
+                        new faceapi.TinyFaceDetectorOptions()
+                    ).withFaceLandmarks()
+                    .withFaceDescriptor();
+                hideLoading()
+                if (!detection) {
+                    alert('Không tìm thấy khuôn mặt!');
+                    document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(""));
+                    return;
+                }
+
+                document.querySelector('input[name="face_descriptor"]').value = JSON.stringify(Array.from(detection
+                    .descriptor));
+            });
+
+        $('#remove-avatar').on('click', function() {
+            $('#avatar').val('');
+            $('#fileAvatar').val('');
+            $('#preview').attr('src', '{{ asset('assets/img/avatars/default.jpg') }}');
+        });
+
+        function previewImage(input) {
+            // Check file size before upload
+            if (input.files[0].size > 1024 * 1024) { // 1MB
+                alert('File ảnh phải nhỏ hơn 1MB');
+                input.value = '';
+                return;
+            }
+
+            // Check file type
+            const validTypes = ['image/jpeg', 'image/png', 'image/jpg'];
+            if (!validTypes.includes(input.files[0].type)) {
+                alert('Chỉ chấp nhận file ảnh định dạng JPG, JPEG hoặc PNG');
+                input.value = '';
+                return;
+            }
+
+            if (input.files && input.files[0]) {
+                var reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                }
+                reader.readAsDataURL(input.files[0]);
+            }
+        }
     </script>
 @endsection
 
@@ -25,7 +86,9 @@
 
 @endphp
 
-<form method="POST" action="{{ $action }}">
+<form method="POST" action="{{ $action }}"
+ enctype="multipart/form-data"
+>
     @csrf
     @if ($method === 'PUT')
         @method('PUT')
@@ -36,14 +99,15 @@
             <div>
                 <h5 class="text-primary mb-2">Thông tin chung</h5>
             </div>
+
             <div class="ml-auto">
-                avatar
+
             </div>
         </div>
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="name" >
+                    <x-input-label for="name">
                         <span class="text-danger">*</span>
                         @lang('messages.user-name')
                     </x-input-label>
@@ -52,15 +116,53 @@
                     <x-input-error :messages="$errors->get('name')" class="" />
                 </div>
             </div>
-
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="position_id" >
+                    <x-input-label for="email">
                         <span class="text-danger">*</span>
-                        Chức vụ
+                        Email
 
                     </x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="position_id">
+                    <input type="email" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
+                        value="{{ old('email', $result->email ?? '') }}" />
+                    <x-input-error :messages="$errors->get('email')" class="" />
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="phone" :value="'Số điện thoại'"></x-input-label>
+                    <input type="tel" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
+                        value="{{ old('phone', $result->phone ?? '') }}" />
+                    <x-input-error :messages="$errors->get('phone')" class="" />
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="position_id">
+                        <span class="text-danger">*</span>
+                        Vai trò
+                    </x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="role_id"
+                        {{ $disabled ?? '' }}>
+                        <option value="" disabled selected>Chọn</option>
+                        @foreach ($roles as $role)
+                            <option value="{{ $role->id }}"
+                                {{ old('role_id', $result->role_id ?? null) == $role->id ? 'selected' : '' }}>
+                                {{ $role->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <x-input-error :messages="$errors->get('role_id')" class="" />
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="position_id">
+                        <span class="text-danger">*</span>
+                        Chức vụ
+                    </x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="position_id"
+                        {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($positions as $position)
                             <option value="{{ $position->id }}"
@@ -74,12 +176,13 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="department_id" >
+                    <x-input-label for="department_id">
                         <span class="text-danger">*</span>
                         Phòng ban
 
                     </x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="department_id">
+                    <select class="select2 form-select" data-allow-clear="true" name="department_id"
+                        {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($departments as $department)
                             <option value="{{ $department->id }}"
@@ -93,43 +196,32 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="manager" :value="'Cán bộ quản lý'"></x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="manager">
+                    <x-input-label for="manager_id">
+                        @lang('messages.user-manager_id')
+
+                    </x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="manager_id"
+                        {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($users as $userItem)
                             <option value="{{ $userItem->id }}"
-                                {{ old('manager', $result->manager ?? null) == $userItem->id ? 'selected' : '' }}>
+                                {{ old('manager_id', $result->manager_id ?? null) == $userItem->id ? 'selected' : '' }}>
                                 {{ '[' . $userItem->code . '] ' . $userItem->name }}
                             </option>
                         @endforeach
                     </select>
-                    <x-input-error :messages="$errors->get('manager')" class="" />
+                    <x-input-error :messages="$errors->get('manager_id')" class="" />
                 </div>
             </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="form-group mb-4">
-                    <x-input-label for="phone" :value="'Số điện thoại'"></x-input-label>
-                    <input type="tel" class="form-control" id="phone" name="phone" {{ $disabled ?? '' }}
-                        value="{{ old('phone', $result->phone ?? '') }}" />
-                    <x-input-error :messages="$errors->get('phone')" class="" />
-                </div>
-            </div>
-            <div class="col-md-6 col-lg-4">
-                <div class="form-group mb-4">
-                    <x-input-label for="email" >
-                        <span class="text-danger">*</span>
-                        Email
 
-                    </x-input-label>
-                    <input type="email" class="form-control" id="email" name="email" {{ $disabled ?? '' }}
-                        value="{{ old('email', $result->email ?? '') }}" />
-                    <x-input-error :messages="$errors->get('email')" class="" />
-                </div>
-            </div>
+
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="status" :value="'Trạng thái'"></x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="status">
+                    <x-input-label for="status">
+                        <span class="text-danger">*</span>
+                        Trạng thái
+                    </x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($statusUser as $item)
                             <option value="{{ $item['id'] }}"
@@ -143,8 +235,12 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="type" :value="'Loại người dùng'"></x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="type">
+                    <x-input-label for="type">
+                        <span class="text-danger">*</span>
+                        Loại người dùng
+
+                    </x-input-label>
+                    <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($typeUser as $item)
                             <option value="{{ $item['id'] }}"
@@ -154,6 +250,38 @@
                         @endforeach
                     </select>
                     <x-input-error :messages="$errors->get('type')" class="" />
+                </div>
+            </div>
+
+            <div class="col-md-6 col-lg-4">
+                <div class="d-flex gap-4">
+                    <div class="w-75">
+                        <x-input-label for="type">
+                            Avatar
+                        </x-input-label>
+                        <div class="d-flex gap-4">
+                            <x-input-label for="fileAvatar" class="btn btn-primary text-white {{ $disabled ?? '' }}">
+                                <i class="me-2 icon-xs  icon-base ti tabler-upload"></i>
+                                Tải ảnh mới
+                            </x-input-label>
+                            <x-button type="button" id="remove-avatar" class="btn-danger {{ $disabled ?? '' }}"
+                                :icon="'x'">Loại bỏ</x-button>
+                        </div>
+                        <input type="text" class="form-control d-none" id="avatar" name="avatar"
+                            {{ $disabled ?? '' }} value="{{ old('avatar', $result->avatar ?? '') }}" />
+                        <input type="file" class="form-control d-none" id="fileAvatar" name="fileAvatar"
+                            {{ $disabled ?? '' }} accept="image/png, image/jpeg"
+                            onchange="previewImage(this)" />
+                            <x-input-text name="face_descriptor" id="face_descriptor" class="d-none" :value="old('name', $result?->face_descriptor)">
+                            </x-input-text>
+                        <x-input-error :messages="$errors->get('fileAvatar')" class="" />
+                    </div>
+                    <div class="w-25 d-flex ">
+                        <img id="preview"
+                            src="{{ old('avatar', $result?->avatar ? asset('storage/' . $result->avatar) : asset('assets/img/avatars/default.jpg')) }}"
+                            class="rounded-circle account-file-input"
+                            style="width: 4rem; height: 4rem; object-fit: cover;">
+                    </div>
                 </div>
             </div>
 
@@ -167,7 +295,8 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="work_time" :value="'Giờ làm việc'"></x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="work_time">
+                    <select class="select2 form-select" data-allow-clear="true" name="work_time"
+                        {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($departments as $department)
                             <option value="{{ $department->id }}"
@@ -182,9 +311,9 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="start_date" name="start_date"
-                    placeholder="dd/mm/yyy"
-                        {{ $disabled ?? '' }} value="{{ old('start_date', $result->start_date ?? '') }}" />
+                    <input type="text" class="form-control bs-rangepicker-single" id="start_date"
+                        name="start_date" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        value="{{ old('start_date', $result->start_date ?? '') }}" />
                     <x-input-error :messages="$errors->get('start_date')" class="" />
                 </div>
 
@@ -208,10 +337,9 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue" name="date_of_issue"
-                    placeholder="dd/mm/yyy"
-
-                        {{ $disabled ?? '' }} value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
+                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue"
+                        name="date_of_issue" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_issue')" class="" />
                 </div>
             </div>
@@ -226,17 +354,17 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth" name="date_of_birth"
-                    placeholder="dd/mm/yyy"
-
-                        {{ $disabled ?? '' }} value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
+                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth"
+                        name="date_of_birth" placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
+                        value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_birth')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="gender">Giới tính</x-input-label>
-                    <select class="select2 form-select" data-allow-clear="true" name="work_time">
+                    <select class="select2 form-select" data-allow-clear="true" name="work_time"
+                        {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
                         @foreach ($genderUser as $item)
                             <option value="{{ $item['id'] }}"
@@ -320,7 +448,7 @@
             <x-button :icon="'x'" type="button" class="btn-secondary">Huỷ</x-button>
         </a>
         @if (!isset($disabled))
-            <x-button :icon="'device-floppy'" class="">Lưu</x-button>
+            <x-button :icon="'device-floppy'" class="submit-btn">Lưu</x-button>
         @endif
     </div>
 

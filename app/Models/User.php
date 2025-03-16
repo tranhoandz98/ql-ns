@@ -58,22 +58,24 @@ class User extends Authenticatable
         });
     }
 
-    public function getRoleSingleton()
+    public function role()
     {
-
-        if (!$this->role) {
-            $this->role = $this->roles()->first();
-        }
-        return $this->role;
+        return $this->belongsTo(Roles::class, 'role_id', 'id');
     }
 
-    public function roles()
+    public function position()
     {
-        return $this->belongsToMany('App\Models\Role', 'user_role', 'user_id', 'role_id');
+        return $this->belongsTo(Position::class, 'position_id', 'id',);
     }
 
-    public function dataUserRole()
+
+    public function department()
     {
-        return $this->hasOne('App\Models\UserRole');
+        return $this->belongsTo(Departments::class, 'department_id', 'id',);
+    }
+
+    public function manager()
+    {
+        return $this->belongsTo(User::class, 'manager_id', 'id',);
     }
 }

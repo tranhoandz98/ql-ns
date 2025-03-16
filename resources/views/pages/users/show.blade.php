@@ -1,19 +1,18 @@
-@section('title', 'Xem vai trò')
+@section('title', __('messages.user-show'))
 @section('breadcrumbs')
-    <x-breadcrumb :labelParent="__('messages.role')" :urlParent="route('roles.index')" :label="__('messages.show')">
+    <x-breadcrumb :labelParent="__('messages.user')" :urlParent="route('users.index')" :label="__('messages.show')">
     </x-breadcrumb>
 @endsection
 <x-app-layout>
     <x-card>
         <h4>
-            Xem vai trò
+            {{ __('messages.user-show') }}
         </h4>
-            @include('pages.roles.partials.form', [
-                'action' => '#',
-                'method' => 'GET',
-                'result' => $result,
-                'disabled' => 'disabled',
-                'permissionOld'=>$permissionOld
-            ])
+        @include('pages.users.partials.form', [
+            'action' => '#',
+            'method' => 'GET',
+            'result' => $result,
+            'disabled' => 'disabled',
+        ])
     </x-card>
 </x-app-layout>

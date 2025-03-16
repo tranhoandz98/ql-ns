@@ -9,19 +9,10 @@
 @endsection
 
 <x-app-layout>
-
-
     <div class="card">
-
         <div class="card-header pb-0 text-md-start text-center">
-            @if (session('message'))
-                <x-alert :type="session('status')">
-                    {{ session('message') }}
-                </x-alert>
-            @endif
             <div class="d-flex gap-4">
                 <div>
-
                     <h4>
                         {{ __('messages.role-index') }}
                     </h4>
@@ -41,11 +32,12 @@
                 <div class="row">
                     <div class="col-12 col-sm-6 col-lg-4">
                         <input type="search" class="form-control dt-input dt-full-name" data-column="1"
-                            placeholder="Tên vai trò" name="name" data-column-index="0" />
+                            value="{{ request('name') }}" placeholder="Tên vai trò" name="name"
+                            data-column-index="0" />
                     </div>
                     <div class="col-12 col-sm-6 col-lg-4">
                         <div class="d-flex gap-4">
-                            <x-button :icon="'search'">
+                            <x-button :icon="'search'" class="submit-btn">
                                 {{ __('messages.search') }}
                             </x-button>
                         </div>
@@ -55,27 +47,47 @@
 
             </form>
         </div>
-        <div class="card-datatable text-nowrap table-responsive ">
+        <div class="card-datatable table-responsive ">
             <table class="table table-hover ">
                 <thead>
                     <tr>
-                        <th>STT</th>
-                        <th>Tên vai trò</th>
-                        <th>Mô tả</th>
-                        <th>Thời gian tạo</th>
-                        <th>Tác vụ</th>
+                        <th>
+                            {{ __('messages.stt') }}
+                        </th>
+                        <th>
+                            {{ __('messages.role-name') }}
+                        </th>
+                        <th>
+                            {{ __('messages.role-description') }}
+                        </th>
+                        <th>
+                            {{ __('messages.created_at') }}
+                        </th>
+                        <th>
+                            {{ __('messages.action') }}
+                        </th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($listAll as $index => $role)
+                    @foreach ($listAll as $index => $item)
                         <tr>
                             <td>{{ $index + 1 }}</td>
-                            <td>{{ $role->name }}</td>
-                            <td>{{ $role->description }}</td>
-                            <td>{{ formatDateTimeView($role->created_at) }}</td>
+
+                            <td style="max-width: 7rem;">
+                                <span class="text-truncate-3-lines" title=" {{ $item->name }}">
+                                    {{ $item->name }}
+                                </span>
+                            </td>
+                            <td style="max-width: 8rem;">
+                                <span class="text-truncate-3-lines" title=" {{ $item->description }}">
+                                    {{ $item->description }}
+                                </span>
+                            </td>
+                            <td>{{ formatDateTimeView($item->created_at) }}</td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('roles.show', $role->id) }}" title="{{ __('messages.view') }}" class="text-primary">
+                                    <a href="{{ route('roles.show', $item->id) }}" title="{{ __('messages.view') }}"
+                                        class="text-primary">
                                         <x-icon :icon="'eye'"></x-icon>
                                     </a>
                                     <div class="dropdown">
@@ -84,11 +96,11 @@
                                             <x-icon :icon="'dots-vertical'"></x-icon>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('roles.edit', $role->id) }}>
+                                            <a class="dropdown-item" href={{ route('roles.edit', $item->id) }}>
                                                 <x-icon :icon="'edit'" class="me-2"></x-icon>
                                                 {{ __('messages.edit') }}
                                             </a>
-                                            <form action="{{ route('roles.destroy', $role->id) }}" method="POST"
+                                            <form action="{{ route('roles.destroy', $item->id) }}" method="POST"
                                                 style="display:inline;"
                                                 onsubmit="return confirm('Bạn có chắc chắn muốn xóa không?');">
                                                 @csrf

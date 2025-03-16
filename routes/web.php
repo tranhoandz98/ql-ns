@@ -8,8 +8,8 @@ use Illuminate\Support\Facades\Route;
 
 require __DIR__ . '/auth.php';
 Route::get('/', function () {
-    return view('welcome');
-});
+    return view(view: 'dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');;
 
 Route::get('/trang-chu', function () {
     return view('dashboard');

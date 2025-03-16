@@ -35,6 +35,7 @@
     <!-- endbuild -->
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/spinkit/spinkit.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notiflix/notiflix.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/notyf/notyf.css') }}" />
 
     @yield('cssVendor')
     <!-- Page CSS -->
@@ -54,6 +55,7 @@
 </head>
 
 <body id="page-block">
+
     <!-- Layout wrapper -->
     <div class="layout-wrapper layout-content-navbar">
         <div class="layout-container">
@@ -99,7 +101,7 @@
 
         <!-- Overlay -->
         <div class="layout-overlay layout-menu-toggle"></div>
-        <button class="btn btn-primary btn-page-block-overlay d-none" id="btn-page-block-overlay">Overlay Color</button>
+        <button class="btn btn-primary btn-page-block-spinner d-none" id="btn-page-block-spinner">Overlay Color</button>
         <button class="btn btn-primary remove-page-btn d-none" id="remove-page-btn">remove/unblock</button>
 
         <!-- Drag Target Area To SlideIn Menu On Small Screens -->
@@ -137,15 +139,25 @@
 
     <!-- Vendors JS -->
     <script src="{{ asset('assets/vendor/libs/notiflix/notiflix.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/sweetalert2/sweetalert2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/block-ui/jquery.blockUI.min.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/notyf/notyf.js') }}"></script>
+
     @yield('scriptVendor')
 
     <!-- Main JS -->
 
     <script src="{{ asset('assets/js/main.js') }}"></script>
     <!-- Page JS -->
-    <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
-
     <script src="{{ asset('assets/js/action-loading.js') }}"></script>
+    <script src="{{ asset('assets/js/extended-ui-blockui.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-block-ui.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-toast.js') }}"></script>
+    @if (session('status'))
+        <script>
+            showAlert('{{ session('status') }}', '{{ session('message') }}');
+        </script>
+    @endif
     @yield('script')
 
 </body>

@@ -2,6 +2,8 @@
 
 namespace App\Enums\User;
 
+use Illuminate\Support\Facades\Lang;
+
 enum GenderUser: int
 {
     case MALE = 1;
@@ -11,9 +13,9 @@ enum GenderUser: int
     public function label(): string
     {
         return match ($this) {
-            self::MALE => 'Nam',
-            self::FEMALE => 'Nữ',
-            self::OTHER => 'Khác',
+            self::MALE => Lang::get("messages.male"),
+            self::FEMALE => Lang::get("messages.female"),
+            self::OTHER => Lang::get("messages.other"),
         };
     }
 

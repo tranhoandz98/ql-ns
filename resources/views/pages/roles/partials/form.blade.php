@@ -41,7 +41,8 @@
             <x-button :icon="'x'" type="button" class="btn-secondary">Huỷ</x-button>
         </a>
         @if (!isset($disabled))
-            <x-button :icon="'device-floppy'" class="">Lưu</x-button>
+            <x-button :icon="'device-floppy'" class="submit-btn"
+            >Lưu</x-button>
         @endif
     </div>
 

@@ -1,8 +1,8 @@
 <x-app-layout>
     <x-card>
-            <h3 class="">
+            <h4 class="">
                 Đổi mật khẩu
-            </h3>
+            </h4>
 
             <form method="post" action="{{ route('password.update') }}" class="mt-6 space-y-6">
                 @csrf

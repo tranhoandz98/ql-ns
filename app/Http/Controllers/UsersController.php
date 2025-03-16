@@ -14,8 +14,10 @@ use App\Models\RolePermission;
 use App\Models\Roles;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
 
 class UsersController extends Controller
 {
@@ -26,16 +28,60 @@ class UsersController extends Controller
     public function index(Request $request)
     {
         $perPage = $request->perPage ?? 10;
-        $listAll = User::where(function ($query) use ($request) {
-            if (!empty($request->name)) {
-                $query->where('name', 'like', '%' . $request->name . '%');
-                $query->orWhere('email', 'like', '%' . $request->name . '%');
-            }
-        })
+        $listAll = User::with(
+            [
+                'position:id,name',
+                'department:id,name',
+                'manager:id,name',
+                'role:id,name',
+            ]
+        )
+            ->where(function ($query) use ($request) {
+                if (!empty($request->name)) {
+                    $query->where('name', 'like', '%' . $request->name . '%');
+                    $query->orWhere('email', 'like', '%' . $request->name . '%');
+                    $query->orWhere('code', 'like', '%' . $request->name . '%');
+                }
+                if (!empty($request->role_id)) {
+                    $query->where('role_id', $request->role_id);
+                }
+                if (!empty($request->type)) {
+                    $query->where('type', $request->type);
+                }
+                if (!empty($request->status)) {
+                    $query->where('status', $request->status);
+                }
+                if (!empty($request->department_id)) {
+                    $query->where('department_id', $request->department_id);
+                }
+                if (!empty($request->position_id)) {
+                    $query->where('position_id', $request->position_id);
+                }
+                if (!empty($request->manager_id)) {
+                    $query->where('manager_id', $request->manager_id);
+                }
+            })
             ->orderBy('created_at', 'desc')
-            // ->select('id', 'name', 'email')
             ->paginate($perPage);
-        return view('pages.users.index', compact('listAll'));
+
+        $positions = Position::select(['id', 'name'])->get();
+        $departments = Departments::select(['id', 'name'])->get();
+        $roles = Roles::select(['id', 'name'])->get();
+        $users = User::select(['id', 'name', 'code'])->get();
+        $typeUser = TypeUser::options();
+        $statusUser = StatusUser::options();
+        $genderUser = GenderUser::options();
+
+        return view('pages.users.index', compact(
+            'listAll',
+            'positions',
+            'departments',
+            'roles',
+            'users',
+            'typeUser',
+            'statusUser',
+            'genderUser'
+        ));
     }
 
     /**
@@ -59,40 +105,58 @@ class UsersController extends Controller
      */
     public function store(UserRequest $request)
     {
-        $password_default = ConfigModel::getSetting('password_default');
-        User::create([
-            'code' => self::genderUserCode(),
-            'name' => $request->name,
-            'password' => Hash::make($password_default),
-            'position_id' => $request->position_id,
-            'department_id' => $request->department_id,
-            'phone' => $request->phone,
-            'email' => $request->email,
-            'status' => $request->status,
-            'type' => $request->type,
-            'manager' => $request->manager,
+        DB::beginTransaction();
+        try {
+            $password_default = ConfigModel::getSetting('password_default');
+            $result = User::create([
+                'code' => self::genderUserCode(),
+                'name' => $request->name,
+                'password' => Hash::make($password_default),
+                'position_id' => $request->position_id,
+                'department_id' => $request->department_id,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'status' => $request->status,
+                'type' => $request->type,
+                'manager_id' => $request->manager_id,
+                'role_id' => $request->role_id,
 
-            'bank_account' => $request->bank_account,
-            'bank_branch' => $request->bank_branch,
-            'bank' => $request->bank,
-            'permanent_address' => $request->permanent_address,
-            'current_address' => $request->current_address,
-            'nation' => $request->nation,
-            'nationality' => $request->nationality,
-            'date_of_birth' => $request->date_of_birth,
+                'bank_account' => $request->bank_account,
+                'bank_branch' => $request->bank_branch,
+                'bank' => $request->bank,
+                'permanent_address' => $request->permanent_address,
+                'current_address' => $request->current_address,
+                'nation' => $request->nation,
+                'nationality' => $request->nationality,
+                'date_of_birth' => $request->date_of_birth,
 
-            'place_of_issue' => $request->place_of_issue,
-            'date_of_issue' => $request->date_of_issue,
+                'place_of_issue' => $request->place_of_issue,
+                'date_of_issue' => $request->date_of_issue,
 
-            'start_date' => $request->start_date,
-            'person_tax_code' => $request->person_tax_code,
-            'identifier' => $request->identifier,
-        ]);
+                'start_date' => $request->start_date,
+                'person_tax_code' => $request->person_tax_code,
+                'identifier' => $request->identifier,
+            ]);
 
-        return redirect()->route('users.index')
-            ->with(
-                ['message' => Lang::get('messages.user-create_s'), 'status' => 'success']
-            );
+
+            if ($request->hasFile('fileAvatar')) {
+                $imagePath = $request->file('fileAvatar')->store('uploads', 'public');
+
+                $result->update([
+                    'avatar' => $imagePath,
+                    'face_descriptor' => $request->face_descriptor,
+                ]);
+            }
+            DB::commit();
+
+            return redirect()->route('users.index')
+                ->with(
+                    ['message' => Lang::get('messages.user-create_s'), 'status' => 'success']
+                );
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
+        }
     }
 
     /**
@@ -101,10 +165,30 @@ class UsersController extends Controller
     public function show(string $id)
     {
         //
-        $permission = Permission::select()->get()->groupBy('parent_name')->toArray();
-        $result = Roles::find($id);
-        $permissionOld = $result->getPermissionSingleton()->pluck('id')->toArray();
-        return view('pages.users.show', compact('result', 'permission', 'permissionOld'));
+        $result = User::with(
+            [
+                'position:id,name',
+                'department:id,name',
+                'manager:id,name',
+            ]
+        )->find($id);
+        $positions = Position::select(['id', 'name'])->get();
+        $departments = Departments::select(['id', 'name'])->get();
+        $roles = Roles::select(['id', 'name'])->get();
+        $users = User::select(['id', 'name', 'code'])->get();
+        $typeUser = TypeUser::options();
+        $statusUser = StatusUser::options();
+        $genderUser = GenderUser::options();
+        return view('pages.users.show', compact(
+            'result',
+            'positions',
+            'departments',
+            'roles',
+            'users',
+            'typeUser',
+            'statusUser',
+            'genderUser'
+        ));
     }
 
     /**
@@ -113,10 +197,30 @@ class UsersController extends Controller
     public function edit(string $id)
     {
         //
-        $permission = Permission::select(['id', 'name', 'display_name', 'parent', 'parent_name'])->get()->groupBy('parent_name')->toArray();
-        $result = Roles::find($id);
-        $permissionOld = $result->getPermissionSingleton()->pluck('id')->toArray();
-        return view('pages.users.edit', compact('result', 'permission', 'permissionOld'));
+        $result = User::with(
+            [
+                'position:id,name',
+                'department:id,name',
+                'manager:id,name',
+            ]
+        )->find($id);
+        $positions = Position::select(['id', 'name'])->get();
+        $departments = Departments::select(['id', 'name'])->get();
+        $roles = Roles::select(['id', 'name'])->get();
+        $users = User::select(['id', 'name', 'code'])->get();
+        $typeUser = TypeUser::options();
+        $statusUser = StatusUser::options();
+        $genderUser = GenderUser::options();
+        return view('pages.users.edit', compact(
+            'result',
+            'positions',
+            'departments',
+            'roles',
+            'users',
+            'typeUser',
+            'statusUser',
+            'genderUser'
+        ));
     }
 
     /**
@@ -124,35 +228,70 @@ class UsersController extends Controller
      */
     public function update(UserRequest $request, string $id)
     {
-        //
-        $result = Roles::find($id);
-        $result->update([
-            'name' => $request->name,
-            'description' => $request->description,
-        ]);
 
-        // Xóa tất cả RolePermission cũ
-        RolePermission::where('role_id', $result->id)->delete();
+        DB::beginTransaction();
+        try {
+            $result = User::findOrFail($id);
+            $result->update([
+                'name' => $request->name,
+                'position_id' => $request->position_id,
+                'department_id' => $request->department_id,
+                'phone' => $request->phone,
+                'email' => $request->email,
+                'status' => $request->status,
+                'type' => $request->type,
+                'manager_id' => $request->manager_id,
+                'role_id' => $request->role_id,
 
-        $listPermission = json_decode($request->permission, true);
-        if ($result) {
-            foreach ($listPermission as $permission_uuid) {
-                if (is_numeric($permission_uuid)) {
-                    RolePermission::create([
-                        'role_id' => $result->id,
-                        'permission_id' => $permission_uuid,
-                    ]);
-                }
+                'bank_account' => $request->bank_account,
+                'bank_branch' => $request->bank_branch,
+                'bank' => $request->bank,
+                'permanent_address' => $request->permanent_address,
+                'current_address' => $request->current_address,
+                'nation' => $request->nation,
+                'nationality' => $request->nationality,
+                'date_of_birth' => $request->date_of_birth,
+
+                'place_of_issue' => $request->place_of_issue,
+                'date_of_issue' => $request->date_of_issue,
+
+                'start_date' => $request->start_date,
+                'person_tax_code' => $request->person_tax_code,
+                'identifier' => $request->identifier,
+            ]);
+
+            if (empty($request->avatar) && !$request->hasFile('fileAvatar')) {
+                $result->update([
+                    'avatar' => null,
+                    'face_descriptor' => null,
+                ]);
             }
+            if ($request->hasFile('fileAvatar')) {
+                if ($result->avatar) {
+                    Storage::delete('public/' . $result->avatar);
+                }
+
+                $imagePath = $request->file('fileAvatar')->store('uploads', 'public');
+
+                $result->update([
+                    'avatar' => $imagePath,
+                    'face_descriptor' => $request->face_descriptor,
+                ]);
+            }
+            if ($result->isDirty('email')) {
+                $result->update([
+                    'email_verified_at' => null,
+                ]);
+            }
+            DB::commit();
             return redirect()->route('users.index')
                 ->with(
-                    ['message' => Lang::get('messages.role-update_s'), 'status' => 'success']
+                    ['message' => Lang::get('messages.user-update_s'), 'status' => 'success']
                 );
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            throw $th;
         }
-        return redirect()->route('users.index')
-            ->with(
-                ['message' => Lang::get('messages.role-update_f'), 'status' => 'danger']
-            );
     }
 
     /**
@@ -161,11 +300,11 @@ class UsersController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = Roles::find($id);
+        $record = User::find($id);
         $record->delete();
         return redirect()->route('users.index')
             ->with(
-                ['message' => Lang::get('messages.role-delete_s'), 'status' => 'success']
+                ['message' => Lang::get('messages.user-delete_s'), 'status' => 'success']
             );
     }
 

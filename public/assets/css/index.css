@@ -19,6 +19,20 @@
     padding-inline: var(--cs-padding);
 }
 
-.table th{
+.table th {
     text-transform: none;
+}
+
+.text-truncate-3-lines {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 3; /* Giới hạn 3 dòng */
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.fw-500{
+    font-weight: 500;
+}
+.table>:not(caption)>*>*{
+    padding: .782rem 1rem;
 }

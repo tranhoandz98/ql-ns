@@ -5,7 +5,7 @@
 ])
 
 <nav aria-label="breadcrumb ">
-    <ol class="breadcrumb mt-4">
+    <ol class="breadcrumb mt-2">
         <li class="">
             <a href="{{ route('dashboard') }}">@lang('messages.home')</a>
             &nbsp;/&nbsp;
