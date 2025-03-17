@@ -33,13 +33,6 @@ Route::middleware('auth')->group(function () {
         Route::post('/add-me', [TimekeepingController::class, 'postAddMe'])->name('post-add-me');
 
         Route::post('/checkin', [TimekeepingController::class, 'checkin'])->name('checkin');
-        Route::get('/create', function () {
-            return view('create');
-        })->name('create');
-
-        Route::get('/edit/{id}', function ($id) {
-            return view('edit', compact('id'));
-        })->name('edit');
     });
 
     // vai trò

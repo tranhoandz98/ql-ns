@@ -7,6 +7,10 @@
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
 @endsection
+@section('script')
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+
+@endsection
 
 <x-app-layout>
     <div class="card">
@@ -91,7 +95,8 @@
                                                 @csrf
                                                 @method('DELETE')
                                                 <button type="button" class="dropdown-item delete-btn"
-                                                    onclick="onDeleteItem({{ $item->id }})">
+                                                    onclick="onDeleteItem({{ $item->id }})"
+                                                    >
                                                     <x-icon :icon="'trash'" class="me-2"></x-icon>
                                                     {{ __('messages.delete') }}
                                                 </button>
@@ -113,7 +118,3 @@
 
 </x-app-layout>
 
-@section('script')
-    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
-
-@endsection

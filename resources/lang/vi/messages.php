@@ -51,6 +51,10 @@ return [
     'notify' => 'Thông báo',
     'are_you_sure_delete' => 'Bạn có chắc chắn muốn xóa không?',
 
+    'timekeeping_s' => 'Chấm công thành công',
+    'timekeeping_f' => 'Chấm công thất bại',
+    'face_not_found' => 'Không tìm thấy khuôn mặt!',
+
     'role' => 'Vai trò',
     'role-code' => 'Mã vai trò',
     'role-name' => 'Tên vai trò',
@@ -164,4 +168,19 @@ return [
     'department-create_s' => 'Thêm mới phòng ban thành công',
     'department-update_s' => 'Cập nhật phòng ban thành công',
     'department-delete_s' => 'Xóa phòng ban thành công',
+
+    'department-user_id' => 'Nhân viên',
+    'department-checkin' => 'Giờ vào',
+    'department-checkout' => 'Giờ ra',
+    'department-work_time' => 'Giờ làm việc',
+    'department-num_work_date' => 'Số ngày đã làm',
+    'department-work_late' => 'Muộn (phút)',
+    'timekeeping-create' => 'Thêm mới chấm công',
+    'timekeeping-edit' => 'Cập nhật chấm công',
+    'timekeeping-show' => 'Chi tiết chấm công',
+    'timekeeping-index' => 'Danh sách chấm công',
+    'timekeeping-search' => 'Tên chấm công',
+    'timekeeping-create_s' => 'Thêm mới chấm công thành công',
+    'timekeeping-update_s' => 'Cập nhật chấm công thành công',
+    'timekeeping-delete_s' => 'Xóa chấm công thành công',
 ];

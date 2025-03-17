@@ -1,5 +1,5 @@
 @php
-    $user= Auth::user();
+    $user = Auth::user();
 @endphp
 <nav class="layout-navbar container-xxl navbar-detached navbar navbar-expand-xl align-items-center bg-navbar-theme"
     id="layout-navbar">
@@ -23,34 +23,35 @@
 
         <ul class="navbar-nav flex-row align-items-center ms-md-auto">
             <li class="nav-item dropdown-language dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill" href="javascript:void(0);" data-bs-toggle="dropdown">
-                  <i class="icon-base ti tabler-language icon-22px text-heading"></i>
+                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
+                    href="javascript:void(0);" data-bs-toggle="dropdown">
+                    <i class="icon-base ti tabler-language icon-22px text-heading"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                  <li>
-                    <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
-                      @csrf
-                      <input type="hidden" name="lang" value="vi">
-                      <button type="submit" class="dropdown-item" data-language="vi" data-text-direction="ltr">
-                        <span>
-                            @lang('messages.vietnam_lang')
-                        </span>
-                      </button>
-                    </form>
-                  </li>
-                  <li>
-                    <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
-                      @csrf
-                      <input type="hidden" name="lang" value="en">
-                      <button type="submit" class="dropdown-item" data-language="en" data-text-direction="ltr">
-                        <span>
-                            @lang('messages.english_lang')
-                            </span>
-                      </button>
-                    </form>
-                  </li>
+                    <li>
+                        <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="lang" value="vi">
+                            <button type="submit" class="dropdown-item" data-language="vi" data-text-direction="ltr">
+                                <span>
+                                    @lang('messages.vietnam_lang')
+                                </span>
+                            </button>
+                        </form>
+                    </li>
+                    <li>
+                        <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
+                            @csrf
+                            <input type="hidden" name="lang" value="en">
+                            <button type="submit" class="dropdown-item" data-language="en" data-text-direction="ltr">
+                                <span>
+                                    @lang('messages.english_lang')
+                                </span>
+                            </button>
+                        </form>
+                    </li>
                 </ul>
-              </li>
+            </li>
             <!-- Style Switcher -->
             <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
@@ -144,9 +145,11 @@
 
             <!-- User -->
             <li class="nav-item navbar-dropdown dropdown-user dropdown">
-                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);" data-bs-toggle="dropdown">
+                <a class="nav-link dropdown-toggle hide-arrow p-0" href="javascript:void(0);"
+                    data-bs-toggle="dropdown">
                     <div class="avatar avatar-online">
-                        <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/img/avatars/default.jpg') }}" alt class="rounded-circle" />
+                        <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/img/avatars/default.jpg') }}"
+                            alt class="rounded-circle" />
                     </div>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
@@ -155,12 +158,29 @@
                             <div class="d-flex align-items-center">
                                 <div class="flex-shrink-0 me-2">
                                     <div class="avatar avatar-online">
-                                        <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/img/avatars/default.jpg') }}" alt class="rounded-circle" />
+                                        <img src="{{ $user->avatar ? asset('storage/' . $user->avatar) : asset('assets/img/avatars/default.jpg') }}"
+                                            alt class="rounded-circle" />
                                     </div>
                                 </div>
                                 <div class="flex-grow-1">
-                                    <h6 class="mb-0">{{$user->name}}</h6>
-                                    {{-- <small class="text-body-secondary">Admin</small> --}}
+                                    <h6 class="mb-0">{{ $user->name }}</h6>
+                                    <small class="text-body-secondary">
+                                        @php
+                                            $TypeUserEnum = \App\Enums\User\TypeUserEnum::options();
+                                            $statusBadge = '';
+                                            $colorBadge = '';
+                                            foreach ($TypeUserEnum as $type) {
+                                                if ($type['id'] == $user->type) {
+                                                    $statusBadge = $type['name'];
+                                                    $colorBadge = $type['color'];
+                                                    break;
+                                                }
+                                            }
+                                        @endphp
+                                        <span class="badge text-bg-{{ $colorBadge ?? 'secondary' }}">
+                                            {{ $statusBadge }}
+                                        </span>
+                                    </small>
                                 </div>
                             </div>
                         </a>
@@ -168,41 +188,52 @@
                     <li>
                         <div class="dropdown-divider my-1 mx-n2"></div>
                     </li>
-                    <li></li>
-                        <a class="dropdown-item" href={{ route('profile.edit') }}>
-                            <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">
-                                @lang('messages.personal_information')
-                            </span>
-                        </a>
+                    <li>
                     </li>
 
-                    <li>
-                        <a class="dropdown-item" href={{ route('password.change') }}>
-                            <i class="icon-base ti tabler-password-user me-3 icon-md"></i><span class="align-middle">
-                                @lang('messages.change_password')
-                            </span>
-                        </a>
-                    </li>
-                    <li>
-                        <div class="d-grid px-2 pt-2 pb-1">
-                            <!-- Authentication -->
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <a class="btn btn-sm btn-danger d-flex" href="route('logout')"
-                                    onclick="event.preventDefault();
-                                                this.closest('form').submit();">
-                                    <small class="align-middle">
-                                        @lang('messages.logout')
-                                    </small>
-                                    <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
-                                </a>
-                            </form>
-
-                        </div>
-                    </li>
-                </ul>
             </li>
-            <!--/ User -->
+            <li>
+                <a class="dropdown-item" href={{ route('cham-cong.add-me') }}>
+                    <i class="icon-base ti tabler-user-check me-3 icon-md"></i><span class="align-middle">
+                        @lang('messages.timekeeping')
+                    </span>
+                </a>
+            </li>
+            <li>
+                <a class="dropdown-item" href={{ route('profile.edit') }}>
+                    <i class="icon-base ti tabler-user me-3 icon-md"></i><span class="align-middle">
+                        @lang('messages.personal_information')
+                    </span>
+                </a>
+            </li>
+
+            <li>
+                <a class="dropdown-item" href={{ route('password.change') }}>
+                    <i class="icon-base ti tabler-password-user me-3 icon-md"></i><span class="align-middle">
+                        @lang('messages.change_password')
+                    </span>
+                </a>
+            </li>
+            <li>
+                <div class="d-grid px-2 pt-2 pb-1">
+                    <!-- Authentication -->
+                    <form method="POST" action="{{ route('logout') }}">
+                        @csrf
+                        <a class="btn btn-sm btn-danger d-flex" href="route('logout')"
+                            onclick="event.preventDefault();
+                                                this.closest('form').submit();">
+                            <small class="align-middle">
+                                @lang('messages.logout')
+                            </small>
+                            <i class="icon-base ti tabler-logout ms-2 icon-14px"></i>
+                        </a>
+                    </form>
+
+                </div>
+            </li>
+        </ul>
+        </li>
+        <!--/ User -->
         </ul>
     </div>
 </nav>

@@ -27,6 +27,9 @@ class DepartmentController extends Controller
                 $query->where('name', 'like', '%' . $request->name . '%');
                 // $query->orWhere('code', 'like', '%' . $request->name . '%');
             }
+            if (!empty($request->status)) {
+                $query->where('status', $request->status);
+            }
         })
             ->orderBy('created_at', 'desc')
             ->paginate($perPage);

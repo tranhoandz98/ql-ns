@@ -3,27 +3,6 @@
 <x-app-layout>
     <x-card :title="'Chấm công cho tôi'">
         <div class="row justify-content-center">
-            {{-- <div class="col-md-6 text-center">
-                <div class="mb-4">
-                    <video id="video" class="img-fluid rounded" autoplay></video>
-                </div>
-                <div class="mb-3">
-                    <button id="startCamera" class="btn btn-primary me-2">
-                        <i class="ti tabler-camera me-2"></i>
-                        Bật camera
-                    </button>
-                    <button id="capture" class="btn btn-success" disabled>
-                        <i class="ti tabler-capture me-2"></i>
-                        Chấm công
-                    </button>
-                    <input type="file" id="uploadImage"
-                    >
-                </div>
-                <canvas id="canvas" class="d-none"></canvas>
-
-
-
-            </div> --}}
             <div class="col-md-6 text-center">
                 <video id="webcam" class="img-fluid rounded" autoplay></video>
                 <div class="mt-4">
@@ -57,39 +36,50 @@
 
             // Xử lý chụp ảnh
             captureBtn.addEventListener('click', async () => {
-                const canvas = faceapi.createCanvasFromMedia(video);
-                const displaySize = {
-                    width: video.width,
-                    height: video.height
-                };
-                faceapi.matchDimensions(canvas, displaySize);
+                showLoading();
+                try {
+                    const canvas = faceapi.createCanvasFromMedia(video);
+                    const displaySize = {
+                        width: video.width,
+                        height: video.height
+                    };
+                    faceapi.matchDimensions(canvas, displaySize);
 
-                const detection = await faceapi.detectSingleFace(
-                        video,
-                        new faceapi.TinyFaceDetectorOptions()
-                    ).withFaceLandmarks()
-                    .withFaceDescriptor();
+                    const detection = await faceapi.detectSingleFace(
+                            video,
+                            new faceapi.TinyFaceDetectorOptions()
+                        ).withFaceLandmarks()
+                        .withFaceDescriptor();
 
-                if (!detection) {
-                    alert('Không tìm thấy khuôn mặt!');
-                    return;
+                    if (!detection) {
+                        hideLoading();
+                        showAlert('error', '{{ __('messages.face_not_found') }}');
+                        return;
+                    }
+
+                    // Gửi descriptor để so sánh
+                    const capturedDescriptor = Array.from(detection.descriptor);
+                    const response = await fetch('{{ route('cham-cong.checkin') }}', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        body: JSON.stringify({
+                            descriptor: capturedDescriptor
+                        })
+                    });
+                    const result = await response.json();
+                    if (result.match) {
+                        showAlert('success', '{{ __('messages.timekeeping_s') }}');
+                    } else {
+                        showAlert('error', '{{ __('messages.timekeeping_f') }}');
+                    }
+                } catch (error) {
+                    showAlert('error', error.message);
+                } finally {
+                    hideLoading();
                 }
-
-                // Gửi descriptor để so sánh
-                const capturedDescriptor = Array.from(detection.descriptor);
-                const response = await fetch('{{ route('cham-cong.checkin') }}', {
-                    method: 'POST',
-                    headers: {
-                        'Content-Type': 'application/json',
-                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
-                    },
-                    body: JSON.stringify({
-                        descriptor: capturedDescriptor
-                    })
-                });
-
-                const result = await response.json();
-                alert(result.match ? 'Chấm công thành công!' : 'Xác thực thất bại!');
             });
         </script>
     @endsection
