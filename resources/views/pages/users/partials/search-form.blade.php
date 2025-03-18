@@ -10,7 +10,7 @@
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="position_id">
                 <span class="text-danger">*</span>
-                Vai trò
+                @lang('messages.user-role_id')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="role_id" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
@@ -23,7 +23,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="type">
-                Loại người dùng
+                @lang('messages.user-type')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
@@ -50,7 +50,8 @@
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="department_id">
                 <span class="text-danger">*</span>
-                Phòng ban
+                @lang('messages.user-department_id')
+
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="department_id" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
@@ -65,7 +66,7 @@
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="position_id">
                 <span class="text-danger">*</span>
-                Chức vụ
+                @lang('messages.user-position_id')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="position_id" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>

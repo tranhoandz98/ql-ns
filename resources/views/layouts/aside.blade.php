@@ -105,12 +105,7 @@
                 <div>KPI</div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('department.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-chart-cohort"></i>
-                <div>Phòng ban</div>
-            </a>
-        </li>
+
         <li class="menu-item {{ request()->routeIs('device.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-devices"></i>

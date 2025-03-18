@@ -3,126 +3,140 @@
     <x-breadcrumb :label="__('messages.timekeeping')">
     </x-breadcrumb>
 @endsection
-<x-app-layout>
-    <x-card>
-        <div class="d-flex gap-4">
-            <div>
-                <h4>
-                    {{ __('messages.timekeeping-index') }}
-                </h4>
-            </div>
+@section('cssVendor')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/pickr/pickr-themes.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/flatpickr/flatpickr.css') }}" />
 
-            <div class="ms-auto">
-                <a href="{{ route('cham-cong.add-me') }}">
-                    <x-button type="button" class="btn-success" :icon="'plus'">
-                        {{ __('messages.add') }}
-                    </x-button>
-                </a>
+@endsection
+@section('css')
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
+@endsection
+@section('scriptVendor')
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
+
+@endsection
+@section('script')
+    <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
+    <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-date.js') }}"></script>
+@endsection
+<x-app-layout>
+    <div class="card">
+        <div class="card-header pb-0">
+            <div class="d-flex gap-4">
+                <div>
+                    <h4>
+                        {{ __('messages.timekeeping-index') }}
+                    </h4>
+                </div>
+
+                <div class="ms-auto">
+                    <a href="{{ route('cham-cong.add-me') }}">
+                        <x-button type="button" class="btn-success" :icon="'plus'">
+                            {{ __('messages.add') }}
+                        </x-button>
+                    </a>
+                </div>
             </div>
         </div>
+
         <div class="card-body">
             @include('pages.timekeeping.partials.search-form')
         </div>
         <div class="card-datatable table-responsive">
-            <table class="table table-hover ">
-                <thead>
+            <table class="table table-hover tree-table">
+                <colgroup>
+                    <col style="width: 3%;">
+                    <col style="width: 10%;">
+                    <col style="width: 20%;">
+                    <col style="width: 12%;">
+                    <col style="width: 12%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                    <col style="width: 10%;">
+                </colgroup>
+                <thead class="">
                     <tr>
-                        <th></th>
                         <th>
-                            {{ __('messages.department-user_id') }}
                         </th>
                         <th>
-                            {{ __('messages.department-checkin') }}
-                        </th>
-
-                        <th>
-                            {{ __('messages.department-checkout') }}
+                            {{ __('messages.time') }}
                         </th>
                         <th>
-                            {{ __('messages.department-work_time') }}
+                            {{ __('messages.timekeeping-user_id') }}
                         </th>
-                        <th>
-                            {{ __('messages.department-num_work_date') }}
-                        </th>
-                        <th>
-                            {{ __('messages.department-work_late') }}
-                        </th>
-                        <th>
-                            {{ __('messages.action') }}
-                        </th>
+                        <th>{{ __('messages.timekeeping-checkin') }}</th>
+                        <th>{{ __('messages.timekeeping-checkout') }}</th>
+                        <th>{{ __('messages.timekeeping-work_time') }}</th>
+                        <th>{{ __('messages.timekeeping-num_work_date') }}</th>
+                        <th>{{ __('messages.timekeeping-work_late') }}</th>
+                        <th>{{ __('messages.action') }}</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($listAll as $index => $item)
-                        <tr>
-                            <td style="">
-                                <div class="">
-                                    <span class="" data-bs-toggle="collapse" id="btn-details-{{ $index }}"
-                                        data-bs-target="#details-{{ $index }}" aria-expanded="false"
-                                        aria-controls="details-{{ $index }}" onclick="">
-                                        <i class="icon-base ti tabler-chevron-right"></i>
-                                    </span>
-                                </div>
+                    @foreach ($listAll as $index => $parent)
+                        <tr class=" table-bold tree-toggle" data-bs-toggle="collapse"
+                            data-bs-target="#tree-{{ $index }}">
+                            <td>
+                                <i class="icon-base ti tabler-chevron-right"></i>
                             </td>
+                            <td>{{ \Carbon\Carbon::createFromFormat('Y-m', $parent->month)->format('m/Y') }}</td>
+                            <td>
+                                [{{ $parent?->user?->code }}] - {{ $parent?->user?->name }}
+                            </td>
+                            <td></td> <!-- Check-in trống -->
+                            <td></td> <!-- Check-out trống -->
+                            <td>{{ $parent->total_work_time }}</td>
+                            <td>{{ number_format($parent->total_work_days, 2) }}</td>
+                            <td>{{ number_format($parent->total_late_minutes, 2) }}</td>
+                            <td>
+                            </td>
+                        </tr>
 
-                            <td>[{{ $item?->user?->code }}] - {{ $item?->user?->name }}</td>
-                            <td>{{ $item->first_checkin }}</td>
-                            <td>{{ $item->last_checkout }}</td>
-                            <td>{{ $item->total_work_time }}</td>
-                            <td>{{ number_format($item->total_work_days, 2) }}</td>
-                            <td>{{ number_format($item->total_late_minutes, 2) }}</td>
-                            <td></td>
-                        </tr>
-                        <tr class="collapse " id="details-{{ $index }}">
-                            <td colspan="8" class="p-0">
-                                <div>
-                                    <table class="table">
-                                        <tbody>
-                                            @foreach ($item->records as $record)
-                                                <tr>
-                                                    <td>
-                                                        <span class="">
-                                                            <i class="icon-base ti tabler-chevron-right"></i>
-                                                        </span>
-                                                    </td>
-                                                    <td>[{{ $item?->user?->code }}] - {{ $item?->user?->name }}</td>
-                                                    <td>{{ $record->checkin }}</td>
-                                                    <td>{{ $record->checkout }}</td>
-                                                    <td>{{ $record->work_time }}</td>
-                                                    <td>{{ $record->num_work_date }}</td>
-                                                    <td>{{ $record->work_late }}</td>
-                                                    <td>ádasd</td>
-                                                </tr>
-                                            @endforeach
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </td>
-                        </tr>
+                        @foreach ($parent->records as $child)
+                            <tr class="collapse tree-content" id="tree-{{ $index }}">
+                                <td></td> <!-- Tháng trống -->
+                                <td></td> <!-- Tháng trống -->
+                                <td>
+                                    [{{ $parent?->user?->code }}] - {{ $parent?->user?->name }}
+                                </td>
+                                <td>{{ formatDateTimeView($child->checkin) }}</td>
+                                <td>{{ formatDateTimeView($child->checkout) }}</td>
+                                <td>{{ $child->work_time }}</td>
+                                <td>{{ number_format($child->num_work_date, 2) }}</td>
+                                <td>{{ $child->work_late }}</td>
+                                <td></td> <!-- Hành động trống -->
+                            </tr>
+                        @endforeach
                     @endforeach
                 </tbody>
             </table>
+
             <div class="mt-4">
                 {{-- {!! $listAll->links('vendor.pagination.bootstrap-5') !!} --}}
             </div>
         </div>
         <script>
-            document.addEventListener('DOMContentLoaded', function() {
-                const toggleButtons = document.querySelectorAll('[id^="btn-details-"]');
-                toggleButtons.forEach(button => {
-                    button.addEventListener('click', function() {
-                        const isExpanded = this.getAttribute('aria-expanded') === 'true';
-                        const icon = this.querySelector('.icon-base');
-                        if (isExpanded) {
-                            icon.classList.add('tabler-chevron-up');
-                            icon.classList.remove('tabler-chevron-right');
-                        } else {
-                            icon.classList.add('tabler-chevron-right');
-                            icon.classList.remove('tabler-chevron-up');
-                        }
-                    });
+            document.querySelectorAll('.tree-toggle').forEach(row => {
+                row.addEventListener('click', function() {
+                    let target = document.querySelector(this.dataset.bsTarget);
+                    let icon = this.querySelector('i');
+
+                    const isExpanded = row.getAttribute('aria-expanded') === 'true';
+                    if (isExpanded) {
+                        icon.classList.remove('tabler-chevron-right');
+                        icon.classList.add('tabler-chevron-down');
+                    } else {
+                        icon.classList.remove('tabler-chevron-down');
+                        icon.classList.add('tabler-chevron-right');
+                    }
                 });
             });
         </script>
-    </x-card>
+    </div>
 </x-app-layout>

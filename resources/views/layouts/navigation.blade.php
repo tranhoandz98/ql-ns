@@ -28,11 +28,11 @@
                     <i class="icon-base ti tabler-language icon-22px text-heading"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li>
+                    <li >
                         <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
                             @csrf
                             <input type="hidden" name="lang" value="vi">
-                            <button type="submit" class="dropdown-item" data-language="vi" data-text-direction="ltr">
+                            <button type="submit" class="dropdown-item {{Session::get('locale')=='vi'?'active':''}}" data-language="vi" data-text-direction="ltr">
                                 <span>
                                     @lang('messages.vietnam_lang')
                                 </span>
@@ -43,7 +43,7 @@
                         <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
                             @csrf
                             <input type="hidden" name="lang" value="en">
-                            <button type="submit" class="dropdown-item" data-language="en" data-text-direction="ltr">
+                            <button type="submit" class="dropdown-item {{Session::get('locale')=='en'?'active':''}}" data-language="en" data-text-direction="ltr">
                                 <span>
                                     @lang('messages.english_lang')
                                 </span>

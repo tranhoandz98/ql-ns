@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\User\TypeGroupCheckInEnum;
 use App\Models\ConfigModel;
 use App\Models\TimeKeepings;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\View\View;
 use Illuminate\Http\Request;
@@ -15,13 +17,25 @@ class TimekeepingController extends Controller
     public function index(Request $request): View
     {
         $perPage = $request->perPage ?? 10;
-
         $listAll = TimeKeepings::with(['user:id,name,code'])
+            ->where(function ($query) use ($request) {
+                if (!empty($request->user_id)) {
+                    $query->where('user_id', $request->user_id);
+                }
+                if (!empty($request->checkin)) {
+                    $dates = explode(' to ', $request->checkin);
+                    if (count($dates) === 2) {
+                        $startDate = Carbon::createFromFormat('d/m/Y', trim($dates[0]));
+                        $endDate = Carbon::createFromFormat('d/m/Y', trim($dates[1]));
+                        $query->whereBetween('checkin', [$startDate->startOfDay(), $endDate->endOfDay()]);
+                    }
+                }
+            })
             ->select([
                 'user_id',
                 DB::raw('DATE_FORMAT(checkin, "%Y-%m") as month'), // Grouping by month
                 DB::raw('COUNT(id) as total_records'), // Count records per group
-                DB::raw('SUM(work_time) as total_work_time'), // Sum work_time for each month
+                DB::raw('TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(work_time))), "%H:%i") as total_work_time'),
                 DB::raw('SUM(num_work_date) as total_work_days'), // Sum num_work_date for each month
                 DB::raw('SUM(work_late) as total_late_minutes'), // Sum work_late for each month
                 DB::raw('MIN(checkin) as first_checkin'), // Get earliest check-in per month
@@ -48,11 +62,15 @@ class TimekeepingController extends Controller
             });
         // ->paginate($perPage);
 
+        $users = User::select(['id', 'name', 'code', 'status'])->get();
+        $typeGroupCheckInEnum = TypeGroupCheckInEnum::options();
 
         return view(
             'pages.timekeeping.index',
             compact(
                 'listAll',
+                'users',
+                'typeGroupCheckInEnum'
             )
         );
     }

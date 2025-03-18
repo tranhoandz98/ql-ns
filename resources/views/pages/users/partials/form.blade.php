@@ -21,14 +21,8 @@
 
 @section('script')
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
+    <script src="{{ asset('assets/js/app/app-date.js') }}"></script>
     <script>
-        let time = $(".bs-rangepicker-single")
-        time.flatpickr({
-            monthSelectorType: "static",
-            dateFormat: "d/m/Y",
-            static: !0
-        })
-
         document.getElementById('fileAvatar').addEventListener('change', async (e) => {
             const file = e.target.files[0];
             const img = await faceapi.bufferToImage(file);
@@ -321,7 +315,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="start_date"
-                        name="start_date" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
+                        name="start_date" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('start_date', $result->start_date ?? '') }}" />
                     <x-input-error :messages="$errors->get('start_date')" class="" />
                 </div>
@@ -346,7 +340,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue"
-                        name="date_of_issue" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
+                        name="date_of_issue" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_issue')" class="" />
                 </div>
@@ -363,7 +357,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
                     <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth"
-                        name="date_of_birth" placeholder="yy-dd-mm" {{ $disabled ?? '' }}
+                        name="date_of_birth" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_birth')" class="" />
                 </div>
