@@ -40,8 +40,8 @@
                 </div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('cham-cong.*') ? 'active' : '' }}">
-            <a href={{ route('cham-cong.index') }} class="menu-link">
+        <li class="menu-item {{ request()->routeIs('timekeeping.*') ? 'active' : '' }}">
+            <a href={{ route('timekeeping.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-list-check"></i>
                 <div>
                     @lang('messages.timekeeping')

@@ -27,12 +27,18 @@ Route::middleware('auth')->group(function () {
     Route::post('change-lang', [ConfigController::class, 'changeLang'])->name('change-lang');
 
 
-    Route::prefix('cham-cong')->name('cham-cong.')->group(function () {
+    Route::prefix('timekeeping')->name('timekeeping.')->group(function () {
         Route::get('/', [TimekeepingController::class, 'index'])->name('index');
         Route::get('/add-me', [TimekeepingController::class, 'addMe'])->name('add-me');
         Route::post('/add-me', [TimekeepingController::class, 'postAddMe'])->name('post-add-me');
-
         Route::post('/checkin', [TimekeepingController::class, 'checkin'])->name('checkin');
+
+        Route::get('/create', [TimekeepingController::class, 'create'])->name('create');
+        Route::post('/', [TimekeepingController::class, 'store'])->name('store');
+        Route::get('/{id}/edit', [TimekeepingController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [TimekeepingController::class, 'update'])->name('update');
+        Route::delete('/{id}', [TimekeepingController::class, 'destroy'])->name('destroy');
+
     });
 
     // vai trò

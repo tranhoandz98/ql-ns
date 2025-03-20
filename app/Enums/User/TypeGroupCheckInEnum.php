@@ -4,10 +4,10 @@ namespace App\Enums\User;
 
 use Illuminate\Support\Facades\Lang;
 
-enum TypeGroupCheckInEnum: int
+enum TypeGroupCheckInEnum: string
 {
-    case MONTH = 1;
-    case YEAR= 2;
+    case MONTH = 'month';
+    case YEAR= 'yearn';
 
     public function label(): string
     {

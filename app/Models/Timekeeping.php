@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class TimeKeepings extends Model
+class Timekeeping extends Model
 {
     //
-    protected $table = 'time_keepings';
+    protected $table = 'timekeeping';
     protected $guarded = [];
 
     protected static function boot()

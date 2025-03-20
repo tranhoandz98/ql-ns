@@ -35,7 +35,7 @@
                 </div>
 
                 <div class="ms-auto">
-                    <a href="{{ route('cham-cong.add-me') }}">
+                    <a href="{{ route('timekeeping.create') }}">
                         <x-button type="button" class="btn-success" :icon="'plus'">
                             {{ __('messages.add') }}
                         </x-button>
@@ -85,7 +85,13 @@
                             <td>
                                 <i class="icon-base ti tabler-chevron-right"></i>
                             </td>
-                            <td>{{ \Carbon\Carbon::createFromFormat('Y-m', $parent->month)->format('m/Y') }}</td>
+                            <td>
+                                @if(strlen($parent->group_period) === 7)
+                                    {{ \Carbon\Carbon::createFromFormat('Y-m', $parent->group_period)->format('m/Y') }}
+                                @else
+                                    {{ \Carbon\Carbon::createFromFormat('Y', $parent->group_period)->format('Y') }}
+                                @endif
+                            </td>
                             <td>
                                 [{{ $parent?->user?->code }}] - {{ $parent?->user?->name }}
                             </td>
@@ -110,7 +116,32 @@
                                 <td>{{ $child->work_time }}</td>
                                 <td>{{ number_format($child->num_work_date, 2) }}</td>
                                 <td>{{ $child->work_late }}</td>
-                                <td></td> <!-- Hành động trống -->
+                                <td>
+                                    <div class="dropdown">
+                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                            data-bs-toggle="dropdown">
+                                            <x-icon :icon="'dots-vertical'"></x-icon>
+                                        </button>
+                                        <div class="dropdown-menu">
+                                            <a class="dropdown-item" href={{ route('timekeeping.edit', $child->id) }}>
+                                                <x-icon :icon="'edit'" class="me-2"></x-icon>
+                                                {{ __('messages.edit') }}
+                                            </a>
+                                            <form action="{{ route('timekeeping.destroy', $child->id) }}" method="POST"
+                                                style="display:inline;" id="delete-form-{{ $child->id }}">
+                                                @csrf
+                                                @method('DELETE')
+                                                <button type="button" class="dropdown-item delete-btn"
+                                                    onclick="onDeleteItem({{ $child->id }})"
+                                                    >
+                                                    <x-icon :icon="'trash'" class="me-2"></x-icon>
+                                                    {{ __('messages.delete') }}
+                                                </button>
+                                            </form>
+                                        </div>
+                                    </div>
+
+                                </td> <!-- Hành động trống -->
                             </tr>
                         @endforeach
                     @endforeach

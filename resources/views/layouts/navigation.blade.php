@@ -193,7 +193,7 @@
 
             </li>
             <li>
-                <a class="dropdown-item" href={{ route('cham-cong.add-me') }}>
+                <a class="dropdown-item" href={{ route('timekeeping.add-me') }}>
                     <i class="icon-base ti tabler-user-check me-3 icon-md"></i><span class="align-middle">
                         @lang('messages.timekeeping')
                     </span>

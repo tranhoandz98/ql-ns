@@ -53,6 +53,8 @@ return [
     'time'=>'Thời gian',
     'group_by'=>'Nhóm theo',
 
+    'unique' => 'đã tồn tại.',
+
     'timekeeping_s' => 'Chấm công thành công',
     'timekeeping_f' => 'Chấm công thất bại',
     'face_not_found' => 'Không tìm thấy khuôn mặt!',

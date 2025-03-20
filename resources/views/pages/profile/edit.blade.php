@@ -121,7 +121,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
-                                        <input type="text" class="form-control bs-rangepicker-single"
+                                        <input type="text" class="form-control flatpickr-rangepicker-single"
                                             id="date_of_issue" name="date_of_issue" placeholder="dd/mm/yyy"
                                             {{ $disabled ?? '' }}
                                             value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
@@ -140,7 +140,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
-                                        <input type="text" class="form-control bs-rangepicker-single"
+                                        <input type="text" class="form-control flatpickr-rangepicker-single"
                                             id="date_of_birth" name="date_of_birth" placeholder="dd/mm/yyy"
                                             {{ $disabled ?? '' }}
                                             value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />

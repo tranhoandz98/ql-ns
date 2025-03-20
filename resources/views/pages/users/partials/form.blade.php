@@ -314,7 +314,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="start_date"
+                    <input type="text" class="form-control flatpickr-rangepicker-single" id="start_date"
                         name="start_date" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('start_date', $result->start_date ?? '') }}" />
                     <x-input-error :messages="$errors->get('start_date')" class="" />
@@ -339,7 +339,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_issue"
+                    <input type="text" class="form-control flatpickr-rangepicker-single" id="date_of_issue"
                         name="date_of_issue" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_issue')" class="" />
@@ -356,7 +356,7 @@
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="date_of_birth"
+                    <input type="text" class="form-control flatpickr-rangepicker-single" id="date_of_birth"
                         name="date_of_birth" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
                     <x-input-error :messages="$errors->get('date_of_birth')" class="" />

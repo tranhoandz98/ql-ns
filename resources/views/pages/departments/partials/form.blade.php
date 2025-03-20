@@ -12,7 +12,7 @@
 @section('script')
     <script src="{{ asset('assets/js/forms-selects.js') }}"></script>
     <script>
-        let time = $(".bs-rangepicker-single")
+        let time = $(".flatpickr-rangepicker-single")
         time.flatpickr({
             monthSelectorType: "static",
             dateFormat: "d/m/Y",
@@ -87,7 +87,7 @@ if ($result){
                         <span class="text-danger">*</span>
                         @lang('messages.department-founding_at')
                     </x-input-label>
-                    <input type="text" class="form-control bs-rangepicker-single" id="founding_at" name="founding_at"
+                    <input type="text" class="form-control flatpickr-rangepicker-single" id="founding_at" name="founding_at"
                         placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
                         value="{{ old('founding_at', $result->founding_at ?? '') }}" />
                     <x-input-error :messages="$errors->get('founding_at')" class="" />

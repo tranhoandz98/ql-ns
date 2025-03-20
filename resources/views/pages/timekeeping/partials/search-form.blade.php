@@ -18,7 +18,7 @@
             <x-input-label for="checkin" class="">
                 @lang('messages.timekeeping-checkin')
             </x-input-label>
-            <input type="text" class="form-control bs-rangepicker-range" id="checkin" name="checkin"
+            <input type="text" class="form-control flatpickr-rangepicker-range" id="checkin" name="checkin"
                 placeholder="DD/MM/YYYY to DD/MM/YYYY" value="{{ request('checkin') }}" />
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">

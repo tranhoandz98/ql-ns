@@ -59,7 +59,7 @@
 
                     // Gửi descriptor để so sánh
                     const capturedDescriptor = Array.from(detection.descriptor);
-                    const response = await fetch('{{ route('cham-cong.checkin') }}', {
+                    const response = await fetch('{{ route('timekeeping.checkin') }}', {
                         method: 'POST',
                         headers: {
                             'Content-Type': 'application/json',
