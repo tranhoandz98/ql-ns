@@ -203,7 +203,7 @@ class TimekeepingController extends Controller
         DB::beginTransaction();
         try {
 
-            $user = Auth::user();
+            $user = User::findOrFail( $request->user_id );
 
             $timeCheckIn = Carbon::createFromFormat('d/m/Y H:i', $request->checkin);
             $timeCheckInFormat = $timeCheckIn->format('Y-m-d H:i:s');
@@ -287,7 +287,7 @@ class TimekeepingController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = Auth::user();
+            $user = User::findOrFail( $request->user_id );
 
             $timeKeeping = Timekeeping::findOrFail($id);
             $timeCheckIn = Carbon::createFromFormat('d/m/Y H:i', $request->checkin);
