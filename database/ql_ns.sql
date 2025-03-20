@@ -11,7 +11,7 @@
  Target Server Version : 80300 (8.3.0)
  File Encoding         : 65001
 
- Date: 18/03/2025 00:29:36
+ Date: 21/03/2025 00:54:48
 */
 
 SET NAMES utf8mb4;
@@ -335,13 +335,13 @@ CREATE TABLE `sessions`  (
 -- ----------------------------
 -- Records of sessions
 -- ----------------------------
-INSERT INTO `sessions` VALUES ('GEmLSEKdbLsJFQRxhOQKcYtMAivhi2BnQdHmA2yx', 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoiUHg5NlRKTnUxZUdSdEpTVVROUVJWbEFLMzVDa3U3ZkNwODE4d2s3ZyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjM5OiJodHRwOi8vbG9jYWxob3N0L3FsLW5zL3B1YmxpYy9jaGFtLWNvbmciO31zOjY6Il9mbGFzaCI7YToyOntzOjM6Im9sZCI7YTowOnt9czozOiJuZXciO2E6MDp7fX1zOjY6ImxvY2FsZSI7czoyOiJlbiI7czo1MDoibG9naW5fd2ViXzU5YmEzNmFkZGMyYjJmOTQwMTU4MGYwMTRjN2Y1OGVhNGUzMDk4OWQiO2k6MTt9', 1742232519);
+INSERT INTO `sessions` VALUES ('yXJhtwEamvoWeV0Dz3878W7yFWX1jy9G9E5DMzch', 1, '::1', 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36', 'YTo2OntzOjY6Il90b2tlbiI7czo0MDoieTZmQ2FSZHY1WDU1NlJ5VDF6Qk9BaXZ1R2J2Tkhnb3BFdzN3RFdGSyI7czozOiJ1cmwiO2E6MDp7fXM6OToiX3ByZXZpb3VzIjthOjE6e3M6MzoidXJsIjtzOjQxOiJodHRwOi8vbG9jYWxob3N0L3FsLW5zL3B1YmxpYy90aW1la2VlcGluZyI7fXM6NjoiX2ZsYXNoIjthOjI6e3M6Mzoib2xkIjthOjA6e31zOjM6Im5ldyI7YTowOnt9fXM6NjoibG9jYWxlIjtzOjI6ImVuIjtzOjUwOiJsb2dpbl93ZWJfNTliYTM2YWRkYzJiMmY5NDAxNTgwZjAxNGM3ZjU4ZWE0ZTMwOTg5ZCI7aToxO30=', 1742493269);
 
 -- ----------------------------
--- Table structure for time_keepings
+-- Table structure for timekeeping
 -- ----------------------------
-DROP TABLE IF EXISTS `time_keepings`;
-CREATE TABLE `time_keepings`  (
+DROP TABLE IF EXISTS `timekeeping`;
+CREATE TABLE `timekeeping`  (
   `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT,
   `user_id` bigint NULL DEFAULT NULL,
   `created_by` int NOT NULL,
@@ -354,13 +354,16 @@ CREATE TABLE `time_keepings`  (
   `num_work_date` float NULL DEFAULT NULL,
   `work_late` float NULL DEFAULT NULL,
   PRIMARY KEY (`id`) USING BTREE
-) ENGINE = MyISAM AUTO_INCREMENT = 3 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = MyISAM AUTO_INCREMENT = 7 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_unicode_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
--- Records of time_keepings
+-- Records of timekeeping
 -- ----------------------------
-INSERT INTO `time_keepings` VALUES (1, 1, 1, 1, '2025-03-17 14:53:07', '2025-03-17 22:55:50', '2025-03-16 08:05:07', '2025-03-16 22:55:50', '13:20', 1, 5.12);
-INSERT INTO `time_keepings` VALUES (2, 1, 1, 1, '2025-03-17 14:53:07', '2025-03-17 22:55:50', '2025-03-17 08:05:07', '2025-03-17 22:55:50', '13:20', 1, 5.12);
+INSERT INTO `timekeeping` VALUES (1, 1, 1, 1, '2025-03-17 14:53:07', '2025-03-17 22:55:50', '2025-03-16 08:05:07', '2025-03-16 22:55:50', '13:20', 1, 5.12);
+INSERT INTO `timekeeping` VALUES (2, 1, 1, 1, '2025-03-17 14:53:07', '2025-03-17 22:55:50', '2025-03-17 08:05:07', '2025-03-17 22:55:50', '13:20', 1, 5.12);
+INSERT INTO `timekeeping` VALUES (3, 1, 1, 1, '2025-03-19 00:24:50', '2025-03-19 00:27:46', '2025-03-19 00:24:50', '2025-03-19 00:27:46', '00:02', 0.01, 0);
+INSERT INTO `timekeeping` VALUES (5, 1, 1, NULL, '2025-03-21 00:51:48', '2025-03-21 00:51:48', '2025-03-21 07:00:00', '2025-03-21 12:00:00', '03:30', 0.44, 0);
+INSERT INTO `timekeeping` VALUES (6, 2, 1, NULL, '2025-03-21 00:54:29', '2025-03-21 00:54:29', '2025-03-21 07:00:00', '2025-03-21 12:00:00', '03:30', 0.44, 0);
 
 -- ----------------------------
 -- Table structure for users
