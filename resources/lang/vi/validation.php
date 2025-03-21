@@ -23,7 +23,7 @@ return [
     'alpha_num' => 'Trường :attribute must only contain letters and numbers.',
     'array' => 'Trường :attribute must be an array.',
     'before' => 'Trường :attribute must be a date before :date.',
-    'before_or_equal' => 'Trường :attribute must be a date before or equal to :date.',
+    'before_or_equal' => 'Trường :attribute phải là ngày trước hoặc bằng :date.',
     'between' => [
         'numeric' => 'Trường :attribute must be between :min and :max.',
         'file' => 'Trường :attribute must be between :min and :max kilobytes.',
@@ -35,7 +35,7 @@ return [
     'current_password' => 'Trường password is incorrect.',
     'date' => 'Trường :attribute is not a valid date.',
     'date_equals' => 'Trường :attribute must be a date equal to :date.',
-    'date_format' => 'Trường :attribute does not match Trường format :format.',
+    'date_format' => 'Trường :attribute không khớp với định dạng :format.',
     'declined' => 'Trường :attribute must be declined.',
     'declined_if' => 'Trường :attribute must be declined when :other is :value.',
     'different' => 'Trường :attribute and :other must be different.',

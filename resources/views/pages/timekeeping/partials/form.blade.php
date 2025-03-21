@@ -54,7 +54,7 @@
                 <input type="text" class="form-control flatpickr-datetime" id="checkin" name="checkin"
                     placeholder="DD/MM/YYYY HH:MM" {{ $disabled ?? '' }}
                     value="{{ old('checkin', $result->checkin ?? '') }}" />
-                <x-input-error :messages="$errors->get('description')" class="" />
+                <x-input-error :messages="$errors->get('checkin')" class="" />
             </div>
             <div class="form-group mb-4 col-12">
                 <x-input-label for="checkout">
@@ -64,7 +64,7 @@
                 <input type="text" class="form-control flatpickr-datetime" id="checkout" name="checkout"
                     placeholder="DD/MM/YYYY HH:MM" {{ $disabled ?? '' }}
                     value="{{ old('checkout', $result->checkout ?? '') }}" />
-                <x-input-error :messages="$errors->get('description')" class="" />
+                <x-input-error :messages="$errors->get('checkout')" class="" />
             </div>
 
             @if (isset($disabled) && $disabled)

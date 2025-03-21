@@ -24,10 +24,12 @@ class TimekeepingRequest extends FormRequest
             'user_id' => [
                 'required_if:id,null',
             ],
-            'checkout' => 'required',
+            'checkout' => 'required|date_format:d/m/Y H:i|before_or_equal:' . now(),
             // Custom validation rule to check for existing checkin on the same day for the same user
             'checkin' => [
                 'required',
+                'date_format:d/m/Y H:i',
+                'before_or_equal:'.now(),
                 function ($attribute, $value, $fail) {
                     $date = \Carbon\Carbon::createFromFormat('d/m/Y H:i',$value)->format('Y-m-d');
                     $userId = $this->input('user_id');
