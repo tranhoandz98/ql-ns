@@ -84,4 +84,15 @@ Route::middleware('auth')->group(function () {
         Route::put('/{id}', [DepartmentController::class, 'update'])->name('update');
         Route::delete('/{id}', [DepartmentController::class, 'destroy'])->name('destroy');
     });
+
+    // tăng ca
+    Route::prefix('overtime')->name('overtime.')->group(function () {
+        Route::get('/', [DepartmentController::class, 'index'])->name('index');
+        Route::get('/create', [DepartmentController::class, 'create'])->name('create');
+        Route::post('/', [DepartmentController::class, 'store'])->name('store');
+        Route::get('/{id}', [DepartmentController::class, 'show'])->name('show');
+        Route::get('/{id}/edit', [DepartmentController::class, 'edit'])->name('edit');
+        Route::put('/{id}', [DepartmentController::class, 'update'])->name('update');
+        Route::delete('/{id}', [DepartmentController::class, 'destroy'])->name('destroy');
+    });
 });
