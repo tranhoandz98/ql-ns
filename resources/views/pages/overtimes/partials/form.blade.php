@@ -115,7 +115,7 @@
                     <option value="" disabled selected>Chọn</option>
                     @foreach ($users as $userItem)
                         <option value="{{ $userItem->id }}"
-                            {{ old('user_id', $result->user_id ?? null) == $userItem->id ? 'selected' : '' }}>
+                            {{ old('user_id', $result->user_id ?? Auth::user()->id) == $userItem->id ? 'selected' : '' }}>
                             {{ '[' . $userItem->code . '] ' . $userItem->name }}
                         </option>
                     @endforeach

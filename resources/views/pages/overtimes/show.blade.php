@@ -5,6 +5,8 @@
 @endsection
 <x-app-layout>
     <x-card>
+        <div class="d-flex ">
+
         <h4 class="">
             {{ __('messages.overtime-show') }}
 
@@ -18,6 +20,27 @@
             </span>
             @endif
         </h4>
+        <div class="ms-auto">
+            @php
+            $statusBadge = '';
+            $colorBadge = '';
+            foreach ($statusOverTimeEnum as $status) {
+                if ($status['id'] == $result->status) {
+                    $statusBadge = $status['name'];
+                    $colorBadge = $status['color'];
+                    break;
+                }
+            }
+        @endphp
+        <span>
+            <span class="badge text-bg-{{ $colorBadge ?? 'secondary' }}"
+                >
+                {{ $statusBadge }}
+            </span>
+        </span>
+        </div>
+    </div>
+
         @include('pages.overtimes.partials.form', [
             'action' => '#',
             'method' => 'GET',

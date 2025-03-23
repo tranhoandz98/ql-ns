@@ -5,14 +5,14 @@
                 @lang('messages.code')
             </x-input-label>
             <input type="search" class="form-control dt-input dt-full-name" data-column="1" value="{{ request('name') }}"
-                placeholder="{{ __('messages.overtime-search') }}" name="name" data-column-index="0" />
+                placeholder="{{ __('messages.day_off-search') }}" name="name" data-column-index="0" />
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="manager_id" class="">
-                @lang('messages.overtime-user_id')
+                @lang('messages.day_off-user_id')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="manager_id" {{ $disabled ?? '' }}
-                title="{{ __('messages.overtime-user_id') }}">
+                title="{{ __('messages.day_off-user_id') }}">
                 <option value="" selected>Chọn</option>
                 @foreach ($users as $userItem)
                     <option value="{{ $userItem->id }}" {{ request('manager_id') == $userItem->id ? 'selected' : '' }}>
@@ -22,11 +22,11 @@
             </select>
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
-            <x-input-label for="expected_start" class="">
-                @lang('messages.overtime-expected_start')
+            <x-input-label for="start_at" class="">
+                @lang('messages.day_off-start_at')
             </x-input-label>
-            <input type="text" class="form-control flatpickr-rangepicker-range" id="expected_start"
-                name="expected_start" placeholder="DD/MM/YYYY to DD/MM/YYYY" value="{{ request('expected_start') }}" />
+            <input type="text" class="form-control flatpickr-rangepicker-range" id="start_at"
+                name="start_at" placeholder="DD/MM/YYYY to DD/MM/YYYY" value="{{ request('expected_start') }}" />
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="status">
@@ -34,7 +34,7 @@
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
-                @foreach ($statusOverTimeEnum as $item)
+                @foreach ($typeDayOffEnum as $item)
                     <option value="{{ $item['id'] }}" {{ request('status') == $item['id'] ? 'selected' : '' }}>
                         {{ $item['name'] }}
                     </option>
@@ -86,7 +86,7 @@
                 element.classList.add('d-none');
             });
             document.querySelector('.extend-btn').classList.remove('d-none');
-            filterSearch.overtimes = false;
+            filterSearch.day_offs = false;
             localStorage.setItem('filterSearch', JSON.stringify(filterSearch))
         }
 
@@ -96,11 +96,11 @@
                 element.classList.remove('d-none');
             });
             document.querySelector('.extend-btn').classList.add('d-none');
-            filterSearch.overtimes = true;
+            filterSearch.day_offs = true;
             localStorage.setItem('filterSearch', JSON.stringify(filterSearch))
         }
 
-        if (!filterSearch?.overtimes) {
+        if (!filterSearch?.day_offs) {
             compactAction()
         } else {
             extendAction()

@@ -103,16 +103,13 @@
         </li>
         @endcan
 
-        <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-user-dollar"></i>
-                <div>Lương và phúc lợi</div>
-            </a>
-        </li>
-        <li class="menu-item {{ request()->routeIs('leave.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
+
+        <li class="menu-item {{ request()->routeIs('day_offs.*') ? 'active' : '' }}">
+            <a href={{ route('day_offs.index') }}  class="menu-link">
                 <i class="menu-icon icon-base ti tabler-calendar-cancel"></i>
-                <div>Nghỉ phép</div>
+                <div>
+                    @lang('messages.day_off-menu')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('kpi.*') ? 'active' : '' }}">
@@ -121,7 +118,12 @@
                 <div>KPI</div>
             </a>
         </li>
-
+        <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">
+            <a href="app-email.html" class="menu-link">
+                <i class="menu-icon icon-base ti tabler-user-dollar"></i>
+                <div>Lương và phúc lợi</div>
+            </a>
+        </li>
         <li class="menu-item {{ request()->routeIs('device.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-devices"></i>

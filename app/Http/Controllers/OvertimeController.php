@@ -3,15 +3,12 @@
 namespace App\Http\Controllers;
 
 use App\Enums\User\ColorEnum;
-use App\Enums\User\StatusGlobalEnum;
 use App\Enums\User\StatusNotifyReadEnum;
 use App\Enums\User\StatusOverTimeEnum;
-use App\Enums\User\TypeGroupCheckInEnum;
 use App\Enums\User\TypeGroupExpectedStartEnum;
 use App\Enums\User\TypeNotifyReadEnum;
 use App\Enums\User\TypeOvertimeEnum;
 use App\Enums\User\TypeUserEnum;
-use App\Http\Requests\DepartmentRequest;
 use App\Http\Requests\OvertimeRequest;
 use App\Models\Notifications;
 use App\Models\Overtimes;
@@ -123,7 +120,7 @@ class OvertimeController extends Controller
                     return $parent;
                 });
         } else {
-            $listAll = $query->orderBy('created_at', 'desc')
+            $listAll = $query->orderBy('expected_start', 'desc')
                 // ->get()
                 ->paginate($perPage);
         }
@@ -211,11 +208,13 @@ class OvertimeController extends Controller
         )->find($id);
         $typeOvertimeEnum = TypeOvertimeEnum::options();
         $users = User::select(['id', 'name', 'code'])->active()->get();
+        $statusOverTimeEnum = StatusOverTimeEnum::options();
 
         return view('pages.overtimes.show', compact(
             'result',
             'users',
-            'typeOvertimeEnum'
+            'typeOvertimeEnum',
+            'statusOverTimeEnum'
         ));
     }
 

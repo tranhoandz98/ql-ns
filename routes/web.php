@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\ConfigController;
+use App\Http\Controllers\DayOffController;
+use App\Http\Controllers\DayOffUserController;
 use App\Http\Controllers\DepartmentController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OvertimeController;
@@ -9,6 +11,7 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimekeepingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PositionController;
+use App\Models\DayOffs;
 use App\Models\Overtimes;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
@@ -154,5 +157,34 @@ Route::middleware('auth')->group(function () {
         Route::delete('/{id}', [NotificationController::class, 'destroy'])->name('destroy');
         Route::post('/list-limit', [NotificationController::class, 'listLimit'])->name('listLimit');
         Route::post('/read/{id}', [NotificationController::class, 'read'])->name('read');
+    });
+
+
+    Route::prefix('day_offs')->name('day_offs.')->group(function () {
+        Route::get('/', [DayOffController::class, 'index'])->name('index')
+            ->can('viewAny', DayOffs::class);
+        Route::get('/create', [DayOffController::class, 'create'])->name('create')
+            ->can('create', DayOffs::class);
+        Route::post('/', [DayOffController::class, 'store'])->name('store')
+            ->can('create', DayOffs::class);
+        Route::get('/{id}', [DayOffController::class, 'show'])->name('show')
+            ->can('view', DayOffs::class);
+        Route::get('/{id}/edit', [DayOffController::class, 'edit'])->name('edit')
+            ->can('update', DayOffs::class);
+        Route::put('/{id}', [DayOffController::class, 'update'])->name('update')
+            ->can('update', DayOffs::class);
+        Route::delete('/{id}', [DayOffController::class, 'destroy'])->name('destroy')
+            ->can('delete', DayOffs::class);
+        Route::get('/{id}/send', [DayOffController::class, 'send'])->name('send')
+            ->can('send', DayOffs::class);
+        Route::get('/{id}/approve', [DayOffController::class, 'approve'])->name('approve')
+            ->can('approve', DayOffs::class);
+        Route::get('/{id}/reject', [DayOffController::class, 'reject'])->name('reject')
+            ->can('reject', DayOffs::class);
+    });
+
+    Route::prefix('day_offs_user')->name('day_offs_user.')->group(function () {
+        Route::get('/getByUser', [DayOffUserController::class, 'getByUser'])->name(name: 'getByUser')
+            ;
     });
 });
