@@ -5,16 +5,19 @@ namespace App\Http\Controllers;
 use App\Enums\DayOff\StatusDayOffEnum;
 use App\Enums\DayOff\TypeDayOffEnum;
 use App\Enums\DayOff\TypeSessionDayOffEnum;
+use App\Enums\StatusApproveEnum;
 use App\Enums\User\ColorEnum;
 use App\Enums\User\StatusNotifyReadEnum;
+use App\Enums\User\TypeGroupEnum;
 use App\Enums\User\TypeGroupExpectedStartEnum;
 use App\Enums\User\TypeNotifyReadEnum;
 use App\Enums\User\TypeOvertimeEnum;
 use App\Enums\User\TypeUserEnum;
-use App\Http\Requests\DayOffRequest;
+use App\Http\Requests\KPIRequest;
 use App\Models\Notifications;
 use App\Models\KPI;
 use App\Models\DayOffsUser;
+use App\Models\KPIDetail;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -125,14 +128,14 @@ class KPIController extends Controller
 
         $users = User::select(['id', 'name', 'code'])->active()->get();
 
-        $statusDayOffEnum = StatusDayOffEnum::options();
-        $typeGroupExpectedStartEnum = TypeGroupExpectedStartEnum::options();
+        $statusApproveEnum = StatusApproveEnum::options();
+        $typeGroupEnum = TypeGroupEnum::options();
 
         return view('pages.kpi.index', compact(
             'listAll',
             'users',
-            'statusDayOffEnum',
-            'typeGroupExpectedStartEnum'
+            'statusApproveEnum',
+            'typeGroupEnum'
         ));
     }
 
@@ -142,15 +145,11 @@ class KPIController extends Controller
     public function create()
     {
         $users = User::select(['id', 'name', 'code'])->active()->get();
-        $typeDayOffEnum = TypeDayOffEnum::options();
-        $typeSessionDayOffEnum = TypeSessionDayOffEnum::options();
 
         return view(
             'pages.kpi.create',
             compact(
                 'users',
-                'typeDayOffEnum',
-                'typeSessionDayOffEnum'
             )
         );
     }
@@ -158,56 +157,36 @@ class KPIController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(DayOffRequest $request)
+    public function store(KPIRequest $request)
     {
-        $dayOffUser = DayOffsUser::where('user_id', $request->user_id)
-            ->whereYear('start_at', now()->year)
-            ->first();
-
         DB::beginTransaction();
         try {
+            $result = KPI::create(
+                [
+                    'code'=> $this->genderEnumCode(),
+                    'name' => $request->name,
+                    'user_id' => $request->user_id,
+                    'start_at' => Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d'),
+                    'end_at' => Carbon::createFromFormat('d/m/Y', $request->end_at)->format('Y-m-d'),
+                    'note' => $request->note,
+                    'description' => $request->description,
+                    'num' => $request->num,
+                    'status'=> StatusApproveEnum::DRAFT
+                ]
+            );
 
-            $result = new KPI();
-
-            $result->user_id = $request->user_id;
-            $result->type = $request->type;
-            $result->code = $this->genderEnumCode();
-            $result->description = $request->description;
-            $result->start_at = Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d') . ' 08:00:00';
-            if (!empty($request->end_at)) {
-                $result->end_at = Carbon::createFromFormat('d/m/Y', $request->end_at)->format('Y-m-d') . ' 17:30:00';
+            foreach ($request->items as $item) {
+                KPIDetail::create([
+                    'kpi_id' => $result->id,
+                    'title' => $item['title'],
+                    'ratio' => $item['ratio'],
+                    'staff_evaluation' => $item['staff_evaluation'],
+                    'assessment_manager' => $item['assessment_manager'],
+                    'target' => $item['target'],
+                    'manager_note' => $item['manager_note'],
+                ]);
             }
-            $result->status = StatusDayOffEnum::DRAFT;
-            $result->created_by = Auth::id();
-            $result->session = $request->session;
-
-            $subRemainLeave = $request->num;
-            if (!empty($request->half_day) && $request->half_day == 1) {
-                $result->half_day = $request->half_day;
-                $timeSession = '12:00:00';
-                if ($request->session && $request->session === TypeSessionDayOffEnum::AFTERNOON->value) {
-                    $timeSession = '17:30:00';
-                }
-                $result->end_at = Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d') . ' ' . $timeSession;
-                $subRemainLeave = 0.5;
-            }
-
-            $result->num = $subRemainLeave;
-
-            // if ()
-            if ($dayOffUser && $request->type === TypeDayOffEnum::ON_LEAVE->value) {
-                if ($dayOffUser->remaining_leave > 0) {
-                    // if ($request->half)
-                    $dayOffUser->update([
-                        'remaining_leave' => $dayOffUser->remaining_leave - $subRemainLeave
-                    ]);
-                }
-            }
-
-            $result->save();
-
             DB::commit();
-
             return redirect()->route('kpi.index')
                 ->with(
                     ['message' => Lang::get('messages.kpi-create_s'), 'status' => 'success']
@@ -228,20 +207,17 @@ class KPIController extends Controller
             [
                 'createdByData:id,name',
                 'updatedByData:id,name',
+                'details'
             ]
         )->find($id);
 
-        $typeDayOffEnum = TypeDayOffEnum::options();
-        $typeSessionDayOffEnum = TypeSessionDayOffEnum::options();
         $users = User::select(['id', 'name', 'code'])->active()->get();
-        $statusDayOffEnum = StatusDayOffEnum::options();
+        $statusApproveEnum = StatusApproveEnum::options();
 
         return view('pages.kpi.show', compact(
             'result',
             'users',
-            'typeDayOffEnum',
-            'typeSessionDayOffEnum',
-            'statusDayOffEnum'
+            'statusApproveEnum',
         ));
     }
 
@@ -253,74 +229,53 @@ class KPIController extends Controller
         //
 
         $result = KPI::with(
-            []
+            [
+                'details'
+            ]
         )->find($id);
         $users = User::select(['id', 'name', 'code'])->active()->get();
-
-        $typeDayOffEnum = TypeDayOffEnum::options();
-        $typeSessionDayOffEnum = TypeSessionDayOffEnum::options();
-        $statusDayOffEnum = StatusDayOffEnum::options();
-
 
         return view('pages.kpi.edit', compact(
             'result',
             'users',
-            'typeDayOffEnum',
-            'typeSessionDayOffEnum',
-            'statusDayOffEnum'
         ));
     }
 
     /**
      * Update the specified resource in storage.
      */
-    public function update(DayOffRequest $request, string $id)
+    public function update(KPIRequest $request, string $id)
     {
 
         DB::beginTransaction();
         try {
             $result = KPI::findOrFail($id);
 
-            $dayOffUser = DayOffsUser::where('user_id', $result->user_id)
-                ->whereYear('start_at', now()->year)
-                ->first();
+            $result->update(
+                [
+                    'name' => $request->name,
+                    'user_id' => $request->user_id,
+                    'start_at' => Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d'),
+                    'end_at' => Carbon::createFromFormat('d/m/Y', $request->end_at)->format('Y-m-d'),
+                    'note' => $request->note,
+                    'description' => $request->description,
+                    'num' => $request->num,
+                    'status'=> StatusApproveEnum::DRAFT
+                ]
+            );
 
-            $result->type = $request->type;
-            $result->code = $this->genderEnumCode();
-            $result->description = $request->description;
-            $result->start_at = Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d') . ' 08:00:00';
-            if (!empty($request->end_at)) {
-                $result->end_at = Carbon::createFromFormat('d/m/Y', $request->end_at)->format('Y-m-d') . ' 17:30:00';
+            KPIDetail::where('kpi_id', $result->id)->delete();
+            foreach ($request->items as $item) {
+                KPIDetail::create([
+                    'kpi_id' => $result->id,
+                    'title' => $item['title'],
+                    'ratio' => $item['ratio'],
+                    'staff_evaluation' => $item['staff_evaluation'],
+                    'assessment_manager' => $item['assessment_manager'],
+                    'target' => $item['target'],
+                    'manager_note' => $item['manager_note'],
+                ]);
             }
-            $result->status = StatusDayOffEnum::DRAFT;
-            $result->created_by = Auth::id();
-            $result->session = $request->session;
-
-            $subRemainLeave = $request->num;
-            if (!empty($request->half_day) && $request->half_day == 1) {
-                $result->half_day = $request->half_day;
-                $timeSession = '12:00:00';
-                if ($request->session && $request->session === TypeSessionDayOffEnum::AFTERNOON->value) {
-                    $timeSession = '17:30:00';
-                }
-                $result->end_at = Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d') . ' ' . $timeSession;
-                $subRemainLeave = 0.5;
-            }
-
-            $oldNum = $result->num;
-            $result->num = $subRemainLeave;
-
-            if ($dayOffUser && $request->type === TypeDayOffEnum::ON_LEAVE->value) {
-                if ($dayOffUser->remaining_leave > 0) {
-                    // if ($request->half)
-                    $remaining_leave = $dayOffUser->remaining_leave + $oldNum - $subRemainLeave;
-                    $dayOffUser->update([
-                        'remaining_leave' => $remaining_leave
-                    ]);
-                }
-            }
-
-            $result->save();
             DB::commit();
             return redirect()->route('kpi.index')
                 ->with(
@@ -348,7 +303,7 @@ class KPIController extends Controller
 
     public function genderEnumCode()
     {
-        return 'OFF' . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+        return 'KPI' . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
     }
 
     /**

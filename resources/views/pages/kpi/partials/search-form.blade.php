@@ -23,7 +23,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="start_at" class="">
-                @lang('messages.kpi-start_at')
+                @lang('messages.start_at')
             </x-input-label>
             <input type="text" class="form-control flatpickr-rangepicker-range" id="start_at"
                 name="start_at" placeholder="DD/MM/YYYY to DD/MM/YYYY" value="{{ request('expected_start') }}" />
@@ -34,7 +34,7 @@
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
-                @foreach ($statusDayOffEnum as $item)
+                @foreach ($statusApproveEnum as $item)
                     <option value="{{ $item['id'] }}" {{ request('status') == $item['id'] ? 'selected' : '' }}>
                         {{ $item['name'] }}
                     </option>
@@ -47,7 +47,7 @@
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="group_by" {{ $disabled ?? '' }}>
                 <option value="" selected>Chọn</option>
-                @foreach ($typeGroupExpectedStartEnum as $item)
+                @foreach ($typeGroupEnum as $item)
                     <option value="{{ $item['id'] }}" {{ request('group_by') == $item['id'] ? 'selected' : '' }}>
                         {{ $item['name'] }}
                     </option>

@@ -22,7 +22,7 @@
                 @php
                     $statusBadge = '';
                     $colorBadge = '';
-                    foreach ($statusDayOffEnum as $status) {
+                    foreach ($statusApproveEnum as $status) {
                         if ($status['id'] == $result->status) {
                             $statusBadge = $status['name'];
                             $colorBadge = $status['color'];

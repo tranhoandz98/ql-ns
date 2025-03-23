@@ -5,10 +5,10 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class KPI extends Model
+class KPIDetail extends Model
 {
     //
-    protected $table = 'kpi';
+    protected $table = 'kpi_details';
     protected $guarded = [];
 
     protected static function boot()
@@ -33,13 +33,9 @@ class KPI extends Model
         return $this->belongsTo(User::class, 'updated_by', 'id',);
     }
 
-    public function user()
+    public function kpi()
     {
-        return $this->belongsTo(User::class, 'user_id', 'id',);
+        return $this->belongsTo(KPI::class, 'kpi_id', 'id',);
     }
 
-    public function details()
-    {
-        return $this->hasMany(KPIDetail::class, 'kpi_id', 'id');
-    }
 }

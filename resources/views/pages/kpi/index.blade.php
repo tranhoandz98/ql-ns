@@ -138,7 +138,7 @@
                                         @php
                                             $statusBadge = '';
                                             $colorBadge = '';
-                                            foreach ($statusDayOffEnum as $status) {
+                                            foreach ($statusApproveEnum as $status) {
                                                 if ($status['id'] == $child->status) {
                                                     $statusBadge = $status['name'];
                                                     $colorBadge = $status['color'];
@@ -177,16 +177,13 @@
                                 {{ __('messages.kpi-name') }}
                             </th>
                             <th>
-                                {{ __('messages.kpiuser_id') }}
+                                {{ __('messages.user_id') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-start_at') }}
+                                {{ __('messages.start_at') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-end_at') }}
-                            </th>
-                            <th>
-                                {{ __('messages.kpi-type') }}
+                                {{ __('messages.end_at') }}
                             </th>
                             <th>
                                 {{ __('messages.kpi-num') }}
@@ -207,31 +204,20 @@
                                     {{ $item->code }}
                                 </td>
                                 <td>
+                                    {{ $item->name }}
+                                </td>
+                                <td>
                                     [{{ $item?->user?->code }}] - {{ $item?->user?->name }}
                                 </td>
                                 <td>{{ formatDateTimeView($item->start_at) }}</td>
                                 <td>{{ formatDateTimeView($item->end_at) }}</td>
-                                <td>
-                                    @php
-                                        $statusBadgeType = '';
-                                        foreach ($typeDayOffEnum as $status) {
-                                            if ($status['id'] == $item->type) {
-                                                $statusBadgeType = $status['name'];
-                                                break;
-                                            }
-                                        }
-                                    @endphp
-                                    <span class="">
-                                        {{ $statusBadgeType }}
-                                    </span>
-                                </td>
                                 <td>{{ number_format($item->num, 2) }}</td>
 
                                 <td>
                                     @php
                                         $statusBadge = '';
                                         $colorBadge = '';
-                                        foreach ($statusDayOffEnum as $status) {
+                                        foreach ($statusApproveEnum as $status) {
                                             if ($status['id'] == $item->status) {
                                                 $statusBadge = $status['name'];
                                                 $colorBadge = $status['color'];

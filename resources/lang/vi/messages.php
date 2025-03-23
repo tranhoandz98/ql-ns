@@ -59,6 +59,8 @@ return [
     'wait_manager' => 'Chờ QBQL phê duyệt',
     'approve' => 'Duyệt',
     'not_valid' => 'không hợp lệ',
+    'month' => 'Tháng',
+    'year' => 'Năm',
 
     'day_of_the_week' => 'Ngày trong tuần',
     'day_off' => 'Ngày nghỉ',
@@ -304,13 +306,28 @@ return [
     'day_off_user-start_at' => 'Thời gian',
     'day_off_user-create_s' => 'Cấp phát ngày nghỉ thành công',
 
+    'kpi' => 'KPI',
     'kpi-menu' => 'KPI',
     'kpi-create' => 'Thêm mới KPI',
     'kpi-edit' => 'Cập nhật KPI',
     'kpi-show' => 'Chi tiết KPI',
     'kpi-index' => 'Danh sách KPI',
     'kpi-search' => 'Mã KPI',
+    'target' => 'Mục tiêu',
+
     'kpi-name' => 'Tên KPI',
+    'start_at' => 'Ngày bắt đầu',
+    'end_at' => 'Ngày kết thúc',
+    'kpi-num' => 'Tổng đánh giá',
+
+
+    'kpi_detail-title' => 'Định nghĩa mục tiêu',
+    'kpi_detail-ratio' => 'Tỉ lệ',
+    'kpi_detail-target' => 'Mục tiêu',
+    'kpi_detail-staff_evaluation' => 'Nhân viên đánh giá',
+    'kpi_detail-assessment_manager' => 'CBQL đánh giá',
+    'kpi_detail-manager_note' => 'Ý kiến của CBQL',
+
     'kpi-create_s' => 'Thêm mới KPI thành công',
     'kpi-update_s' => 'Cập nhật KPI thành công',
     'kpi-delete_s' => 'Xóa KPI thành công',
