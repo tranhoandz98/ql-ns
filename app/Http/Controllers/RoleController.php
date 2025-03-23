@@ -6,6 +6,7 @@ use App\Http\Requests\RoleRequest;
 use App\Models\Permission;
 use App\Models\RolePermission;
 use App\Models\Roles;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 
@@ -61,7 +62,7 @@ class RoleController extends Controller
                     ['message' => Lang::get('messages.role-create_s'), 'status' => 'success']
                 );
         }
-        return redirect()->route('roles.index')->with((['status' => 'danger', 'message' => 'Có lỗi xảy ra!']));
+        return redirect()->route('roles.index')->with((['status' => 'error', 'message' => 'Có lỗi xảy ra!']));
     }
 
     /**
@@ -120,7 +121,7 @@ class RoleController extends Controller
         }
         return redirect()->route('roles.index')
             ->with(
-                ['message' => Lang::get('messages.role-update_f'), 'status' => 'danger']
+                ['message' => Lang::get('messages.role-update_f'), 'status' => 'error']
             );
     }
 
@@ -130,7 +131,13 @@ class RoleController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = Roles::find($id);
+        $record = Roles::findOrFail($id);
+        $checkUse = User::where('role_id', $record->id)->first();
+        if ($checkUse) {
+            return redirect()->route('roles.index')
+                ->with(['message' => Lang::get('messages.role-cc1'), 'status' => 'error']);
+        }
+
         $record->delete();
         return redirect()->route('roles.index')
             ->with(

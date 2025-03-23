@@ -4,11 +4,11 @@ namespace App\Enums\User;
 
 use Illuminate\Support\Facades\Lang;
 
-enum TypeUserEnum: int
+enum TypeUserEnum: string
 {
-    case ADMIN = 1;
-    case CAN_BO_QUAN_LY = 2;
-    case NHAN_VIEN = 3;
+    case ADMIN = "1";
+    case CAN_BO_QUAN_LY = "2";
+    case NHAN_VIEN = "3";
 
     public function label(): string
     {

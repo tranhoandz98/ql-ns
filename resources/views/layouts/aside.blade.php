@@ -3,7 +3,7 @@
 <aside id="layout-menu" class="layout-menu menu-vertical menu">
 
     <div class="app-brand demo ">
-        <a href={{route('dashboard')}} class="app-brand-link mt-2">
+        <a href={{ route('dashboard') }} class="app-brand-link mt-2">
             <span class="app-brand-logo demo">
                 <span class="text-primary">
                     <svg width="32" height="22" viewBox="0 0 32 22" fill="none"
@@ -40,53 +40,69 @@
                 </div>
             </a>
         </li>
-        <li class="menu-item {{ request()->routeIs('timekeeping.*') ? 'active' : '' }}">
-            <a href={{ route('timekeeping.index') }} class="menu-link">
-                <i class="menu-icon icon-base ti tabler-list-check"></i>
-                <div>
-                    @lang('messages.timekeeping')
-                </div>
-            </a>
-        </li>
-        <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
-            <a href="{{ route('users.index') }}" class="menu-link">
-                <i class="menu-icon icon-base ti tabler-user"></i>
-                <div>
-                    @lang('messages.user-menu')
-                </div>
-            </a>
-        </li>
-        <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
-            <a href={{route('roles.index')}} class="menu-link">
-                <i class="menu-icon icon-base ti tabler-circles"></i>
-                <div>
-                    @lang('messages.role-menu')
-                </div>
-            </a>
-        </li>
-        <li class="menu-item {{ request()->routeIs('positions.*') ? 'active' : '' }}">
-            <a href={{route('positions.index')}} class="menu-link">
-                <i class="menu-icon icon-base ti tabler-user-pin"></i>
-                <div>
-                    @lang('messages.position-menu')
-                </div>
-            </a>
-        </li>
+        @can('viewAny', App\Models\Timekeeping::class)
+            <li class="menu-item {{ request()->routeIs('timekeeping.*') ? 'active' : '' }}">
+                <a href={{ route('timekeeping.index') }} class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-list-check"></i>
+                    <div>
+                        @lang('messages.timekeeping')
+                    </div>
+                </a>
+            </li>
+        @endcan
+
+        @can('viewAny', App\Models\User::class)
+            <li class="menu-item {{ request()->routeIs('users.*') ? 'active' : '' }}">
+                <a href="{{ route('users.index') }}" class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-user"></i>
+                    <div>
+                        @lang('messages.user-menu')
+                    </div>
+                </a>
+            </li>
+        @endcan
+        @can('viewAny', App\Models\Roles::class)
+            <li class="menu-item {{ request()->routeIs('roles.*') ? 'active' : '' }}">
+                <a href={{ route('roles.index') }} class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-circles"></i>
+                    <div>
+                        @lang('messages.role-menu')
+                    </div>
+                </a>
+            </li>
+        @endcan
+        @can('viewAny', App\Models\Position::class)
+            <li class="menu-item {{ request()->routeIs('positions.*') ? 'active' : '' }}">
+                <a href={{ route('positions.index') }} class="menu-link">
+                    <i class="menu-icon icon-base ti tabler-user-pin"></i>
+                    <div>
+                        @lang('messages.position-menu')
+                    </div>
+                </a>
+            </li>
+        @endcan
+        @can('viewAny', App\Models\Departments::class)
         <li class="menu-item {{ request()->routeIs('departments.*') ? 'active' : '' }}">
-            <a href={{route('departments.index')}} class="menu-link">
+            <a href={{ route('departments.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-building"></i>
                 <div>
                     @lang('messages.department-menu')
                 </div>
             </a>
         </li>
+        @endcan
+        @can('viewAny', App\Models\Overtimes::class)
 
-        <li class="menu-item {{ request()->routeIs('overtime.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
+        <li class="menu-item {{ request()->routeIs('overtimes.*') ? 'active' : '' }}">
+            <a href={{ route('overtimes.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-clock-plus"></i>
-                <div>Tăng ca</div>
+                <div>
+                    @lang('messages.overtime-menu')
+                </div>
             </a>
         </li>
+        @endcan
+
         <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">
             <a href="app-email.html" class="menu-link">
                 <i class="menu-icon icon-base ti tabler-user-dollar"></i>

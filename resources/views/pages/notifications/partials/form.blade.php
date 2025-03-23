@@ -37,7 +37,7 @@ if ($result){
             <div class="form-group mb-4 col-6">
                 <x-input-label for="name">
                     <span class="text-danger">*</span>
-                    @lang('messages.department-name')
+                    @lang('messages.notification-name')
                 </x-input-label>
                 <input type="text" class="form-control" id="name" name="name" {{ $disabled ?? '' }}
                     value="{{ old('name', $result->name ?? '') }}" />
@@ -84,7 +84,7 @@ if ($result){
                 <div class="form-group mb-4">
                     <x-input-label for="founding_at">
                         <span class="text-danger">*</span>
-                        @lang('messages.department-founding_at')
+                        @lang('messages.notification-founding_at')
                     </x-input-label>
                     <input type="text" class="form-control flatpickr-rangepicker-single" id="founding_at" name="founding_at"
                         placeholder="dd/mm/yyy" {{ $disabled ?? '' }}
@@ -153,7 +153,7 @@ if ($result){
         </div>
 
         <div class="gap-4 justify-content-center d-flex">
-            <a href="{{ route('departments.index') }}">
+            <a href="{{ route('notifications.index') }}">
                 <x-button :icon="'x'" type="button" class="btn-secondary">
                     @lang('messages.cancel')
                 </x-button>

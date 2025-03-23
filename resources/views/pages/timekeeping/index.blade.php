@@ -15,7 +15,6 @@
 @endsection
 @section('scriptVendor')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
 @endsection
@@ -35,11 +34,13 @@
                 </div>
 
                 <div class="ms-auto">
-                    <a href="{{ route('timekeeping.create') }}">
-                        <x-button type="button" class="btn-success" :icon="'plus'">
-                            {{ __('messages.add') }}
-                        </x-button>
-                    </a>
+                    @can('create', App\Models\Timekeeping::class)
+                        <a href="{{ route('timekeeping.create') }}">
+                            <x-button type="button" class="btn-success" :icon="'plus'">
+                                {{ __('messages.add') }}
+                            </x-button>
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -86,7 +87,7 @@
                                 <i class="icon-base ti tabler-chevron-right"></i>
                             </td>
                             <td>
-                                @if(strlen($parent->group_period) === 7)
+                                @if (strlen($parent->group_period) === 7)
                                     {{ \Carbon\Carbon::createFromFormat('Y-m', $parent->group_period)->format('m/Y') }}
                                 @else
                                     {{ \Carbon\Carbon::createFromFormat('Y', $parent->group_period)->format('Y') }}
@@ -117,29 +118,36 @@
                                 <td>{{ number_format($child->num_work_date, 2) }}</td>
                                 <td>{{ $child->work_late }}</td>
                                 <td>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <x-icon :icon="'dots-vertical'"></x-icon>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('timekeeping.edit', $child->id) }}>
-                                                <x-icon :icon="'edit'" class="me-2"></x-icon>
-                                                {{ __('messages.edit') }}
-                                            </a>
-                                            <form action="{{ route('timekeeping.destroy', $child->id) }}" method="POST"
-                                                style="display:inline;" id="delete-form-{{ $child->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="dropdown-item delete-btn"
-                                                    onclick="onDeleteItem({{ $child->id }})"
-                                                    >
-                                                    <x-icon :icon="'trash'" class="me-2"></x-icon>
-                                                    {{ __('messages.delete') }}
-                                                </button>
-                                            </form>
+                                    @canany(['update', 'delete'], App\Models\Timekeeping::class)
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <x-icon :icon="'dots-vertical'"></x-icon>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                @can('update', App\Models\Timekeeping::class)
+                                                    <a class="dropdown-item" href={{ route('timekeeping.edit', $child->id) }}>
+                                                        <x-icon :icon="'edit'" class="me-2"></x-icon>
+                                                        {{ __('messages.edit') }}
+                                                    </a>
+                                                @endcan
+                                                @can('delete', App\Models\Timekeeping::class)
+                                                    <form action="{{ route('timekeeping.destroy', $child->id) }}"
+                                                        method="POST" style="display:inline;"
+                                                        id="delete-form-{{ $child->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item delete-btn"
+                                                            onclick="onDeleteItem({{ $child->id }})">
+                                                            <x-icon :icon="'trash'" class="me-2"></x-icon>
+                                                            {{ __('messages.delete') }}
+                                                        </button>
+                                                    </form>
+                                                @endcan
+
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endcanany
 
                                 </td> <!-- Hành động trống -->
                             </tr>

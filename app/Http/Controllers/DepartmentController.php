@@ -168,7 +168,20 @@ class DepartmentController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = Departments::find($id);
+        $record = Departments::findOrFail($id);
+        $checkUse = false;
+
+        $user = User::where('department_id', $record->id)->first();
+        if ($user) {
+            $checkUse = true;
+        }
+
+        if ($checkUse || !$record) {
+            return redirect()->route('departments.index')
+                ->with(['message' => Lang::get('messages.department-cc1'), 'status' => 'error']);
+        }
+
+
         $record->delete();
         return redirect()->route('departments.index')
             ->with(

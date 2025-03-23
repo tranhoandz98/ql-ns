@@ -22,11 +22,13 @@
                     </h4>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('roles.create') }}">
-                        <x-button type="button" class="btn-success" :icon="'plus'">
-                            {{ __('messages.add') }}
-                        </x-button>
-                    </a>
+                    @can('create', App\Models\Roles::class)
+                        <a href="{{ route('roles.create') }}">
+                            <x-button type="button" class="btn-success" :icon="'plus'">
+                                {{ __('messages.add') }}
+                            </x-button>
+                        </a>
+                    @endcan
 
                 </div>
             </div>
@@ -76,33 +78,41 @@
                             <td>{{ formatDateTimeView($item->created_at) }}</td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('roles.show', $item->id) }}" title="{{ __('messages.view') }}"
-                                        class="text-primary">
-                                        <x-icon :icon="'eye'"></x-icon>
-                                    </a>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <x-icon :icon="'dots-vertical'"></x-icon>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('roles.edit', $item->id) }}>
-                                                <x-icon :icon="'edit'" class="me-2"></x-icon>
-                                                {{ __('messages.edit') }}
-                                            </a>
-                                            <form action="{{ route('roles.destroy', $item->id) }}" method="POST"
-                                                style="display:inline;" id="delete-form-{{ $item->id }}">
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="dropdown-item delete-btn"
-                                                    onclick="onDeleteItem({{ $item->id }})"
-                                                    >
-                                                    <x-icon :icon="'trash'" class="me-2"></x-icon>
-                                                    {{ __('messages.delete') }}
-                                                </button>
-                                            </form>
+                                    @can('view', App\Models\Roles::class)
+                                        <a href="{{ route('roles.show', $item->id) }}" title="{{ __('messages.view') }}"
+                                            class="text-primary">
+                                            <x-icon :icon="'eye'"></x-icon>
+                                        </a>
+                                    @endcan
+                                    @canany(['update', 'delete'], App\Models\Roles::class)
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <x-icon :icon="'dots-vertical'"></x-icon>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                @can('update', App\Models\Roles::class)
+                                                    <a class="dropdown-item" href={{ route('roles.edit', $item->id) }}>
+                                                        <x-icon :icon="'edit'" class="me-2"></x-icon>
+                                                        {{ __('messages.edit') }}
+                                                    </a>
+                                                @endcan
+                                                @can('delete', App\Models\Roles::class)
+                                                    <form action="{{ route('roles.destroy', $item->id) }}" method="POST"
+                                                        style="display:inline;" id="delete-form-{{ $item->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item delete-btn"
+                                                            onclick="onDeleteItem({{ $item->id }})">
+                                                            <x-icon :icon="'trash'" class="me-2"></x-icon>
+                                                            {{ __('messages.delete') }}
+                                                        </button>
+                                                    </form>
+                                                @endcan
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endcanany
+
                                 </div>
                             </td>
                         </tr>
@@ -117,4 +127,3 @@
     </div>
 
 </x-app-layout>
-

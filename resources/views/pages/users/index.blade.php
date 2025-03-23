@@ -28,12 +28,13 @@
                     </h4>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('users.create') }}">
-                        <x-button type="button" class="btn-success" :icon="'plus'">
-                            {{ __('messages.add') }}
-                        </x-button>
-                    </a>
-
+                    @can('create', App\Models\User::class)
+                        <a href="{{ route('users.create') }}">
+                            <x-button type="button" class="btn-success" :icon="'plus'">
+                                {{ __('messages.add') }}
+                            </x-button>
+                        </a>
+                    @endcan
                 </div>
             </div>
         </div>
@@ -161,37 +162,42 @@
                             <td>{{ formatDateTimeView($item->created_at) }}</td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('users.show', $item->id) }}" title="Xem" class="text-primary">
-                                        <x-icon :icon="'eye'"></x-icon>
-                                    </a>
+                                    @can('view', App\Models\User::class)
+                                        <a href="{{ route('users.show', $item->id) }}" title="Xem" class="text-primary">
+                                            <x-icon :icon="'eye'"></x-icon>
+                                        </a>
+                                    @endcan
+                                    @canany(['update', 'delete'], App\Models\User::class)
                                     <div class="dropdown">
                                         <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
                                             data-bs-toggle="dropdown">
                                             <x-icon :icon="'dots-vertical'"></x-icon>
                                         </button>
                                         <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('users.edit', $item->id) }}>
-                                                <x-icon :icon="'edit'" class="me-2"></x-icon>
-                                                {{ __('messages.edit') }}
+                                            @can('update', App\Models\User::class)
+                                                <a class="dropdown-item" href={{ route('users.edit', $item->id) }}>
+                                                    <x-icon :icon="'edit'" class="me-2"></x-icon>
+                                                    {{ __('messages.edit') }}
 
-                                            </a>
-                                            <form action="{{ route('users.destroy', $item->id) }}" method="POST"
-                                                style="display:inline;"
-                                                id="delete-form-{{ $item->id }}"
-                                                >
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="dropdown-item"
-                                                onclick="onDeleteItem({{ $item->id }})"
+                                                </a>
+                                            @endcan
+                                            @can('delete', App\Models\User::class)
+                                                <form action="{{ route('users.destroy', $item->id) }}" method="POST"
+                                                    style="display:inline;" id="delete-form-{{ $item->id }}">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="button" class="dropdown-item"
+                                                        onclick="onDeleteItem({{ $item->id }})">
+                                                        <x-icon :icon="'trash'" class="me-2"></x-icon>
+                                                        {{ __('messages.delete') }}
 
-                                                >
-                                                    <x-icon :icon="'trash'" class="me-2"></x-icon>
-                                                    {{ __('messages.delete') }}
+                                                    </button>
+                                                </form>
+                                            @endcan
 
-                                                </button>
-                                            </form>
                                         </div>
                                     </div>
+                                    @endcanany
                                 </div>
                             </td>
                         </tr>
@@ -204,7 +210,5 @@
 
         </div>
     </div>
-    <script>
-
-    </script>
+    <script></script>
 </x-app-layout>

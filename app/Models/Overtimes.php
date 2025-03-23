@@ -5,14 +5,11 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\Auth;
 
-class Roles extends Model
+class Overtimes extends Model
 {
     //
-    protected $table = 'roles';
+    protected $table = 'overtimes';
     protected $guarded = [];
-
-
-    private $rolePermission;
 
     protected static function boot()
     {
@@ -27,19 +24,6 @@ class Roles extends Model
         });
     }
 
-    public function getPermissionSingleton()
-    {
-        if (!$this->rolePermission) {
-            $this->rolePermission = $this->rolePermission()->get();
-        }
-        return $this->rolePermission;
-    }
-
-    public function rolePermission()
-    {
-        return $this->belongsToMany(Permission::class, 'role_permission', 'role_id', 'permission_id');
-    }
-
     public function createdByData()
     {
         return $this->belongsTo(User::class, 'created_by', 'id',);
@@ -47,6 +31,11 @@ class Roles extends Model
     public function updatedByData()
     {
         return $this->belongsTo(User::class, 'updated_by', 'id',);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'user_id', 'id',);
     }
 
 }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\PositionRequest;
 use App\Models\Position;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
@@ -129,7 +130,19 @@ class PositionController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = Position::find($id);
+        $record = Position::findOrFail($id);
+        $checkUse = false;
+
+        $user = User::where('position_id', $record->id)->first();
+        if ($user) {
+            $checkUse = true;
+        }
+
+        if ($checkUse || !$record) {
+            return redirect()->route('positions.index')
+                ->with(['message' => Lang::get('messages.position-cc1'), 'status' => 'error']);
+        }
+
         $record->delete();
         return redirect()->route('positions.index')
             ->with(

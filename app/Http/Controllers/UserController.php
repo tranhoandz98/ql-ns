@@ -9,8 +9,10 @@ use App\Enums\User\TypeUserEnum;
 use App\Http\Requests\UserRequest;
 use App\Models\ConfigModel;
 use App\Models\Departments;
+use App\Models\Overtimes;
 use App\Models\Position;
 use App\Models\Roles;
+use App\Models\Timekeeping;
 use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
@@ -318,7 +320,29 @@ class UserController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = User::find($id);
+        $record = User::findOrFail($id);
+        $checkUse = false;
+
+        $user = User::where('manager_id', $record->id)->first();
+        if ($user) {
+            $checkUse = true;
+        }
+
+        $timekeeping = Timekeeping::where('user_id', $record->id)->first();
+        if ($timekeeping) {
+            $checkUse = true;
+        }
+
+        $overtime = Overtimes::where('user_id', $record->id)->first();
+        if ($overtime) {
+            $checkUse = true;
+        }
+
+        if ($checkUse || !$record) {
+            return redirect()->route('users.index')
+                ->with(['message' => Lang::get('messages.user-cc1'), 'status' => 'error']);
+        }
+
         $record->delete();
         return redirect()->route('users.index')
             ->with(

@@ -5,7 +5,6 @@
 @endsection
 @section('scriptVendor')
     <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
-    <script src="{{ asset('assets/vendor/libs/moment/moment.js') }}"></script>
     <script src="{{ asset('assets/vendor/libs/flatpickr/flatpickr.js') }}"></script>
 
     <script src="{{ asset('assets/js/face-api.min.js') }}"></script>
@@ -221,7 +220,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="status">
                         <span class="text-danger">*</span>
-                        Trạng thái
+                        @lang('messages.status')
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="status" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>

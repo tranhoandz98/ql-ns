@@ -4,14 +4,14 @@
     </x-breadcrumb>
 @endsection
 @section('cssVendor')
-<link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
+    <link rel="stylesheet" href="{{ asset('assets/vendor/libs/select2/select2.css') }}" />
 @endsection
 @section('css')
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-bs5/datatables.bootstrap5.css') }}" />
     <link rel="stylesheet" href="{{ asset('assets/vendor/libs/datatables-responsive-bs5/responsive.bootstrap5.css') }}" />
 @endsection
 @section('scriptVendor')
-<script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
+    <script src="{{ asset('assets/vendor/libs/select2/select2.js') }}"></script>
 @endsection
 @section('script')
     <script src="{{ asset('assets/vendor/libs/datatables-bs5/datatables-bootstrap5.js') }}"></script>
@@ -28,11 +28,13 @@
                     </h4>
                 </div>
                 <div class="ms-auto">
-                    <a href="{{ route('departments.create') }}">
-                        <x-button type="button" class="btn-success" :icon="'plus'">
-                            {{ __('messages.add') }}
-                        </x-button>
-                    </a>
+                    @can('create', App\Models\Departments::class)
+                        <a href="{{ route('departments.create') }}">
+                            <x-button type="button" class="btn-success" :icon="'plus'">
+                                {{ __('messages.add') }}
+                            </x-button>
+                        </a>
+                    @endcan
 
                 </div>
             </div>
@@ -104,38 +106,44 @@
                             </td>
                             <td>
                                 <div class="d-flex gap-2">
-                                    <a href="{{ route('departments.show', $item->id) }}" title="Xem"
-                                        class="text-primary">
-                                        <x-icon :icon="'eye'"></x-icon>
-                                    </a>
-                                    <div class="dropdown">
-                                        <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
-                                            data-bs-toggle="dropdown">
-                                            <x-icon :icon="'dots-vertical'"></x-icon>
-                                        </button>
-                                        <div class="dropdown-menu">
-                                            <a class="dropdown-item" href={{ route('departments.edit', $item->id) }}>
-                                                <x-icon :icon="'edit'" class="me-2"></x-icon>
-                                                {{ __('messages.edit') }}
+                                    @can('view', App\Models\Departments::class)
+                                        <a href="{{ route('departments.show', $item->id) }}" title="Xem"
+                                            class="text-primary">
+                                            <x-icon :icon="'eye'"></x-icon>
+                                        </a>
+                                    @endcan
+                                    @canany(['update', 'delete'], App\Models\Departments::class)
+                                        <div class="dropdown">
+                                            <button type="button" class="btn p-0 dropdown-toggle hide-arrow"
+                                                data-bs-toggle="dropdown">
+                                                <x-icon :icon="'dots-vertical'"></x-icon>
+                                            </button>
+                                            <div class="dropdown-menu">
+                                                @can('update', App\Models\Departments::class)
+                                                    <a class="dropdown-item" href={{ route('departments.edit', $item->id) }}>
+                                                        <x-icon :icon="'edit'" class="me-2"></x-icon>
+                                                        {{ __('messages.edit') }}
 
-                                            </a>
-                                            <form action="{{ route('departments.destroy', $item->id) }}" method="POST"
-                                                style="display:inline;"
-                                                id="delete-form-{{ $item->id }}"
-                                                >
-                                                @csrf
-                                                @method('DELETE')
-                                                <button type="button" class="dropdown-item"
-                                                onclick="onDeleteItem({{ $item->id }})"
+                                                    </a>
+                                                @endcan
+                                                @can('delete', App\Models\Departments::class)
+                                                    <form action="{{ route('departments.destroy', $item->id) }}" method="POST"
+                                                        style="display:inline;" id="delete-form-{{ $item->id }}">
+                                                        @csrf
+                                                        @method('DELETE')
+                                                        <button type="button" class="dropdown-item"
+                                                            onclick="onDeleteItem({{ $item->id }})">
+                                                            <x-icon :icon="'trash'" class="me-2"></x-icon>
+                                                            {{ __('messages.delete') }}
 
-                                                >
-                                                    <x-icon :icon="'trash'" class="me-2"></x-icon>
-                                                    {{ __('messages.delete') }}
+                                                        </button>
+                                                    </form>
+                                                @endcan
 
-                                                </button>
-                                            </form>
+                                            </div>
                                         </div>
-                                    </div>
+                                    @endcanany
+
                                 </div>
                             </td>
                         </tr>
@@ -148,7 +156,5 @@
 
         </div>
     </div>
-    <script>
-
-    </script>
+    <script></script>
 </x-app-layout>

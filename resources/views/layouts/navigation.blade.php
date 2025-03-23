@@ -28,11 +28,13 @@
                     <i class="icon-base ti tabler-language icon-22px text-heading"></i>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end">
-                    <li >
+                    <li>
                         <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
                             @csrf
                             <input type="hidden" name="lang" value="vi">
-                            <button type="submit" class="dropdown-item {{Session::get('locale')=='vi'?'active':''}}" data-language="vi" data-text-direction="ltr">
+                            <button type="submit"
+                                class="dropdown-item {{ Session::get('locale') == 'vi' ? 'active' : '' }}"
+                                data-language="vi" data-text-direction="ltr">
                                 <span>
                                     @lang('messages.vietnam_lang')
                                 </span>
@@ -43,7 +45,9 @@
                         <form action="{{ route('change-lang') }}" method="POST" style="display: inline;">
                             @csrf
                             <input type="hidden" name="lang" value="en">
-                            <button type="submit" class="dropdown-item {{Session::get('locale')=='en'?'active':''}}" data-language="en" data-text-direction="ltr">
+                            <button type="submit"
+                                class="dropdown-item {{ Session::get('locale') == 'en' ? 'active' : '' }}"
+                                data-language="en" data-text-direction="ltr">
                                 <span>
                                     @lang('messages.english_lang')
                                 </span>
@@ -86,20 +90,29 @@
 
             <!-- Notification -->
             <li class="nav-item dropdown-notifications navbar-dropdown dropdown me-3 me-xl-2">
-                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill"
+                <a class="nav-link dropdown-toggle hide-arrow btn btn-icon btn-text-secondary rounded-pill view-notify-list"
                     href="javascript:void(0);" data-bs-toggle="dropdown" data-bs-auto-close="outside"
                     aria-expanded="false">
                     <span class="position-relative">
                         <i class="icon-base ti tabler-bell icon-22px text-heading"></i>
-                        <span class="badge rounded-pill bg-danger badge-dot badge-notifications border"></span>
+                        @if ($user->unread_notification)
+                            <span class="badge rounded-pill  badge-notifications position-absolute ">
+                                {{ $user->unread_notification }}
+                            </span>
+                        @endif
                     </span>
                 </a>
                 <ul class="dropdown-menu dropdown-menu-end p-0">
                     <li class="dropdown-menu-header border-bottom">
                         <div class="dropdown-header d-flex align-items-center py-3">
-                            <h6 class="mb-0 me-auto">Notification</h6>
+                            <h6 class="mb-0 me-auto">
+                                @lang('messages.notification')
+                            </h6>
                             <div class="d-flex align-items-center h6 mb-0">
-                                <span class="badge bg-label-primary me-2">8 New</span>
+                                <span class="badge bg-label-primary me-2">
+                                    {{ $user->unread_notification }}
+                                    @lang('messages.notification-un_read')
+                                </span>
                                 <a href="javascript:void(0)" class="dropdown-notifications-all p-2 btn btn-icon"
                                     data-bs-toggle="tooltip" data-bs-placement="top" title="Mark all as read"><i
                                         class="icon-base ti tabler-mail-opened text-heading"></i></a>
@@ -107,35 +120,36 @@
                         </div>
                     </li>
                     <li class="dropdown-notifications-list scrollable-container">
-                        <ul class="list-group list-group-flush">
+                        <ul class="list-group list-group-flush" id="list-notification">
 
-                            <li class="list-group-item list-group-item-action dropdown-notifications-item">
+                            {{-- <li class="list-group-item list-group-item-action dropdown-notifications-item">
                                 <div class="d-flex">
-                                    <div class="flex-shrink-0 me-3">
-                                        <div class="avatar">
-                                            <span class="avatar-initial rounded-circle bg-label-danger">CF</span>
-                                        </div>
+                                    <a href="javascript:void(0);" class="w-100 d-flex">
+                                  <div class="flex-shrink-0 me-3">
+                                    <div class="avatar">
+                                        av
                                     </div>
-                                    <div class="flex-grow-1">
-                                        <h6 class="mb-1 small">Charles Franklin</h6>
-                                        <small class="mb-1 d-block text-body">Accepted your connection</small>
-                                        <small class="text-body-secondary">12hr ago</small>
-                                    </div>
-                                    <div class="flex-shrink-0 dropdown-notifications-actions">
-                                        <a href="javascript:void(0)" class="dropdown-notifications-read"><span
-                                                class="badge badge-dot"></span></a>
-                                        <a href="javascript:void(0)" class="dropdown-notifications-archive"><span
-                                                class="icon-base ti tabler-x"></span></a>
-                                    </div>
+                                  </div>
+                                  <div class="flex-grow-1">
+                                    <h6 class="small mb-1">Congratulation Lettie 🎉</h6>
+                                    <small class="mb-1 d-block text-body">Won the monthly best seller gold badge</small>
+                                    <small class="text-body-secondary">1h ago</small>
+                                  </div>
+                                  <div class="flex-shrink-0 dropdown-notifications-actions">
+                                    <a href="javascript:void(0)" class="dropdown-notifications-read"><span class="badge badge-dot"></span></a>
+                                    <a href="javascript:void(0)" class="dropdown-notifications-archive"><span class="icon-base ti tabler-x"></span></a>
+                                  </div>
+                                </a>
                                 </div>
-                            </li>
-
+                            </li> --}}
                         </ul>
                     </li>
-                    <li class="border-top">
+                    <li class="border-top" id="view-all-notify">
                         <div class="d-grid p-4">
-                            <a class="btn btn-primary btn-sm d-flex" href="javascript:void(0);">
-                                <small class="align-middle">View all notifications</small>
+                            <a class="btn btn-primary btn-sm d-flex" href={{route('notifications.index')}}>
+                                <small class="align-middle">
+                                    @lang('messages.notification-view_all')
+                                </small>
                             </a>
                         </div>
                     </li>
@@ -236,4 +250,114 @@
         <!--/ User -->
         </ul>
     </div>
+    <script>
+        document.querySelector('.view-notify-list').addEventListener('click', async function() {
+            try {
+                const response = await fetch('{{ route('notifications.listLimit') }}', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'X-Requested-With': 'XMLHttpRequest',
+                        'Accept': 'application/json',
+                        'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                    }
+                });
+                if (!response.ok) {
+                    throw new Error('Network response was not ok');
+                }
+
+                const data = await response.json();
+                if (data) {
+                    const listNotification = document.getElementById('list-notification');
+                    const viewAllNotify = document.getElementById('view-all-notify');
+
+                    // Clear existing notifications
+                    listNotification.innerHTML = '';
+
+                    if (data.length === 0) {
+                        // Hide view all button if no notifications
+                        viewAllNotify.style.display = 'none';
+
+                        // Show empty message
+                        listNotification.innerHTML = `
+                        <li class="list-group-item list-group-item-action dropdown-notifications-item p-3 text-center">
+                            <div class="text-muted">@lang('messages.no_notifications')</div>
+                        </li>`;
+                        return;
+                    }
+
+                    // Show view all button if there are notifications
+                    viewAllNotify.style.display = 'block';
+
+                    // Generate notification items
+                    data.forEach(notification => {
+                        const li = `
+                        <li class="list-group-item list-group-item-action dropdown-notifications-item notify-item"
+                        data-key="${notification.id}"
+                        data-url="${notification.link ?? '#'}"
+                        onclick="handleNotificationClick(event, '${notification.id}', '${notification.link ?? '#'}')"
+                        style="cursor: pointer;"
+                        >
+                            <div class="d-flex">
+                                <div class="flex-shrink-0 me-3">
+                                    <div class="avatar">
+                                        <span class="avatar-initial rounded-circle bg-label-${notification.color ??'secondary'}">
+                                            <span class="icon-base ti tabler-${(() => {
+                                                const typeEnum = @json(\App\Enums\User\TypeNotifyReadEnum::options());
+                                                const notificationType = typeEnum.find(item => item.id === notification.type);
+                                                return notificationType ? notificationType.icon : notification.type;
+                                            })()}"></span>
+                                            </span>
+                                    </div>
+                                </div>
+                                <div class="flex-grow-1">
+                                    <h6 class="mb-1 small">${notification.title}</h6>
+                                    <small class="mb-1 d-block text-body">${notification.content}</small>
+                                    <small class="text-body-secondary">${
+                                        '{{ Session::get('locale', 'vi') }}' === 'vi'
+                                        ? moment(notification.created_at).locale('vi').fromNow()
+                                        : moment(notification.created_at).locale('en').fromNow()
+                                    }</small>
+                                </div>
+                                <div class="flex-shrink-0 dropdown-notifications-actions">
+                                    ${notification.is_read === 'UNREAD' ?
+                                    `<a href="javascript:void(0)" class="dropdown-notifications-read"><span
+                                                        class="badge badge-dot"></span></a>` : ''}
+                                </div>
+                            </div>
+                        </li>
+                        `;
+                        listNotification.innerHTML += li;
+                    });
+                }
+            } catch (error) {
+                console.error('error: ', error);
+            }
+        });
+    </script>
+    <script>
+       async function handleNotificationClick(event, notificationId, redirectUrl) {
+            try {
+                // Call the notification read API
+                const response = await fetch(`{{ route('notifications.read', '') }}/${notificationId}`, {
+                    method: 'POST',
+                    headers: {
+                        'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')
+                            .content,
+                        'Accept': 'application/json',
+                        'Content-Type': 'application/json'
+                    },
+                });
+                if (response.ok) {
+                    // If API call is successful, redirect to the specified URL
+                    window.location.href = redirectUrl;
+                } else {
+                    console.error('Failed to mark notification as read');
+                }
+            } catch (error) {
+                console.error('Error:', error);
+            }
+
+        }
+    </script>
 </nav>

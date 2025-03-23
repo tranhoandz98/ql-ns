@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\User\TypeGroupCheckInEnum;
+use App\Enums\User\TypeUserEnum;
 use App\Http\Requests\TimekeepingRequest;
 use App\Models\ConfigModel;
 use App\Models\Timekeeping;
@@ -34,6 +35,13 @@ class TimekeepingController extends Controller
                         $query->whereBetween('checkin', [$startDate->startOfDay(), $endDate->endOfDay()]);
                     }
                 }
+                $user = Auth::user();
+                if ($user) {
+                    if ($user->type === TypeUserEnum::NHAN_VIEN->value) {
+                        // For regular employees, only show their own records
+                        $query->where('user_id', $user->id);
+                    }
+                }
             });
 
         // Define the grouping format based on the input
@@ -44,15 +52,15 @@ class TimekeepingController extends Controller
         };
 
         $listAll = $query->select([
-                'user_id',
-                DB::raw("DATE_FORMAT(checkin, '$groupFormat') as group_period"),
-                DB::raw('COUNT(id) as total_records'),
-                DB::raw('TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(work_time))), "%H:%i") as total_work_time'),
-                DB::raw('SUM(num_work_date) as total_work_days'),
-                DB::raw('SUM(work_late) as total_late_minutes'),
-                DB::raw('MIN(checkin) as first_checkin'),
-                DB::raw('MAX(checkout) as last_checkout')
-            ])
+            'user_id',
+            DB::raw("DATE_FORMAT(checkin, '$groupFormat') as group_period"),
+            DB::raw('COUNT(id) as total_records'),
+            DB::raw('TIME_FORMAT(SEC_TO_TIME(SUM(TIME_TO_SEC(work_time))), "%H:%i") as total_work_time'),
+            DB::raw('SUM(num_work_date) as total_work_days'),
+            DB::raw('SUM(work_late) as total_late_minutes'),
+            DB::raw('MIN(checkin) as first_checkin'),
+            DB::raw('MAX(checkout) as last_checkout')
+        ])
             ->groupBy('user_id', 'group_period')
             ->orderBy('group_period', 'desc')
             ->get()
@@ -203,7 +211,7 @@ class TimekeepingController extends Controller
         DB::beginTransaction();
         try {
 
-            $user = User::findOrFail( $request->user_id );
+            $user = User::findOrFail($request->user_id);
 
             $timeCheckIn = Carbon::createFromFormat('d/m/Y H:i', $request->checkin);
             $timeCheckInFormat = $timeCheckIn->format('Y-m-d H:i:s');
@@ -229,13 +237,13 @@ class TimekeepingController extends Controller
             $timeKeeping->user_id = $user->id;
             $timeKeeping->checkin = $timeCheckInFormat;
             $timeKeeping->checkout = $timeCheckOutFormat;
-            $timeKeeping->work_time =$formattedWorkTime;
+            $timeKeeping->work_time = $formattedWorkTime;
             $timeKeeping->num_work_date = $numWorkDate;
 
             $userWorkTime = Carbon::parse($timeCheckIn->format('Y-m-d') . ' ' . $user->work_time); // Thời gian làm việc quy định
 
-             // Kiểm tra nếu userWorkTime có giá trị hợp lệ
-             if (!$user->work_time) {
+            // Kiểm tra nếu userWorkTime có giá trị hợp lệ
+            if (!$user->work_time) {
                 $timeKeeping->work_late = 0; // Không có giờ làm quy định thì không tính đi muộn
             } else {
                 if ($timeCheckIn > $userWorkTime) {
@@ -287,7 +295,7 @@ class TimekeepingController extends Controller
 
         DB::beginTransaction();
         try {
-            $user = User::findOrFail( $request->user_id );
+            $user = User::findOrFail($request->user_id);
 
             $timeKeeping = Timekeeping::findOrFail($id);
             $timeCheckIn = Carbon::createFromFormat('d/m/Y H:i', $request->checkin);
@@ -312,13 +320,13 @@ class TimekeepingController extends Controller
             $timeKeeping->user_id = $user->id;
             $timeKeeping->checkin = $timeCheckInFormat;
             $timeKeeping->checkout = $timeCheckOutFormat;
-            $timeKeeping->work_time =$formattedWorkTime;
+            $timeKeeping->work_time = $formattedWorkTime;
             $timeKeeping->num_work_date = $numWorkDate;
 
             $userWorkTime = Carbon::parse($timeCheckIn->format('Y-m-d') . ' ' . $user->work_time); // Thời gian làm việc quy định
 
-             // Kiểm tra nếu userWorkTime có giá trị hợp lệ
-             if (!$user->work_time) {
+            // Kiểm tra nếu userWorkTime có giá trị hợp lệ
+            if (!$user->work_time) {
                 $timeKeeping->work_late = 0; // Không có giờ làm quy định thì không tính đi muộn
             } else {
                 if ($timeCheckIn > $userWorkTime) {
