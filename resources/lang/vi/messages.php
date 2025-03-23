@@ -304,4 +304,21 @@ return [
     'day_off_user-start_at' => 'Thời gian',
     'day_off_user-create_s' => 'Cấp phát ngày nghỉ thành công',
 
+    'kpi-menu' => 'KPI',
+    'kpi-create' => 'Thêm mới KPI',
+    'kpi-edit' => 'Cập nhật KPI',
+    'kpi-show' => 'Chi tiết KPI',
+    'kpi-index' => 'Danh sách KPI',
+    'kpi-search' => 'Mã KPI',
+    'kpi-name' => 'Tên KPI',
+    'kpi-create_s' => 'Thêm mới KPI thành công',
+    'kpi-update_s' => 'Cập nhật KPI thành công',
+    'kpi-delete_s' => 'Xóa KPI thành công',
+    'kpi-send_s' => 'Gửi KPI thành công',
+    'kpi-approve_s' => 'Duyệt KPI thành công',
+    'kpi-reject_s' => 'Từ chối KPI thành công',
+    'kpi-cc1' => 'KPI đang được sử dụng hoặc đã được xóa',
+    'kpi-allocation' => 'Cấp phát KPI',
+
+
 ];

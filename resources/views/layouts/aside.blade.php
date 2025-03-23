@@ -116,9 +116,11 @@
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('kpi.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
+            <a href={{ route('kpi.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-cookie"></i>
-                <div>KPI</div>
+                <div>
+                    @lang('messages.kpi-menu')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">

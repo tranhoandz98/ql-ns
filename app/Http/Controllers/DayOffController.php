@@ -44,6 +44,9 @@ class DayOffController extends Controller
                 if (!empty($request->status)) {
                     $query->where('status', $request->status);
                 }
+                if (!empty($request->type)) {
+                    $query->where('type', $request->type);
+                }
                 if (!empty($request->user_id)) {
                     $query->where('user_id', $request->user_id);
                 }

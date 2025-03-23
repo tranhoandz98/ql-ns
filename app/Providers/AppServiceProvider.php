@@ -7,6 +7,7 @@ use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Gate;
 use App\Models\User;
 use App\Models\Departments;
+use App\Models\KPI;
 use App\Models\Position;
 use App\Models\Overtimes;
 use App\Models\Roles;
@@ -15,6 +16,7 @@ use App\Policies\DayOffPolicy;
 use App\Policies\UserPolicy;
 use App\Policies\RolePolicy;
 use App\Policies\DepartmentPolicy;
+use App\Policies\KPIPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\OvertimePolicy;
 use App\Policies\TimekeepingPolicy;
@@ -41,5 +43,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Overtimes::class, OvertimePolicy::class);
         Gate::policy(Timekeeping::class, TimekeepingPolicy::class);
         Gate::policy(DayOffs::class, DayOffPolicy::class);
+        Gate::policy(KPI::class, KPIPolicy::class);
     }
 }

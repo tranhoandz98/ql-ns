@@ -5,14 +5,14 @@
                 @lang('messages.code')
             </x-input-label>
             <input type="search" class="form-control dt-input dt-full-name" data-column="1" value="{{ request('name') }}"
-                placeholder="{{ __('messages.day_off-search') }}" name="name" data-column-index="0" />
+                placeholder="{{ __('messages.kpi-search') }}" name="name" data-column-index="0" />
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="manager_id" class="">
-                @lang('messages.day_off-user_id')
+                @lang('messages.kpi-user_id')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="manager_id" {{ $disabled ?? '' }}
-                title="{{ __('messages.day_off-user_id') }}">
+                title="{{ __('messages.kpi-user_id') }}">
                 <option value="" selected>Chọn</option>
                 @foreach ($users as $userItem)
                     <option value="{{ $userItem->id }}" {{ request('manager_id') == $userItem->id ? 'selected' : '' }}>
@@ -23,23 +23,10 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="start_at" class="">
-                @lang('messages.day_off-start_at')
+                @lang('messages.kpi-start_at')
             </x-input-label>
             <input type="text" class="form-control flatpickr-rangepicker-range" id="start_at"
                 name="start_at" placeholder="DD/MM/YYYY to DD/MM/YYYY" value="{{ request('expected_start') }}" />
-        </div>
-        <div class="col-12 col-sm-6 col-lg-4 advance-search">
-            <x-input-label for="type">
-                @lang('messages.day_off-type')
-            </x-input-label>
-            <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
-                <option value="" selected>Chọn</option>
-                @foreach ($typeDayOffEnum as $item)
-                    <option value="{{ $item['id'] }}" {{ request('type') == $item['id'] ? 'selected' : '' }}>
-                        {{ $item['name'] }}
-                    </option>
-                @endforeach
-            </select>
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="status">
@@ -99,7 +86,7 @@
                 element.classList.add('d-none');
             });
             document.querySelector('.extend-btn').classList.remove('d-none');
-            filterSearch.day_offs = false;
+            filterSearch.kpi = false;
             localStorage.setItem('filterSearch', JSON.stringify(filterSearch))
         }
 
@@ -109,11 +96,11 @@
                 element.classList.remove('d-none');
             });
             document.querySelector('.extend-btn').classList.add('d-none');
-            filterSearch.day_offs = true;
+            filterSearch.kpi = true;
             localStorage.setItem('filterSearch', JSON.stringify(filterSearch))
         }
 
-        if (!filterSearch?.day_offs) {
+        if (!filterSearch?.kpi) {
             compactAction()
         } else {
             extendAction()
