@@ -126,11 +126,13 @@ class KPIController extends Controller
         $users = User::select(['id', 'name', 'code'])->active()->get();
 
         $statusDayOffEnum = StatusDayOffEnum::options();
+        $typeGroupExpectedStartEnum = TypeGroupExpectedStartEnum::options();
 
         return view('pages.kpi.index', compact(
             'listAll',
             'users',
             'statusDayOffEnum',
+            'typeGroupExpectedStartEnum'
         ));
     }
 

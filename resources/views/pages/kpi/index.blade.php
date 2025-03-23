@@ -71,19 +71,19 @@
                                 {{ __('messages.time') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-user_id') }}
+                                {{ __('messages.user_id') }}
                             </th>
                             <th>
                                 {{ __('messages.code') }}
+                            </th>
+                            <th>
+                                {{ __('messages.kpi-name') }}
                             </th>
                             <th>
                                 {{ __('messages.kpi-start_at') }}
                             </th>
                             <th>
                                 {{ __('messages.kpi-end_at') }}
-                            </th>
-                            <th>
-                                {{ __('messages.kpi-type') }}
                             </th>
                             <th>
                                 {{ __('messages.kpi-num') }}
@@ -111,13 +111,13 @@
                                     @endif
                                 </td>
                                 <td>
-                                    [{{ $parent?->user?->code }}] - {{ $parent?->user?->name }}
+                                </td>
+                                <td>
                                 </td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td>{{ number_format($parent->total_num, 2) }}</td>
                                 <td></td>
                                 <td></td>
                             </tr>
@@ -130,22 +130,9 @@
                                         [{{ $parent?->user?->code }}] - {{ $parent?->user?->name }}
                                     </td>
                                     <td>{{ $child->code }}</td>
+                                    <td>{{ $child->name }}</td>
                                     <td>{{ formatDateTimeView($child->start_at) }}</td>
                                     <td>{{ formatDateTimeView($child->end_at) }}</td>
-                                    <td>
-                                        @php
-                                            $statusBadgeType = '';
-                                            foreach ($typeDayOffEnum as $status) {
-                                                if ($status['id'] == $child->type) {
-                                                    $statusBadgeType = $status['name'];
-                                                    break;
-                                                }
-                                            }
-                                        @endphp
-                                        <span class="">
-                                            {{ $statusBadgeType }}
-                                        </span>
-                                    </td>
                                     <td>{{ number_format($child->num, 2) }}</td>
                                     <td>
                                         @php
@@ -186,8 +173,11 @@
                             <th>
                                 {{ __('messages.code') }}
                             </th>
+                             <th>
+                                {{ __('messages.kpi-name') }}
+                            </th>
                             <th>
-                                {{ __('messages.kpi-user_id') }}
+                                {{ __('messages.kpiuser_id') }}
                             </th>
                             <th>
                                 {{ __('messages.kpi-start_at') }}

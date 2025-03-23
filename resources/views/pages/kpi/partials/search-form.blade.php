@@ -9,7 +9,7 @@
         </div>
         <div class="col-12 col-sm-6 col-lg-4 advance-search">
             <x-input-label for="manager_id" class="">
-                @lang('messages.kpi-user_id')
+                @lang('messages.user_id')
             </x-input-label>
             <select class="select2 form-select" data-allow-clear="true" name="manager_id" {{ $disabled ?? '' }}
                 title="{{ __('messages.kpi-user_id') }}">

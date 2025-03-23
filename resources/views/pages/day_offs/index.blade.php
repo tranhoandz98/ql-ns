@@ -198,10 +198,10 @@
                                 {{ __('messages.stt') }}
                             </th>
                             <th>
-                                {{ __('messages.code') }}
+                                {{ __('messages.day_off-user_id') }}
                             </th>
                             <th>
-                                {{ __('messages.day_off-user_id') }}
+                                {{ __('messages.code') }}
                             </th>
                             <th>
                                 {{ __('messages.day_off-start_at') }}
@@ -228,10 +228,10 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    {{ $item->code }}
+                                    [{{ $item?->user?->code }}] - {{ $item?->user?->name }}
                                 </td>
                                 <td>
-                                    [{{ $item?->user?->code }}] - {{ $item?->user?->name }}
+                                    {{ $item->code }}
                                 </td>
                                 <td>{{ formatDateTimeView($item->start_at) }}</td>
                                 <td>{{ formatDateTimeView($item->end_at) }}</td>

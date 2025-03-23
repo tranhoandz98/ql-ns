@@ -199,10 +199,10 @@
                                 {{ __('messages.stt') }}
                             </th>
                             <th>
-                                {{ __('messages.code') }}
+                                {{ __('messages.overtime-user_id') }}
                             </th>
                             <th>
-                                {{ __('messages.overtime-user_id') }}
+                                {{ __('messages.code') }}
                             </th>
                             <th>
                                 {{ __('messages.overtime-expected_start') }}
@@ -235,10 +235,10 @@
                             <tr>
                                 <td>{{ $index + 1 }}</td>
                                 <td>
-                                    {{ $item->code }}
+                                    [{{ $item?->user?->code }}] - {{ $item?->user?->name }}
                                 </td>
                                 <td>
-                                    [{{ $item?->user?->code }}] - {{ $item?->user?->name }}
+                                    {{ $item->code }}
                                 </td>
                                 <td>{{ formatDateTimeView($item->expected_start) }}</td>
                                 <td>{{ formatDateTimeView($item->expected_end) }}</td>
