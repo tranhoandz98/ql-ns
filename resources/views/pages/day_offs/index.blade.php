@@ -24,9 +24,23 @@
     <script src="{{ asset('assets/js/app/app-date.js') }}"></script>
 @endsection
 <x-app-layout>
-    <div class="card">
-        <div class="card-header pb-0 text-md-start text-center">
 
+    <div class="card">
+        <div class="nav-align-top nav-tabs-shadow">
+            <ul class="nav nav-tabs" role="tablist">
+                <li class="nav-item">
+                    <a href="{{ route('day_offs.index') }}" class="nav-link {{ request()->routeIs('day_offs.index') ? 'active' : '' }}">
+                        {{ __('messages.day_off-index') }}
+                    </a>
+                </li>
+                <li class="nav-item">
+                    <a href="{{ route('day_offs_user.index') }}" class="nav-link {{ request()->routeIs('day_offs_user.index') ? 'active' : '' }}">
+                        {{ __('messages.day_off_user-index') }}
+                    </a>
+                </li>
+            </ul>
+        </div>
+        <div class="card-header pb-0 text-md-start text-center">
             <div class="d-flex gap-4">
                 <div>
                     <h4>

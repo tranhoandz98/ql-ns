@@ -104,7 +104,10 @@
         @endcan
 
 
-        <li class="menu-item {{ request()->routeIs('day_offs.*') ? 'active' : '' }}">
+        <li class="menu-item {{ request()->routeIs('day_offs.*') ? 'active' : '' }}
+
+            {{ request()->routeIs('day_offs_user.*') ? 'active' : '' }}
+            ">
             <a href={{ route('day_offs.index') }}  class="menu-link">
                 <i class="menu-icon icon-base ti tabler-calendar-cancel"></i>
                 <div>

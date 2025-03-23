@@ -294,5 +294,14 @@ return [
     'day_off-approve_s' => 'Duyệt ngày nghỉ thành công',
     'day_off-reject_s' => 'Từ chối ngày nghỉ thành công',
     'day_off-cc1' => 'Ngày nghỉ đang được sử dụng hoặc đã được xóa',
+    'day_off-allocation' => 'Cấp phát ngày nghỉ',
+
+    'user_id' => 'Nhân viên',
+    'day_off_user' => 'Cấp phát ngày nghỉ',
+    'day_off_user-index' => 'Danh sách cấp phát ngày nghỉ',
+    'day_off_user-num' => 'Thời lượng',
+    'day_off_user-remaining_leave' => 'Thời lượng còn lại',
+    'day_off_user-start_at' => 'Thời gian',
+    'day_off_user-create_s' => 'Cấp phát ngày nghỉ thành công',
 
 ];

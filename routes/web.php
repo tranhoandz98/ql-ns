@@ -4,6 +4,7 @@ use App\Http\Controllers\ConfigController;
 use App\Http\Controllers\DayOffController;
 use App\Http\Controllers\DayOffUserController;
 use App\Http\Controllers\DepartmentController;
+use App\Http\Controllers\KPIController;
 use App\Http\Controllers\NotificationController;
 use App\Http\Controllers\OvertimeController;
 use App\Http\Controllers\ProfileController;
@@ -184,7 +185,34 @@ Route::middleware('auth')->group(function () {
     });
 
     Route::prefix('day_offs_user')->name('day_offs_user.')->group(function () {
-        Route::get('/getByUser', [DayOffUserController::class, 'getByUser'])->name(name: 'getByUser')
-            ;
+        Route::get('/', [DayOffUserController::class, 'index'])->name('index')
+            ->can('allocation', DayOffs::class);
+        Route::get('/getByUser', [DayOffUserController::class, 'getByUser'])->name(name: 'getByUser');
+        Route::post('/createDayOffForAllUsers', [DayOffUserController::class, 'createDayOffForAllUsers'])->name('createDayOffForAllUsers')
+            ->can('allocation', DayOffs::class)
+        ;
+    });
+
+    Route::prefix('kpi')->name('kpi.')->group(function () {
+        Route::get('/', [KPIController::class, 'index'])->name('index')
+            ->can('viewAny', Overtimes::class);
+        Route::get('/create', [KPIController::class, 'create'])->name('create')
+            ->can('create', Overtimes::class);
+        Route::post('/', [KPIController::class, 'store'])->name('store')
+            ->can('create', Overtimes::class);
+        Route::get('/{id}', [KPIController::class, 'show'])->name('show')
+            ->can('view', Overtimes::class);
+        Route::get('/{id}/edit', [KPIController::class, 'edit'])->name('edit')
+            ->can('update', Overtimes::class);
+        Route::put('/{id}', [KPIController::class, 'update'])->name('update')
+            ->can('update', Overtimes::class);
+        Route::delete('/{id}', [KPIController::class, 'destroy'])->name('destroy')
+            ->can('delete', Overtimes::class);
+        Route::get('/{id}/send', [KPIController::class, 'send'])->name('send')
+            ->can('send', Overtimes::class);
+        Route::get('/{id}/approve', [KPIController::class, 'approve'])->name('approve')
+            ->can('approve', Overtimes::class);
+        Route::get('/{id}/reject', [KPIController::class, 'reject'])->name('reject')
+            ->can('reject', Overtimes::class);
     });
 });

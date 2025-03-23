@@ -24,6 +24,7 @@ if (!function_exists('formatDateView')) {
     }
 }
 
+
 if (!function_exists('checkPermission')) {
     function checkPermission($permission)
     {

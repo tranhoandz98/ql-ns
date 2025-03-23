@@ -50,4 +50,9 @@ class DayOffPolicy
     {
         return checkPermission('day_off_reject');
     }
+    public function allocation()
+    {
+        return checkPermission('day_off_allocation');
+    }
+
 }
