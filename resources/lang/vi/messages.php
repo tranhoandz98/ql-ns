@@ -103,19 +103,6 @@ return [
     'role-delete_s' => 'Xóa vai trò thành công',
     'role-cc1' => 'Vai trò đang được sử dụng hoặc đã được xóa',
 
-    'user' => 'Người dùng',
-    'user-search' => 'Tên người dùng, mã người dùng, email',
-    'user-role_id' => 'Vai trò',
-    'user-code' => 'Mã người dùng',
-    'user-position_id' => 'Chức vụ',
-    'user-department_id' => 'Phòng ban',
-    'user-manager_id' => 'Người quản lý',
-    'user-name' => 'Tên người dùng',
-    'user-email' => 'Email',
-    'user-phone' => 'Số điện thoại',
-    'user-description' => 'Mô tả',
-    'user-permission' => 'Quyền hạn',
-    'user-type' => 'Loại người dùng',
 
     'description_reset_pass' => 'Quên mật khẩu? Không vấn đề gì. Chỉ cần cho chúng tôi biết địa chỉ email của bạn và chúng tôi sẽ gửi cho bạn liên kết đặt lại mật khẩu cho phép bạn chọn mật khẩu mới.',
     'confirm' => 'Xác nhận',
@@ -130,6 +117,23 @@ return [
     'password_change_s' => 'Đổi mật khẩu thành công',
     'personal_information' => 'Thông tin cá nhân',
 
+
+    'user' => 'Người dùng',
+    'user-search' => 'Tên người dùng, mã người dùng, email',
+    'user-role_id' => 'Vai trò',
+    'user-code' => 'Mã người dùng',
+    'user-position_id' => 'Chức vụ',
+    'user-department_id' => 'Phòng ban',
+    'user-manager_id' => 'Người quản lý',
+    'user-name' => 'Tên người dùng',
+    'user-email' => 'Email',
+    'user-phone' => 'Số điện thoại',
+    'user-description' => 'Mô tả',
+    'user-permission' => 'Quyền hạn',
+    'user-type' => 'Loại người dùng',
+    'user-salary' => 'Lương cơ bản',
+    'user-salary_kpi' => 'Lương KPI',
+    'user-info_bank' => 'Thông tin ngân hàng',
     'user-start_date' => 'Ngày bắt đầu làm việc',
     'user-work_time' => 'Giờ làm việc',
     'user-identifier' => 'Mã định danh',
@@ -146,6 +150,10 @@ return [
     'user-bank' => 'Ngân hàng',
     'user-bank_branch' => 'Chi nhánh',
     'user-avatar' => 'Avatar',
+    'user-info_onother' => 'Thông tin khác',
+    'user-add_avatar' => 'Tải ảnh mới',
+    'user-remove_avatar' => 'Loại bỏ',
+    'user-info_general' => 'Thông tin chung',
 
     'user-menu' => 'Quản lý người dùng',
     'user-create' => 'Thêm mới người dùng',
@@ -266,6 +274,7 @@ return [
     'notification-no_notifications' => 'Không có thông báo nào',
     'notification-overtime_approval' => 'Thông báo tăng ca',
     'notification-day_off' => 'Thông báo ngày nghỉ',
+    'notification-salary' => 'Lương',
 
     'day_off-user_id' => 'Nhân viên',
     'day_off-start_at' => 'Ngày bắt đầu',
@@ -319,8 +328,6 @@ return [
     'start_at' => 'Ngày bắt đầu',
     'end_at' => 'Ngày kết thúc',
     'kpi-num' => 'Tổng đánh giá',
-
-
     'kpi_detail-title' => 'Định nghĩa mục tiêu',
     'kpi_detail-ratio' => 'Tỉ lệ',
     'kpi_detail-target' => 'Mục tiêu',
@@ -336,6 +343,26 @@ return [
     'kpi-reject_s' => 'Từ chối KPI thành công',
     'kpi-cc1' => 'KPI đang được sử dụng hoặc đã được xóa',
     'kpi-allocation' => 'Cấp phát KPI',
+
+
+    'salary' => 'Phiếu lương',
+    'salary-search' => 'Mã phiếu lương',
+    'salary-name' => 'Tên phiếu lương',
+    'salary-num' => 'Lương thực tế',
+
+    'salary-menu' => 'Phiếu lương',
+    'salary-create' => 'Thêm mới phiếu lương',
+    'salary-edit' => 'Cập nhật phiếu lương',
+    'salary-show' => 'Chi tiết phiếu lương',
+    'salary-index' => 'Danh sách phiếu lương',
+    'salary-create_s' => 'Thêm mới phiếu lương thành công',
+    'salary-update_s' => 'Cập nhật phiếu lương thành công',
+    'salary-delete_s' => 'Xóa phiếu lương thành công',
+    'salary-send_s' => 'Gửi phiếu lương thành công',
+    'salary-approve_s' => 'Duyệt phiếu lương thành công',
+    'salary-reject_s' => 'Từ chối phiếu lương thành công',
+    'salary-cc1' => 'Phiếu lương đang được sử dụng hoặc đã được xóa',
+    'salary-allocation' => 'Cấp phát phiếu lương',
 
 
 ];

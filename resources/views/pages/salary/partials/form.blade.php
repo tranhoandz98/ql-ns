@@ -172,7 +172,7 @@
             <div class="form-group mb-4 col-6">
                 <x-input-label for="name">
                     <span class="text-danger">*</span>
-                    @lang('messages.kpi-name')
+                    @lang('messages.salary-name')
                 </x-input-label>
                 <input type="text" class="form-control" id="name" name="name" {{ $disabled ?? '' }}
                     value="{{ old('name', $result->name ?? '') }}" />
@@ -243,7 +243,7 @@
             <div class="col-md-6 ">
                 <div class="form-group mb-4">
                     <x-input-label for="num">
-                        @lang('messages.kpi-num')
+                        @lang('messages.salary-num')
                     </x-input-label>
                     <input type="text" class="form-control" id="num_show" name="num_show" placeholder="" disabled
                         value="{{ old('num', $result->num ?? '0') }}" />
@@ -478,14 +478,14 @@
         </div>
 
         <div class="gap-4 justify-content-center d-flex">
-            <a href="{{ route('kpi.index') }}">
+            <a href="{{ route('salary.index') }}">
                 <x-button :icon="'x'" type="button" class="btn-secondary">
                     @lang('messages.cancel')
                 </x-button>
             </a>
             @can('send', App\Models\KPI::class)
                 @if (!empty($disabled) && $result && $result->status === App\Enums\DayOff\StatusDayOffEnum::DRAFT->value)
-                    <a class="btn btn-info" href={{ route('kpi.send', $result->id) }}>
+                    <a class="btn btn-info" href={{ route('salary.send', $result->id) }}>
                         <x-icon :icon="'send'" class="me-2"></x-icon>
                         {{ __('messages.send') }}
                     </a>
@@ -495,14 +495,14 @@
             && $result->isApprove
             )
                 @can('reject', App\Models\KPI::class)
-                    <a href="{{ route('kpi.reject', $result->id) }}" class="btn btn-danger">
+                    <a href="{{ route('salary.reject', $result->id) }}" class="btn btn-danger">
                         <x-icon :icon="'x'" />
                         @lang('messages.reject')
                     </a>
                 @endcan
 
                 @can('approve', App\Models\KPI::class)
-                    <a href="{{ route('kpi.approve', $result->id) }}" class="btn btn-success">
+                    <a href="{{ route('salary.approve', $result->id) }}" class="btn btn-success">
                         <x-icon :icon="'check'" />
                         @lang('messages.approve')
                     </a>

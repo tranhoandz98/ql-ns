@@ -12,8 +12,11 @@ use App\Http\Controllers\RoleController;
 use App\Http\Controllers\TimekeepingController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\PositionController;
+use App\Http\Controllers\SalaryController;
 use App\Models\DayOffs;
+use App\Models\KPI;
 use App\Models\Overtimes;
+use App\Models\Salary;
 use App\Models\User;
 use Illuminate\Support\Facades\Route;
 
@@ -195,24 +198,43 @@ Route::middleware('auth')->group(function () {
 
     Route::prefix('kpi')->name('kpi.')->group(function () {
         Route::get('/', [KPIController::class, 'index'])->name('index')
-            ->can('viewAny', Overtimes::class);
+            ->can('viewAny', KPI::class);
         Route::get('/create', [KPIController::class, 'create'])->name('create')
-            ->can('create', Overtimes::class);
+            ->can('create', KPI::class);
         Route::post('/', [KPIController::class, 'store'])->name('store')
-            ->can('create', Overtimes::class);
+            ->can('create', KPI::class);
         Route::get('/{id}', [KPIController::class, 'show'])->name('show')
-            ->can('view', Overtimes::class);
+            ->can('view', KPI::class);
         Route::get('/{id}/edit', [KPIController::class, 'edit'])->name('edit')
-            ->can('update', Overtimes::class);
+            ->can('update', KPI::class);
         Route::put('/{id}', [KPIController::class, 'update'])->name('update')
-            ->can('update', Overtimes::class);
+            ->can('update', KPI::class);
         Route::delete('/{id}', [KPIController::class, 'destroy'])->name('destroy')
-            ->can('delete', Overtimes::class);
+            ->can('delete', KPI::class);
         Route::get('/{id}/send', [KPIController::class, 'send'])->name('send')
-            ->can('send', Overtimes::class);
+            ->can('send', KPI::class);
         Route::get('/{id}/approve', [KPIController::class, 'approve'])->name('approve')
-            ->can('approve', Overtimes::class);
+            ->can('approve', KPI::class);
         Route::get('/{id}/reject', [KPIController::class, 'reject'])->name('reject')
-            ->can('reject', Overtimes::class);
+            ->can('reject', KPI::class);
+    });
+
+    Route::prefix('salary')->name('salary.')->group(function () {
+        Route::get('/', [SalaryController::class, 'index'])->name('index')
+            ->can('viewAny', Salary::class);
+        Route::get('/create', [SalaryController::class, 'create'])->name('create')
+            ->can('create', Salary::class);
+        Route::post('/', [SalaryController::class, 'store'])->name('store')
+            ->can('create', Salary::class);
+        Route::get('/{id}', [SalaryController::class, 'show'])->name('show')
+            ->can('view', Salary::class);
+        Route::get('/{id}/edit', [SalaryController::class, 'edit'])->name('edit')
+            ->can('update', Salary::class);
+        Route::put('/{id}', [SalaryController::class, 'update'])->name('update')
+            ->can('update', Salary::class);
+        Route::delete('/{id}', [SalaryController::class, 'destroy'])->name('destroy')
+            ->can('delete', Salary::class);
+        Route::get('/{id}/approve', [SalaryController::class, 'approve'])->name('approve')
+            ->can('approve', Salary::class);
     });
 });

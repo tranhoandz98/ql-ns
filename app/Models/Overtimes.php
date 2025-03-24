@@ -38,4 +38,21 @@ class Overtimes extends Model
         return $this->belongsTo(User::class, 'user_id', 'id',);
     }
 
+    public function getIsApproveAttribute()
+    {
+        $user = User::find($this->user_id);
+
+        $auth = Auth::user();
+        if ($user) {
+            if ($auth->type == 2 && $user->manager_id == $auth->id) {
+                return true;
+            } elseif ($auth->type == 1) {
+                return true;
+            } elseif ($auth->type == 3) {
+                return false;
+            }
+        }
+
+        return null; // hoặc false, tùy thuộc vào logic của bạn
+    }
 }

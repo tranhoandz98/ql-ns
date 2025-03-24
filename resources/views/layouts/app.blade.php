@@ -169,7 +169,7 @@
                 text: `{{ __('messages.are_you_sure_delete') }}`,
                 icon: "warning",
                 showCancelButton: true,
-                reverseButtons:true,
+                reverseButtons: true,
                 confirmButtonText: "{{ __('messages.delete') }}",
                 cancelButtonText: "{{ __('messages.cancel') }}",
                 customClass: {
@@ -183,6 +183,12 @@
                     form.submit(); // Submit the form if confirmed
                 }
             });
+        }
+
+        function formatCurrency(input) {
+            let value = input.value.replace(/\D/g, ""); // Chỉ giữ lại số
+            value = new Intl.NumberFormat('vi-VN').format(value); // Định dạng kiểu tiền tệ Việt Nam
+            input.value = value;
         }
     </script>
     @yield('script')

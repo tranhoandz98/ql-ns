@@ -148,6 +148,8 @@ class UserController extends Controller
                 'person_tax_code' => $request->person_tax_code,
                 'identifier' => $request->identifier,
                 'work_time' => $request->work_time,
+                'salary' => str_replace('.', '', $request->salary),
+                'salary_kpi' => str_replace('.', '', $request->salary_kpi),
             ]);
 
 
@@ -278,6 +280,8 @@ class UserController extends Controller
                 'start_date' => !empty($request->start_date) ? Carbon::createFromFormat('d/m/Y', $request->start_date)->format('Y-m-d') : null,
 
                 'work_time' => $request->work_time,
+                'salary' => str_replace('.', '', $request->salary),
+                'salary_kpi' => str_replace('.', '', $request->salary_kpi),
             ]);
 
             if (empty($request->avatar) && !$request->hasFile('fileAvatar')) {

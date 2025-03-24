@@ -11,6 +11,7 @@ use App\Models\KPI;
 use App\Models\Position;
 use App\Models\Overtimes;
 use App\Models\Roles;
+use App\Models\Salary;
 use App\Models\Timekeeping;
 use App\Policies\DayOffPolicy;
 use App\Policies\UserPolicy;
@@ -19,6 +20,7 @@ use App\Policies\DepartmentPolicy;
 use App\Policies\KPIPolicy;
 use App\Policies\PositionPolicy;
 use App\Policies\OvertimePolicy;
+use App\Policies\SalaryPolicy;
 use App\Policies\TimekeepingPolicy;
 
 class AppServiceProvider extends ServiceProvider
@@ -44,5 +46,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(Timekeeping::class, TimekeepingPolicy::class);
         Gate::policy(DayOffs::class, DayOffPolicy::class);
         Gate::policy(KPI::class, KPIPolicy::class);
+        Gate::policy(Salary::class, SalaryPolicy::class);
     }
 }

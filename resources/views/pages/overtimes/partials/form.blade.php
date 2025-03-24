@@ -283,7 +283,9 @@
                     </a>
                 @endif
             @endcan
-            @if (!empty($disabled) && $result && $result->status === \App\Enums\User\StatusOverTimeEnum::WAIT_MANAGER->value)
+            @if (!empty($disabled) && $result && $result->status === \App\Enums\User\StatusOverTimeEnum::WAIT_MANAGER->value
+            && $result->isApprove
+            )
                 @can('reject', App\Models\Overtimes::class)
                     <a href="{{ route('overtimes.reject', $result->id) }}" class="btn btn-danger">
                         <x-icon :icon="'x'" />

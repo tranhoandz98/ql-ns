@@ -51,6 +51,10 @@ class UserRequest extends FormRequest
             'bank' => 'max:255',
             'bank_branch' => 'max:255',
             'fileAvatar' => 'image|mimes:jpeg,png,jpg|max:1024',
+
+            'salary' => 'required|max:11',
+            'salary_kpi' => 'nullable|max:11',
+            'work_time' => 'required',
         ];
         return $rules;
     }
@@ -75,8 +79,11 @@ class UserRequest extends FormRequest
             'permanent_address' => Lang::get('messages.user-permanent_address'),
             'bank_account' => Lang::get('messages.user-bank_account'),
             'bank' => Lang::get('messages.user-bank'),
-            'bank_branch' => Lang::get('messages.user-bank_branch'),
             'fileAvatar' => Lang::get('messages.user-avatar'),
+            'bank_branch' => Lang::get('messages.user-bank_branch'),
+            'salary' => Lang::get('messages.user-salary'),
+            'salary_kpi' => Lang::get('messages.user-salary_kpi'),
+            'work_time' => Lang::get('messages.user-work_time'),
         ];
     }
 

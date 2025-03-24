@@ -98,7 +98,9 @@
     <div class="">
         <div class="d-flex gap-4">
             <div>
-                <h5 class="text-primary mb-2">Thông tin chung</h5>
+                <h5 class="text-primary mb-2">
+                    @lang('messages.user-info_general')
+                </h5>
             </div>
 
             <div class="ml-auto">
@@ -140,9 +142,9 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="position_id">
+                    <x-input-label for="role_id">
                         <span class="text-danger">*</span>
-                        Vai trò
+                        @lang('messages.user-role_id')
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="role_id" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
@@ -160,7 +162,8 @@
                 <div class="form-group mb-4">
                     <x-input-label for="position_id">
                         <span class="text-danger">*</span>
-                        Chức vụ
+                        @lang('messages.user-position_id')
+
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="position_id"
                         {{ $disabled ?? '' }}>
@@ -179,8 +182,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="department_id">
                         <span class="text-danger">*</span>
-                        Phòng ban
-
+                        @lang('messages.user-department_id')
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="department_id"
                         {{ $disabled ?? '' }}>
@@ -238,8 +240,7 @@
                 <div class="form-group mb-4">
                     <x-input-label for="type">
                         <span class="text-danger">*</span>
-                        Loại người dùng
-
+                        @lang('messages.user-type')
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="type" {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
@@ -258,15 +259,17 @@
                 <div class="d-flex gap-4">
                     <div class="">
                         <x-input-label for="type">
-                            Avatar
+                            @lang('messages.user-avatar')
                         </x-input-label>
                         <div class="d-flex gap-4">
                             <x-input-label for="fileAvatar" class="btn btn-primary text-white {{ $disabled ?? '' }}">
                                 <i class="me-2 icon-xs  icon-base ti tabler-upload"></i>
-                                Tải ảnh mới
+                                @lang('messages.user-add_avatar')
                             </x-input-label>
                             <x-button type="button" id="remove-avatar" class="btn-danger {{ $disabled ?? '' }}"
-                                :icon="'x'">Loại bỏ</x-button>
+                                :icon="'x'">
+                                @lang('messages.user-remove_avatar')
+                            </x-button>
                         </div>
                         <input type="text" class="form-control d-none" id="avatar" name="avatar"
                             {{ $disabled ?? '' }} value="{{ old('avatar', $result->avatar ?? '') }}" />
@@ -290,11 +293,14 @@
 
 
     <div>
-        <h5 class="text-primary mb-2">Thông tin khác</h5>
+        <h5 class="text-primary mb-2">
+            @lang('messages.user-info_onother')
+        </h5>
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="work_time">
+                        <span class="text-danger">*</span>
                         @lang('messages.user-work_time')
                     </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="work_time"
@@ -312,7 +318,36 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="start_date" :value="'Ngày bắt đầu làm việc'"></x-input-label>
+                    <x-input-label for="salary">
+                        <span class="text-danger">*</span>
+                        @lang('messages.user-salary')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="salary" name="salary"
+                        {{ $disabled ?? '' }} value="{{ old('salary', number_format($result->salary ?? 0, 0, ',', '.')) }}"
+                        oninput="formatCurrency(this)"
+
+                        />
+                    <x-input-error :messages="$errors->get('salary')" class="" />
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="salary_kpi">
+                        @lang('messages.user-salary_kpi')
+                    </x-input-label>
+
+                    <input type="number" class="form-control" id="salary_kpi" name="salary_kpi"
+                        {{ $disabled ?? '' }} value="{{ old('salary_kpi', $result->salary_kpi ?? '') }}"
+                        oninput="formatCurrency(this)"
+                        />
+                    <x-input-error :messages="$errors->get('salary_kpi')" class="" />
+                </div>
+            </div>
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="start_date">
+                        @lang('messages.user-start_date')
+                    </x-input-label>
                     <input type="text" class="form-control flatpickr-rangepicker-single" id="start_date"
                         name="start_date" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('start_date', $result->start_date ?? '') }}" />
@@ -321,23 +356,29 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="person_tax_code">MST cá nhân</x-input-label>
-                    <input type="timestamp" class="form-control" id="person_tax_code" name="person_tax_code"
+                    <x-input-label for="person_tax_code">
+                        @lang('messages.user-person_tax_code')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="person_tax_code" name="person_tax_code"
                         {{ $disabled ?? '' }} value="{{ old('person_tax_code', $result->person_tax_code ?? '') }}" />
                     <x-input-error :messages="$errors->get('person_tax_code')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="identifier">Mã định danh</x-input-label>
-                    <input type="timestamp" class="form-control" id="identifier" name="identifier"
+                    <x-input-label for="identifier">
+                        @lang('messages.user-identifier')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="identifier" name="identifier"
                         {{ $disabled ?? '' }} value="{{ old('identifier', $result->identifier ?? '') }}" />
                     <x-input-error :messages="$errors->get('identifier')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="date_of_issue">Ngày cấp</x-input-label>
+                    <x-input-label for="date_of_issue">
+                        @lang('messages.user-date_of_birth')
+                    </x-input-label>
                     <input type="text" class="form-control flatpickr-rangepicker-single" id="date_of_issue"
                         name="date_of_issue" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_issue', $result->date_of_issue ?? '') }}" />
@@ -346,15 +387,19 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="place_of_issue">Nơi cấp</x-input-label>
-                    <input type="timestamp" class="form-control" id="place_of_issue" name="place_of_issue"
+                    <x-input-label for="place_of_issue">
+                        @lang('messages.user-place_of_issue')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="place_of_issue" name="place_of_issue"
                         {{ $disabled ?? '' }} value="{{ old('place_of_issue', $result->place_of_issue ?? '') }}" />
                     <x-input-error :messages="$errors->get('place_of_issue')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="date_of_birth">Ngày sinh</x-input-label>
+                    <x-input-label for="date_of_birth">
+                        @lang('messages.user-date_of_birth')
+                    </x-input-label>
                     <input type="text" class="form-control flatpickr-rangepicker-single" id="date_of_birth"
                         name="date_of_birth" placeholder="DD/MM/YYYY" {{ $disabled ?? '' }}
                         value="{{ old('date_of_birth', $result->date_of_birth ?? '') }}" />
@@ -363,7 +408,9 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="gender">Giới tính</x-input-label>
+                    <x-input-label for="gender">
+                        @lang('messages.user-gender')
+                    </x-input-label>
                     <select class="select2 form-select" data-allow-clear="true" name="work_time"
                         {{ $disabled ?? '' }}>
                         <option value="" disabled selected>Chọn</option>
@@ -380,32 +427,40 @@
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="nationality">Quốc tịnh</x-input-label>
-                    <input type="timestamp" class="form-control" id="nationality" name="nationality"
+                    <x-input-label for="nationality">
+                        @lang('messages.user-nationality')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="nationality" name="nationality"
                         {{ $disabled ?? '' }} value="{{ old('nationality', $result->nationality ?? '') }}" />
                     <x-input-error :messages="$errors->get('nationality')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="nation">Dân tộc</x-input-label>
-                    <input type="timestamp" class="form-control" id="nation" name="nation"
+                    <x-input-label for="nation">
+                        @lang('messages.user-nation')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="nation" name="nation"
                         {{ $disabled ?? '' }} value="{{ old('nation', $result->nation ?? '') }}" />
                     <x-input-error :messages="$errors->get('nation')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="current_address">Địa chỉ hiện tại</x-input-label>
-                    <input type="timestamp" class="form-control" id="current_address" name="current_address"
+                    <x-input-label for="current_address">
+                        @lang('messages.user-current_address')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="current_address" name="current_address"
                         {{ $disabled ?? '' }} value="{{ old('current_address', $result->current_address ?? '') }}" />
                     <x-input-error :messages="$errors->get('current_address')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="permanent_address">Địa chỉ thường trú</x-input-label>
-                    <input type="timestamp" class="form-control" id="permanent_address" name="permanent_address"
+                    <x-input-label for="permanent_address">
+                        @lang('messages.user-permanent_address')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="permanent_address" name="permanent_address"
                         {{ $disabled ?? '' }}
                         value="{{ old('permanent_address', $result->permanent_address ?? '') }}" />
                     <x-input-error :messages="$errors->get('permanent_address')" class="" />
@@ -456,30 +511,38 @@
     </div>
 
     <div>
-        <h5 class="text-primary mb-2">Thông tin ngân hàng</h5>
+        <h5 class="text-primary mb-2">
+            @lang('messages.user-info_bank')
+        </h5>
         <div class="row">
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="bank_account">Tài khoản ngân hàng</x-input-label>
-                    <input type="timestamp" class="form-control" id="bank_account" name="bank_account"
+                    <x-input-label for="bank_account">
+                        @lang('messages.user-bank_account')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="bank_account" name="bank_account"
                         {{ $disabled ?? '' }} value="{{ old('bank_account', $result->bank_account ?? '') }}" />
                     <x-input-error :messages="$errors->get('bank_account')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="bank">Ngân hàng</x-input-label>
-                    <input type="timestamp" class="form-control" id="bank" name="bank"
+                    <x-input-label for="bank">
+                        @lang('messages.user-bank')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="bank" name="bank"
                         {{ $disabled ?? '' }} value="{{ old('bank', $result->bank ?? '') }}" />
                     <x-input-error :messages="$errors->get('bank')" class="" />
                 </div>
             </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
-                    <x-input-label for="bank_branch">Chi nhánh</x-input-label>
-                    <input type="timestamp" class="form-control" id="bank_branch" name="bank_branch"
-                        {{ $disabled ?? '' }} value="{{ old('bank_branch', $result->bank_branch ?? '') }}" />
-                    <x-input-error :messages="$errors->get('bank_branch')" class="" />
+                    <x-input-label for="bank_branch">
+                        @lang('messages.user-bank_branch')
+                    </x-input-label>
+                        <input type="text" class="form-control" id="bank_branch" name="bank_branch"
+                            {{ $disabled ?? '' }} value="{{ old('bank_branch', $result->bank_branch ?? '') }}" />
+                        <x-input-error :messages="$errors->get('bank_branch')" class="" />
                 </div>
             </div>
         </div>

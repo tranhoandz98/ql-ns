@@ -328,7 +328,9 @@
                     </a>
                 @endif
             @endcan
-            @if (!empty($disabled) && $result && $result->status === \App\Enums\DayOff\StatusDayOffEnum::WAIT_MANAGER->value)
+            @if (!empty($disabled) && $result && $result->status === \App\Enums\DayOff\StatusDayOffEnum::WAIT_MANAGER->value
+            && $result->isApprove
+            )
                 @can('reject', App\Models\DayOffs::class)
                     <a href="{{ route('day_offs.reject', $result->id) }}" class="btn btn-danger">
                         <x-icon :icon="'x'" />

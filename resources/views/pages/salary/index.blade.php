@@ -1,6 +1,6 @@
-@section('title', __('messages.kpi-index'))
+@section('title', __('messages.salary-index'))
 @section('breadcrumbs')
-    <x-breadcrumb :label="__('messages.kpi')">
+    <x-breadcrumb :label="__('messages.salary')">
     </x-breadcrumb>
 @endsection
 @section('cssVendor')
@@ -30,12 +30,12 @@
             <div class="d-flex gap-4">
                 <div>
                     <h4>
-                        {{ __('messages.kpi-index') }}
+                        {{ __('messages.salary-index') }}
                     </h4>
                 </div>
                 <div class="ms-auto">
                     @can('create', App\Models\KPI::class)
-                        <a href="{{ route('kpi.create') }}">
+                        <a href="{{ route('salary.create') }}">
                             <x-button type="button" class="btn-success" :icon="'plus'">
                                 {{ __('messages.add') }}
                             </x-button>
@@ -45,7 +45,7 @@
             </div>
         </div>
         <div class="card-body">
-            @include('pages.kpi.partials.search-form')
+            @include('pages.salary.partials.search-form')
         </div>
         <div class="card-datatable table-responsive">
             @if (request('group_by'))
@@ -77,16 +77,16 @@
                                 {{ __('messages.code') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-name') }}
+                                {{ __('messages.salary-name') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-start_at') }}
+                                {{ __('messages.salary-start_at') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-end_at') }}
+                                {{ __('messages.salary-end_at') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-num') }}
+                                {{ __('messages.salary-num') }}
                             </th>
                             <th>
                                 {{ __('messages.status') }}
@@ -138,7 +138,7 @@
                                         @php
                                             $statusBadge = '';
                                             $colorBadge = '';
-                                            foreach ($statusApproveEnum as $status) {
+                                            foreach ($salaryStatusEnum as $status) {
                                                 if ($status['id'] == $child->status) {
                                                     $statusBadge = $status['name'];
                                                     $colorBadge = $status['color'];
@@ -154,7 +154,7 @@
                                         </span>
                                     </td>
                                     <td>
-                                        @include('pages.kpi.partials.action-index', [
+                                        @include('pages.salary.partials.action-index', [
                                             'item' => $child,
                                         ])
                                     </td> <!-- Hành động trống -->
@@ -177,7 +177,7 @@
                                 {{ __('messages.code') }}
                             </th>
                              <th>
-                                {{ __('messages.kpi-name') }}
+                                {{ __('messages.salary-name') }}
                             </th>
 
                             <th>
@@ -187,7 +187,7 @@
                                 {{ __('messages.end_at') }}
                             </th>
                             <th>
-                                {{ __('messages.kpi-num') }}
+                                {{ __('messages.salary-num') }}
                             </th>
                             <th>
                                 {{ __('messages.status') }}
@@ -219,7 +219,7 @@
                                     @php
                                         $statusBadge = '';
                                         $colorBadge = '';
-                                        foreach ($statusApproveEnum as $status) {
+                                        foreach ($salaryStatusEnum as $status) {
                                             if ($status['id'] == $item->status) {
                                                 $statusBadge = $status['name'];
                                                 $colorBadge = $status['color'];
@@ -235,7 +235,7 @@
                                     </span>
                                 </td>
                                 <td>
-                                    @include('pages.kpi.partials.action-index', [
+                                    @include('pages.salary.partials.action-index', [
                                         'item' => $item,
                                     ])
 

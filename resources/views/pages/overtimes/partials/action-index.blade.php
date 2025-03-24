@@ -34,22 +34,23 @@
                             </a>
                         @endif
                     @endcan
-                    @can('approve', App\Models\Overtimes::class)
-                        @if ($item->status === App\Enums\User\StatusOverTimeEnum::WAIT_MANAGER->value)
+                    @if ($item->status === App\Enums\User\StatusOverTimeEnum::WAIT_MANAGER->value
+                    && $item->isApprove
+                    )
+                        @can('approve', App\Models\Overtimes::class)
                             <a class="dropdown-item" href={{ route('overtimes.approve', $item->id) }}>
                                 <x-icon :icon="'check'" class="me-2"></x-icon>
                                 {{ __('messages.approve') }}
                             </a>
-                        @endif
-                    @endcan
-                    @can('reject', App\Models\Overtimes::class)
-                        @if ($item->status === App\Enums\User\StatusOverTimeEnum::WAIT_MANAGER->value)
+                        @endcan
+                        @can('reject', App\Models\Overtimes::class)
                             <a class="dropdown-item" href={{ route('overtimes.reject', $item->id) }}>
                                 <x-icon :icon="'x'" class="me-2"></x-icon>
                                 {{ __('messages.reject') }}
                             </a>
-                        @endif
-                    @endcan
+                        @endcan
+                    @endif
+
                     @can('delete', App\Models\Overtimes::class)
                         @if ($item->status !== App\Enums\User\StatusOverTimeEnum::DONE->value)
                             <form action="{{ route('overtimes.destroy', $item->id) }}" method="POST" style="display:inline;"

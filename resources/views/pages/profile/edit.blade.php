@@ -103,7 +103,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="person_tax_code">MST cá nhân</x-input-label>
-                                        <input type="timestamp" class="form-control" id="person_tax_code"
+                                        <input type="text" class="form-control" id="person_tax_code"
                                             name="person_tax_code" {{ $disabled ?? '' }}
                                             value="{{ old('person_tax_code', $result->person_tax_code ?? '') }}" />
                                         <x-input-error :messages="$errors->get('person_tax_code')" class="" />
@@ -112,7 +112,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="identifier">Mã định danh</x-input-label>
-                                        <input type="timestamp" class="form-control" id="identifier" name="identifier"
+                                        <input type="text" class="form-control" id="identifier" name="identifier"
                                             {{ $disabled ?? '' }}
                                             value="{{ old('identifier', $result->identifier ?? '') }}" />
                                         <x-input-error :messages="$errors->get('identifier')" class="" />
@@ -131,7 +131,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="place_of_issue">Nơi cấp</x-input-label>
-                                        <input type="timestamp" class="form-control" id="place_of_issue"
+                                        <input type="text" class="form-control" id="place_of_issue"
                                             name="place_of_issue" {{ $disabled ?? '' }}
                                             value="{{ old('place_of_issue', $result->place_of_issue ?? '') }}" />
                                         <x-input-error :messages="$errors->get('place_of_issue')" class="" />
@@ -167,7 +167,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="nationality">Quốc tịnh</x-input-label>
-                                        <input type="timestamp" class="form-control" id="nationality"
+                                        <input type="text" class="form-control" id="nationality"
                                             name="nationality" {{ $disabled ?? '' }}
                                             value="{{ old('nationality', $result->nationality ?? '') }}" />
                                         <x-input-error :messages="$errors->get('nationality')" class="" />
@@ -176,7 +176,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="nation">Dân tộc</x-input-label>
-                                        <input type="timestamp" class="form-control" id="nation" name="nation"
+                                        <input type="text" class="form-control" id="nation" name="nation"
                                             {{ $disabled ?? '' }}
                                             value="{{ old('nation', $result->nation ?? '') }}" />
                                         <x-input-error :messages="$errors->get('nation')" class="" />
@@ -185,7 +185,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="current_address">Địa chỉ hiện tại</x-input-label>
-                                        <input type="timestamp" class="form-control" id="current_address"
+                                        <input type="text" class="form-control" id="current_address"
                                             name="current_address" {{ $disabled ?? '' }}
                                             value="{{ old('current_address', $result->current_address ?? '') }}" />
                                         <x-input-error :messages="$errors->get('current_address')" class="" />
@@ -194,7 +194,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="permanent_address">Địa chỉ thường trú</x-input-label>
-                                        <input type="timestamp" class="form-control" id="permanent_address"
+                                        <input type="text" class="form-control" id="permanent_address"
                                             name="permanent_address" {{ $disabled ?? '' }}
                                             value="{{ old('permanent_address', $result->permanent_address ?? '') }}" />
                                         <x-input-error :messages="$errors->get('permanent_address')" class="" />
@@ -209,7 +209,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="bank_account">Tài khoản ngân hàng</x-input-label>
-                                        <input type="timestamp" class="form-control" id="bank_account"
+                                        <input type="text" class="form-control" id="bank_account"
                                             name="bank_account" {{ $disabled ?? '' }}
                                             value="{{ old('bank_account', $result->bank_account ?? '') }}" />
                                         <x-input-error :messages="$errors->get('bank_account')" class="" />
@@ -218,7 +218,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="bank">Ngân hàng</x-input-label>
-                                        <input type="timestamp" class="form-control" id="bank" name="bank"
+                                        <input type="text" class="form-control" id="bank" name="bank"
                                             {{ $disabled ?? '' }} value="{{ old('bank', $result->bank ?? '') }}" />
                                         <x-input-error :messages="$errors->get('bank')" class="" />
                                     </div>
@@ -226,7 +226,7 @@
                                 <div class="col-md-6">
                                     <div class="form-group mb-4">
                                         <x-input-label for="bank_branch">Chi nhánh</x-input-label>
-                                        <input type="timestamp" class="form-control" id="bank_branch"
+                                        <input type="text" class="form-control" id="bank_branch"
                                             name="bank_branch" {{ $disabled ?? '' }}
                                             value="{{ old('bank_branch', $result->bank_branch ?? '') }}" />
                                         <x-input-error :messages="$errors->get('bank_branch')" class="" />

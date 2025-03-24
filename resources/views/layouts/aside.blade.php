@@ -124,9 +124,11 @@
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('salary.*') ? 'active' : '' }}">
-            <a href="app-email.html" class="menu-link">
+            <a href={{ route('salary.index') }} class="menu-link">
                 <i class="menu-icon icon-base ti tabler-user-dollar"></i>
-                <div>Lương và phúc lợi</div>
+                <div>
+                    @lang('messages.salary-menu')
+                </div>
             </a>
         </li>
         <li class="menu-item {{ request()->routeIs('device.*') ? 'active' : '' }}">

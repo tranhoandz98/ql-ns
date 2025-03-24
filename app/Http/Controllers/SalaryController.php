@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Enums\DayOff\StatusDayOffEnum;
 use App\Enums\DayOff\TypeDayOffEnum;
 use App\Enums\DayOff\TypeSessionDayOffEnum;
+use App\Enums\Salary\SalaryStatusEnum;
 use App\Enums\StatusApproveEnum;
 use App\Enums\User\ColorEnum;
 use App\Enums\User\StatusNotifyReadEnum;
@@ -15,7 +16,7 @@ use App\Enums\User\TypeOvertimeEnum;
 use App\Enums\User\TypeUserEnum;
 use App\Http\Requests\KPIRequest;
 use App\Models\Notifications;
-use App\Models\KPI;
+use App\Models\Salary;
 use App\Models\DayOffsUser;
 use App\Models\KPIDetail;
 use App\Models\User;
@@ -25,7 +26,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Lang;
 
-class KPIController extends Controller
+class SalaryController extends Controller
 {
 
     /**
@@ -36,7 +37,7 @@ class KPIController extends Controller
         $perPage = $request->perPage ?? 10;
         $groupBy = $request->group_by;
 
-        $query = KPI::with([
+        $query = Salary::with([
             'user:id,code,name'
         ])
             ->where(function ($query) use ($request) {
@@ -61,14 +62,10 @@ class KPIController extends Controller
                 // Check user type and filter records accordingly
                 $user = Auth::user();
                 if ($user) {
-                    if ($user->type === TypeUserEnum::NHAN_VIEN->value) {
-                        // For regular employees, only show their own records
-                        $query->where('user_id', $user->id);
-                    } elseif ($user->type === TypeUserEnum::CAN_BO_QUAN_LY->value) {
-                        // For managers, show records of users they manage
-                        $query->whereHas('user', function ($q) use ($user) {
-                            $q->where('manager_id', $user->id);
-                        });
+                    if ($user->type !== TypeUserEnum::ADMIN->value) {
+                        // Nếu không phải ADMIN, chỉ lấy các bản ghi của chính họ và trạng thái "done"
+                        $query->where('user_id', $user->id)
+                            ->where('status', SalaryStatusEnum::DONE->value);
                     }
                     // Admin can see all records, so no additional filter needed
                 }
@@ -95,7 +92,7 @@ class KPIController extends Controller
                 ->get()
                 ->map(function ($parent) use ($groupFormat, $request) {
                     // Get child records for each group
-                    $parent->records = KPI::where('user_id', $parent->user_id)
+                    $parent->records = Salary::where('user_id', $parent->user_id)
                         ->whereRaw("DATE_FORMAT(start_at, '$groupFormat') = ?", [$parent->group_period])
                         ->where(function ($query) use ($request) {
                             if (!empty($request->start_at)) {
@@ -128,13 +125,13 @@ class KPIController extends Controller
 
         $users = User::select(['id', 'name', 'code'])->active()->get();
 
-        $statusApproveEnum = StatusApproveEnum::options();
+        $salaryStatusEnum = SalaryStatusEnum::options();
         $typeGroupEnum = TypeGroupEnum::options();
 
-        return view('pages.kpi.index', compact(
+        return view('pages.salary.index', compact(
             'listAll',
             'users',
-            'statusApproveEnum',
+            'salaryStatusEnum',
             'typeGroupEnum'
         ));
     }
@@ -147,7 +144,7 @@ class KPIController extends Controller
         $users = User::select(['id', 'name', 'code'])->active()->get();
 
         return view(
-            'pages.kpi.create',
+            'pages.salary.create',
             compact(
                 'users',
             )
@@ -161,9 +158,9 @@ class KPIController extends Controller
     {
         DB::beginTransaction();
         try {
-            $result = KPI::create(
+            $result = Salary::create(
                 [
-                    'code'=> $this->genderEnumCode(),
+                    'code' => $this->genderEnumCode(),
                     'name' => $request->name,
                     'user_id' => $request->user_id,
                     'start_at' => Carbon::createFromFormat('d/m/Y', $request->start_at)->format('Y-m-d'),
@@ -171,7 +168,7 @@ class KPIController extends Controller
                     'note' => $request->note,
                     'description' => $request->description,
                     'num' => $request->num,
-                    'status'=> StatusApproveEnum::DRAFT
+                    'status' => StatusApproveEnum::DRAFT
                 ]
             );
 
@@ -187,9 +184,9 @@ class KPIController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('kpi.index')
+            return redirect()->route('salary.index')
                 ->with(
-                    ['message' => Lang::get('messages.kpi-create_s'), 'status' => 'success']
+                    ['message' => Lang::get('messages.salary-create_s'), 'status' => 'success']
                 );
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -203,7 +200,7 @@ class KPIController extends Controller
     public function show(string $id)
     {
         //
-        $result = KPI::with(
+        $result = Salary::with(
             [
                 'createdByData:id,name',
                 'updatedByData:id,name',
@@ -214,7 +211,7 @@ class KPIController extends Controller
         $users = User::select(['id', 'name', 'code'])->active()->get();
         $statusApproveEnum = StatusApproveEnum::options();
 
-        return view('pages.kpi.show', compact(
+        return view('pages.salary.show', compact(
             'result',
             'users',
             'statusApproveEnum',
@@ -228,14 +225,14 @@ class KPIController extends Controller
     {
         //
 
-        $result = KPI::with(
+        $result = Salary::with(
             [
                 'details'
             ]
         )->find($id);
         $users = User::select(['id', 'name', 'code'])->active()->get();
 
-        return view('pages.kpi.edit', compact(
+        return view('pages.salary.edit', compact(
             'result',
             'users',
         ));
@@ -249,7 +246,7 @@ class KPIController extends Controller
 
         DB::beginTransaction();
         try {
-            $result = KPI::findOrFail($id);
+            $result = Salary::findOrFail($id);
 
             $result->update(
                 [
@@ -260,7 +257,7 @@ class KPIController extends Controller
                     'note' => $request->note,
                     'description' => $request->description,
                     'num' => $request->num,
-                    'status'=> StatusApproveEnum::DRAFT
+                    'status' => StatusApproveEnum::DRAFT
                 ]
             );
 
@@ -277,9 +274,9 @@ class KPIController extends Controller
                 ]);
             }
             DB::commit();
-            return redirect()->route('kpi.index')
+            return redirect()->route('salary.index')
                 ->with(
-                    ['message' => Lang::get('messages.kpi-update_s'), 'status' => 'success']
+                    ['message' => Lang::get('messages.salary-update_s'), 'status' => 'success']
                 );
         } catch (\Throwable $th) {
             DB::rollBack();
@@ -293,83 +290,38 @@ class KPIController extends Controller
     public function destroy(string $id)
     {
         //
-        $record = KPI::find($id);
+        $record = Salary::find($id);
         $record->delete();
-        return redirect()->route('kpi.index')
+        return redirect()->route('salary.index')
             ->with(
-                ['message' => Lang::get('messages.kpi-delete_s'), 'status' => 'success']
+                ['message' => Lang::get('messages.salary-delete_s'), 'status' => 'success']
             );
     }
 
     public function genderEnumCode()
     {
-        return 'KPI' . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
-    }
-
-    /**
-     * Send kpi request for approval and notify manager
-     */
-    public function send(string $id)
-    {
-        DB::beginTransaction();
-        try {
-            $kpi = KPI::findOrFail($id);
-
-            // Update status to waiting for manager approval
-            $kpi->update([
-                'status' => StatusDayOffEnum::WAIT_MANAGER,
-            ]);
-
-            // Get the manager of the user who created the kpi request
-            $manager = User::find($kpi->user->manager_id);
-            if ($manager) {
-                // Create notification record for the manager
-                Notifications::create([
-                    'user_id' => $manager->id,
-                    'title' => 'Yêu cầu KPI',
-                    'content' => 'Bạn có một yêu cầu KPI cần duyệt từ ' . $kpi->user->name . ' (Mã: ' . $kpi->code . ')',
-                    'link' => route('kpi.show', $kpi->id),
-                    'is_read' => StatusNotifyReadEnum::UNREAD,
-                    'type' => TypeNotifyReadEnum::KPI,
-                    'color' => ColorEnum::WARNING
-                ]);
-
-                $manager->update([
-                    'unread_notification' => $manager->unread_notification ? $manager->unread_notification + 1 : 1
-                ]);
-            }
-
-            DB::commit();
-            return redirect()->route('kpi.index')
-                ->with([
-                    'message' => Lang::get('messages.kpi-send_s'),
-                    'status' => 'success'
-                ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
+        return 'Salary' . str_pad(random_int(0, 999999), 6, '0', STR_PAD_LEFT);
     }
 
     public function approve(string $id)
     {
         DB::beginTransaction();
         try {
-            $kpi = KPI::findOrFail($id);
+            $salary = Salary::findOrFail($id);
 
-            $kpi->update([
+            $salary->update([
                 'status' => StatusDayOffEnum::DONE,
             ]);
 
-            $user = User::find($kpi->created_by);
+            $user = User::find($salary->user_id);
             if ($user) {
                 Notifications::create([
                     'user_id' => $user->id,
-                    'title' => 'Yêu cầu KPI đã được duyệt',
-                    'content' => 'Yêu cầu KPI của bạn đã được duyệt (Mã: ' . $kpi->code . ')',
-                    'link' => route('kpi.show', $kpi->id),
+                    'title' => 'Phiếu lương của bạn đã được duyệt',
+                    'content' => 'Phiếu lương của bạn đã được duyệt (Mã: ' . $salary->code . ')',
+                    'link' => route('salary.show', $salary->id),
                     'is_read' => StatusNotifyReadEnum::UNREAD,
-                    'type' => TypeNotifyReadEnum::KPI,
+                    'type' => TypeNotifyReadEnum::SALARY,
                     'color' => ColorEnum::SUCCESS
                 ]);
 
@@ -379,51 +331,9 @@ class KPIController extends Controller
             }
 
             DB::commit();
-            return redirect()->route('kpi.index')
+            return redirect()->route('salary.index')
                 ->with([
-                    'message' => Lang::get('messages.kpi-approve_s'),
-                    'status' => 'success'
-                ]);
-        } catch (\Throwable $th) {
-            DB::rollBack();
-            throw $th;
-        }
-    }
-
-    /**
-     * Reject kpi request and notify the requester
-     */
-    public function reject(string $id)
-    {
-        DB::beginTransaction();
-        try {
-            $kpi = KPI::findOrFail($id);
-
-            $kpi->update([
-                'status' => StatusDayOffEnum::REJECT,
-            ]);
-
-            $user = User::find($kpi->created_by);
-            if ($user) {
-                Notifications::create([
-                    'user_id' => $user->id,
-                    'title' => 'Yêu cầu KPI đã bị từ chối',
-                    'content' => 'Yêu cầu KPI của bạn đã bị từ chối (Mã: ' . $kpi->code . ')',
-                    'link' => route('kpi.show', $kpi->id),
-                    'is_read' => StatusNotifyReadEnum::UNREAD,
-                    'type' => TypeNotifyReadEnum::KPI,
-                    'color' => ColorEnum::DANGER
-                ]);
-
-                $user->update([
-                    'unread_notification' => $user->unread_notification ? $user->unread_notification + 1 : 1
-                ]);
-            }
-
-            DB::commit();
-            return redirect()->route('kpi.index')
-                ->with([
-                    'message' => Lang::get('messages.kpi-reject_s'),
+                    'message' => Lang::get('messages.salary-approve_s'),
                     'status' => 'success'
                 ]);
         } catch (\Throwable $th) {
