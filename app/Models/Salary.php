@@ -37,6 +37,13 @@ class Salary extends Model
     {
         return $this->belongsTo(User::class, 'user_id', 'id',);
     }
-
+    public function details()
+    {
+        return $this->hasMany(SalaryDetails::class, 'salary_id', 'id',);
+    }
+    public function calculates()
+    {
+        return $this->hasMany(SalaryCalculate::class, 'salary_id', 'id',);
+    }
 
 }

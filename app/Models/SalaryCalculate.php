@@ -11,6 +11,9 @@ class SalaryCalculate extends Model
     protected $table = 'salary_calculate';
     protected $guarded = [];
 
+    const ADD ='ADD';
+    const SUB ='SUB';
+
     protected static function boot()
     {
         parent::boot();

@@ -8,11 +8,11 @@
         <h4>
             {{ __('messages.salary-create') }}
         </h4>
-        @include('pages.salary.partials.form', [
+
+        @include('pages.salary.partials.form-create', [
             'action' => route('salary.store'),
             'method' => 'POST',
             'result' => null, // Không có dữ liệu cũ
-            'permissionOld' => null,
         ])
     </x-card>
 </x-app-layout>

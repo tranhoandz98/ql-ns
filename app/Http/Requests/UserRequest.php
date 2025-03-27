@@ -53,6 +53,7 @@ class UserRequest extends FormRequest
             'fileAvatar' => 'image|mimes:jpeg,png,jpg|max:1024',
 
             'salary' => 'required|max:11',
+            'salary_insurance' => 'required|max:11',
             'salary_kpi' => 'nullable|max:11',
             'work_time' => 'required',
         ];
@@ -82,6 +83,7 @@ class UserRequest extends FormRequest
             'fileAvatar' => Lang::get('messages.user-avatar'),
             'bank_branch' => Lang::get('messages.user-bank_branch'),
             'salary' => Lang::get('messages.user-salary'),
+            'salary_insurance' => Lang::get('messages.user-salary_insurance'),
             'salary_kpi' => Lang::get('messages.user-salary_kpi'),
             'work_time' => Lang::get('messages.user-work_time'),
         ];

@@ -61,6 +61,7 @@ return [
     'not_valid' => 'không hợp lệ',
     'month' => 'Tháng',
     'year' => 'Năm',
+    'continue' => 'Tiếp tục',
 
     'day_of_the_week' => 'Ngày trong tuần',
     'day_off' => 'Ngày nghỉ',
@@ -133,6 +134,7 @@ return [
     'user-type' => 'Loại người dùng',
     'user-salary' => 'Lương cơ bản',
     'user-salary_kpi' => 'Lương KPI',
+    'user-salary_insurance' => 'Lương đóng bảo hiểm',
     'user-info_bank' => 'Thông tin ngân hàng',
     'user-start_date' => 'Ngày bắt đầu làm việc',
     'user-work_time' => 'Giờ làm việc',
@@ -349,6 +351,9 @@ return [
     'salary-search' => 'Mã phiếu lương',
     'salary-name' => 'Tên phiếu lương',
     'salary-num' => 'Lương thực tế',
+    'salary-user_id' => 'Bảng lương nhân viên',
+    'salary-tab_num' => 'Ngày làm việc',
+    'salary-tab_cacular' => 'Tính toán lương',
 
     'salary-menu' => 'Phiếu lương',
     'salary-create' => 'Thêm mới phiếu lương',
@@ -363,6 +368,15 @@ return [
     'salary-reject_s' => 'Từ chối phiếu lương thành công',
     'salary-cc1' => 'Phiếu lương đang được sử dụng hoặc đã được xóa',
     'salary-allocation' => 'Cấp phát phiếu lương',
+
+    'salary-detail-name' => 'Miêu tả',
+    'salary-detail-num_day' => 'Số ngày',
+    'salary-detail-num_hours' => 'Số giờ',
+
+    'salary-calculate-description' => 'Danh mục',
+    'salary-calculate-name' => 'Quy tắc',
+    'salary-calculate-total' => 'Tổng',
+
 
 
 ];

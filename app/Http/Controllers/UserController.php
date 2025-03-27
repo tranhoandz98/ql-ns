@@ -149,6 +149,8 @@ class UserController extends Controller
                 'identifier' => $request->identifier,
                 'work_time' => $request->work_time,
                 'salary' => str_replace('.', '', $request->salary),
+                'salary_insurance' => str_replace('.', '', $request->salary_insurance),
+                'salary_insurance' => str_replace('.', '', $request->salary_insurance),
                 'salary_kpi' => str_replace('.', '', $request->salary_kpi),
             ]);
 
@@ -281,6 +283,7 @@ class UserController extends Controller
 
                 'work_time' => $request->work_time,
                 'salary' => str_replace('.', '', $request->salary),
+                'salary_insurance' => str_replace('.', '', $request->salary_insurance),
                 'salary_kpi' => str_replace('.', '', $request->salary_kpi),
             ]);
 

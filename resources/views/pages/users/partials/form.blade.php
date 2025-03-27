@@ -316,6 +316,22 @@
                     <x-input-error :messages="$errors->get('work_time')" class="" />
                 </div>
             </div>
+
+
+            <div class="col-md-6 col-lg-4">
+                <div class="form-group mb-4">
+                    <x-input-label for="salary_insurance">
+                        <span class="text-danger">*</span>
+                        @lang('messages.user-salary_insurance')
+                    </x-input-label>
+                    <input type="text" class="form-control" id="salary_insurance" name="salary_insurance"
+                        {{ $disabled ?? '' }} value="{{ old('salary_insurance', number_format($result->salary_insurance ?? 0, 0, ',', '.')) }}"
+                        oninput="formatCurrency(this)"
+
+                        />
+                    <x-input-error :messages="$errors->get('salary_insurance')" class="" />
+                </div>
+            </div>
             <div class="col-md-6 col-lg-4">
                 <div class="form-group mb-4">
                     <x-input-label for="salary">
